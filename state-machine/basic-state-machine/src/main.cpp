@@ -36,6 +36,7 @@ char* state_to_str(uint8_t state) {
             // chute ejection
             return chute_ejection;
         case 6:
+		
             // post flight
             return post_flight;
         default:
@@ -64,9 +65,7 @@ char* state_to_str(uint8_t state) {
 void timerCallback(TimerHandle_t xTimerHandle) {
     static uint8_t cnt = 0;
     cnt++;
-
     USER_EVENT_T data = {"timeout", cnt};
-
     xQueueSend(evntQueue, &data, 0U);
 }
 
@@ -100,10 +99,13 @@ static void stateMachine(void* arg) {
         // transition the state based on the timer value
         switch (current_state) {
             case 1:
+				
                 // call function to operate the state machine
                 // printf("%s\n", state_to_str(current_state));
                 break;
             case 5:
+			// apogee
+			eject()
 
                 break;
             case 10:
@@ -134,7 +136,7 @@ void setup() {
     tHandle = xTimerCreate(
             "Timer",                // name for debugging
             1000,               // ticks -> 1s
-            true,                    // true - reptitive
+            true,                    // true - repetitive
             NULL,                      // timer's ID is not used
             timerCallback       // function to execute when the timer expires
             );
