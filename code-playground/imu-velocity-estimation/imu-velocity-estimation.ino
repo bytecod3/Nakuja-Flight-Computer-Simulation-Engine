@@ -3,8 +3,9 @@
 const int MPU = 0x68;
 
 int16_t acc_x, acc_y, acc_z; // accelerometer raw data
-float acc_x_real, acc_y_real; // converted accelerations in G's
-float gyro_x, gyro_y, gyro_z; // gyro raw data 
+float acc_x_real, acc_y_real, acc_z_real; // converted accelerations in G's
+int16_t gyro_x, gyro_y, gyro_z; // gyro raw data 
+float gyro_x_real, gyro_y_real, gyro_z_real; // converted gyro values in deg/s
 
 // error values 
 float acc_error = 0;
@@ -56,16 +57,35 @@ void loop() {
   Wire.write(0x3B);
   Wire.endTransmission(false);// I2C restart
 
-  Wire.requestFrom(MPU, 4, true);
+  Wire.requestFrom(MPU, 6, true);
   acc_x = Wire.read()<<8 | Wire.read();
   acc_y = Wire.read()<<8 | Wire.read();
+  acc_z = Wire.read()<<8 | Wire.read();
   acc_x_real = (float) acc_x / 16384.0;
   acc_y_real = (float) acc_y / 16384.0; 
-  
-  Serial.print("x:");Serial.print(acc_x_real);Serial.print(",y:");Serial.print(acc_y_real);Serial.println();
-  
-  Serial.println();
+  acc_z_real = (float) acc_z / 16384.0;
 
-  delay(100);
+  // read gyroscope
+  Wire.beginTransmission(0x68);
+  Wire.write(0x43);
+  Wire.endTransmission(false);
+
+  Wire.requestFrom(MPU, 6, true);
+  gyro_x = Wire.read()<<8 | Wire.read();
+  gyro_y = Wire.read()<<8 | Wire.read();
+  gyro_z = Wire.read()<<8 | Wire.read();
+  gyro_x_real = (float) gyro_x / 32.8;
+  gyro_y_real = (float) gyro_y / 32.8;
+  gyro_z_real = (float) gyro_z / 32.8;
+
+  printf("ACC: %.2f,%.2f GY:%.2f,%.2f,%.2f\n",
+          acc_x_real, 
+          acc_y_real,
+          gyro_x_real,
+          gyro_y_real,
+          gyro_z_real
+          );
+           
+  delay(50);
   
 }
