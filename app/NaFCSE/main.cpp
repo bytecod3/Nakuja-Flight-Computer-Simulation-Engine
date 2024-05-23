@@ -11,6 +11,9 @@ int main(int argc, char *argv[])
     // set version number
     QString version = "1.0";
 
+    // set window icon
+    // w.setWindowIcon();
+
     w.setMaximumSize(WINDOW_WIDTH, WINDOW_HEIGHT);
     w.setWindowTitle("Nakuja Flight Computer Simulation Engine. v"+version);
 
