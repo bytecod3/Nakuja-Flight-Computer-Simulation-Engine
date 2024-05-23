@@ -8,8 +8,11 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     MainWindow w;
 
-    w.resize(1024, 900);
-    w.setWindowTitle("Nakuja FLight Computer Simulation Engine");
+    // set version number
+    QString version = "1.0";
+
+    w.setMaximumSize(1400, 900);
+    w.setWindowTitle("Nakuja Flight Computer Simulation Engine. v"+version);
 
     w.show();
     return a.exec();

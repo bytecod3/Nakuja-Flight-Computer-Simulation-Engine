@@ -7,9 +7,12 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
+    // set a fixed size for the window
+
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+

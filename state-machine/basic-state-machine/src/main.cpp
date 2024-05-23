@@ -78,6 +78,7 @@ static void stateMachine(void* arg) {
 
     while(true) {
 
+	if(mode == FLIGHT_MODE) {
         xQueueReceive(evntQueue, &rcvd_data, 10);
 
         printf("cnt: %d\n", rcvd_data.counter);
@@ -99,13 +100,13 @@ static void stateMachine(void* arg) {
         // transition the state based on the timer value
         switch (current_state) {
             case 1:
-				
+								
                 // call function to operate the state machine
                 // printf("%s\n", state_to_str(current_state));
                 break;
             case 5:
-			// apogee
-			eject()
+				// apogee
+				eject()
 
                 break;
             case 10:
@@ -119,6 +120,11 @@ static void stateMachine(void* arg) {
         }
 
     }
+	} else {
+		// nothing
+		// sending telemetry
+		
+	}
 }
 
 void setup() {
@@ -148,4 +154,12 @@ void setup() {
 
 void loop() {
     vTaskDelete(nullptr);
+	
+	// topic "fc/arm"
+	if(recv_msg != "ARM") {
+		mode = SAFE_MODE;
+	} else {
+		mode = FLIGHT_MODE;
+	}
+	
 }
