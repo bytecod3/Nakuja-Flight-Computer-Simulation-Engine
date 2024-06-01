@@ -3,12 +3,27 @@
 
 #include <QtCharts>
 #include <QSplineSeries>
+#include <QSerialPortInfo>
+#include <QDebug>
+#include <QMessageBox>
+#include <QString>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // scan and load all the serial ports
+    this->loadPorts();
+
+    // update the baud Rate combo box with possible baud rates
+    this->numBaudRates = 9;
+    QString baudRates[numBaudRates] = {"4800", "9600", "19200", "38400","57600", "115200","230400", "460800", "921600"};
+
+    for (int i =0; i < numBaudRates; i++) {
+        ui->cmbBaudRates->addItem(baudRates[i]);
+    }
 
     ////////////////// DRAW SPLINE CHART ///////////////////////
     QSplineSeries* series = new QSplineSeries();
@@ -36,8 +51,6 @@ MainWindow::MainWindow(QWidget *parent)
     chartView->setRenderHint(QPainter::Antialiasing); // make lines look nicer
 
     ui->accelerationChart->addWidget(chartView);
-
-
 
 
     // create dummy graph 2
@@ -70,8 +83,38 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+/**
+ * @brief MainWindow::loadPorts
+ * scan for available com ports and add them to combo box
+ */
+void MainWindow::loadPorts() {
+    foreach(auto &port , QSerialPortInfo::availablePorts()) {
+        ui->cmbSerialPorts->addItem(port.portName());
+    }
+}
+
+
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+/**
+ * @brief MainWindow::on_btnRun_clicked
+ * Run the application
+ */
+void MainWindow::on_btnRun_clicked()
+{
+    // connect to serial port
+    QString portName = ui->cmbSerialPorts->currentText();
+    QString baudRate = ui->cmbBaudRates->currentText();
+    auto isConnected = port.connectToSerial(portName, baudRate);
+
+    if(!isConnected) {
+        QMessageBox::critical(this, "Port error", "Could not connect to port");
+    }
+
+    qDebug() << baudRate;
+
 }
 

@@ -106,7 +106,9 @@ static void stateMachine(void* arg) {
                 break;
             case 5:
 				// apogee
-				eject()
+				if(mode == FLIGHTMODE) {
+					eject();
+				} 
 
                 break;
             case 10:

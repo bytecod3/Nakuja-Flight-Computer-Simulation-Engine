@@ -42,8 +42,12 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;</string>
          </property>
          <property name="text">
           <string>POST FLIGHT</string>
@@ -53,8 +57,13 @@ color: #000000;</string>
        <item>
         <widget class="QLabel" name="label_3">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;
+</string>
          </property>
          <property name="text">
           <string>MAIN CHUTE DESCENT</string>
@@ -64,8 +73,13 @@ color: #000000;</string>
        <item>
         <widget class="QLabel" name="label_2">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;
+</string>
          </property>
          <property name="text">
           <string>MAIN CHUTE EJECT</string>
@@ -75,8 +89,13 @@ color: #000000;</string>
        <item>
         <widget class="QLabel" name="label_4">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;
+</string>
          </property>
          <property name="text">
           <string>DROGUE CHUTE DESCENT</string>
@@ -86,8 +105,13 @@ color: #000000;</string>
        <item>
         <widget class="QLabel" name="label_5">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;
+</string>
          </property>
          <property name="text">
           <string>DROGUE CHUTE EJECT</string>
@@ -97,8 +121,12 @@ color: #000000;</string>
        <item>
         <widget class="QLabel" name="label_6">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;</string>
          </property>
          <property name="text">
           <string>BALLISTIC DESCENT</string>
@@ -108,8 +136,13 @@ color: #000000;</string>
        <item>
         <widget class="QLabel" name="label_7">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;
+</string>
          </property>
          <property name="text">
           <string>APOGEE</string>
@@ -119,8 +152,12 @@ color: #000000;</string>
        <item>
         <widget class="QLabel" name="label_8">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;</string>
          </property>
          <property name="text">
           <string>COASTING</string>
@@ -130,8 +167,12 @@ color: #000000;</string>
        <item>
         <widget class="QLabel" name="label_13">
          <property name="styleSheet">
-          <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+          <string notr="true">border: 0px solid black;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right:  2px solid black;
+border-left:  2px solid #a0a0a0;
+color: #000080;</string>
          </property>
          <property name="text">
           <string>POWERED FLIGHT</string>
@@ -142,7 +183,9 @@ color: #000000;</string>
         <widget class="QLabel" name="label_14">
          <property name="styleSheet">
           <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;</string>
+color: #000000;
+background: #FFD700;
+font: 700 9pt &quot;Segoe UI&quot;;</string>
          </property>
          <property name="text">
           <string>PRE-FLIGHT</string>
@@ -184,7 +227,7 @@ color: #000000;</string>
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="comboBox"/>
+               <widget class="QComboBox" name="cmbSerialPorts"/>
               </item>
              </layout>
             </item>
@@ -198,7 +241,7 @@ color: #000000;</string>
                </widget>
               </item>
               <item>
-               <widget class="QComboBox" name="comboBox_2"/>
+               <widget class="QComboBox" name="cmbBaudRates"/>
               </item>
              </layout>
             </item>
@@ -270,6 +313,12 @@ color: #000000;</string>
            </property>
            <item row="0" column="2">
             <widget class="QLabel" name="label_19">
+             <property name="styleSheet">
+              <string notr="true">border: 2px solid grey;
+border-radius: 4px;
+color: black;
+font: 700 9pt &quot;Segoe UI&quot;;</string>
+             </property>
              <property name="text">
               <string>GPS</string>
              </property>
@@ -280,6 +329,13 @@ color: #000000;</string>
            </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_17">
+             <property name="styleSheet">
+              <string notr="true">border: 2px solid grey;
+border-radius: 4px;
+color: black;
+font: 700 9pt &quot;Segoe UI&quot;;
+background: #32CD32;</string>
+             </property>
              <property name="text">
               <string>IMU</string>
              </property>
@@ -290,6 +346,12 @@ color: #000000;</string>
            </item>
            <item row="0" column="1">
             <widget class="QLabel" name="label_18">
+             <property name="styleSheet">
+              <string notr="true">border: 2px solid grey;
+border-radius: 4px;
+color: black;
+font: 700 9pt &quot;Segoe UI&quot;;</string>
+             </property>
              <property name="text">
               <string>Altimeter</string>
              </property>
@@ -300,6 +362,13 @@ color: #000000;</string>
            </item>
            <item row="1" column="2">
             <widget class="QLabel" name="label_22">
+             <property name="styleSheet">
+              <string notr="true">border: 2px solid grey;
+border-radius: 4px;
+color: black;
+font: 700 9pt &quot;Segoe UI&quot;;
+</string>
+             </property>
              <property name="text">
               <string>Data Logger</string>
              </property>
@@ -310,6 +379,13 @@ color: #000000;</string>
            </item>
            <item row="1" column="0">
             <widget class="QLabel" name="label_20">
+             <property name="styleSheet">
+              <string notr="true">border: 2px solid grey;
+border-radius: 4px;
+color: black;
+font: 700 9pt &quot;Segoe UI&quot;;
+</string>
+             </property>
              <property name="text">
               <string>WIFI</string>
              </property>
@@ -320,6 +396,12 @@ color: #000000;</string>
            </item>
            <item row="1" column="1">
             <widget class="QLabel" name="label_21">
+             <property name="styleSheet">
+              <string notr="true">border: 2px solid grey;
+border-radius: 4px;
+color: black;
+font: 700 9pt &quot;Segoe UI&quot;;</string>
+             </property>
              <property name="text">
               <string>Battery</string>
              </property>
@@ -330,6 +412,12 @@ color: #000000;</string>
            </item>
            <item row="0" column="3">
             <widget class="QLabel" name="label_23">
+             <property name="styleSheet">
+              <string notr="true">border: 2px solid grey;
+border-radius: 4px;
+color: black;
+font: 700 9pt &quot;Segoe UI&quot;;</string>
+             </property>
              <property name="text">
               <string>Battery</string>
              </property>
@@ -420,6 +508,13 @@ color: #000000;</string>
             </widget>
            </item>
           </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="btnRun">
+          <property name="text">
+           <string>Run</string>
+          </property>
          </widget>
         </item>
        </layout>

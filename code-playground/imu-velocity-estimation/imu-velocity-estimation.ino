@@ -44,9 +44,9 @@ void callibrateIMU() {
     
     Wire.requestFrom(0x68, 6, true);
     // todo: change divider factor based on the FS reading set
-    acc_x = (float)(Wire.read()<<8|Wire.read());
-    acc_y = (float)(Wire.read()<<8|Wire.read());
-    acc_z = (float)(Wire.read()<<8|Wire.read());
+    acc_x = (float)(Wire.read()<<8|Wire.read())/16384;
+    acc_y = (float)(Wire.read()<<8|Wire.read())/16384;
+    acc_z = (float)(Wire.read()<<8|Wire.read())/16384;
 
     // accelerometer running sum 
     x_acc_sum += acc_x;
@@ -71,11 +71,6 @@ void callibrateIMU() {
   }
 
   // DEBUG
- printf("Sum: %.2f, %.2f, %.2f \n",
-      x_acc_sum,
-      y_acc_sum,
-      z_acc_sum);
-  
   // find the average error in all the 3 axes
   // for accelerometer 
   x_acc_err = x_acc_sum / CALLIBRATION_VALUES;
@@ -91,6 +86,45 @@ void callibrateIMU() {
 //  x_gyro_err = x_gyro_sum / CALLIBRATION_VALUES;
 //  y_gyro_err = y_gyro_sum / CALLIBRATION_VALUES;
 //  z_gyro_err = z_gyro_sum / CALLIBRATION_VALUES;  
+}
+
+float filter_coeff = 0.98; 
+float dt;
+unsigned long current_time=0;
+unsigned long previous_time=0;
+unsigned long interval =0;
+// filtered values 
+float f_acc_x, f_acc_y, f_acc_z;
+float f_gyro_x, f_gyro_y, f_gyro_z;
+
+void complementary_filter(
+  float acc_x, 
+  float acc_y, 
+  float acc_z,
+  float gyro_x,
+  float gyro_y,
+  float gyro_z
+  )
+{
+  // filter every 50 ms
+  current_time = millis();
+  interval = current_time - previous_time;
+  if( interval >= 50) {
+    // filter the accelerometer
+    // formula: x = 0.98*(val+val*dt) + 0.02*val
+    f_acc_x = filter_coeff*(acc_x + acc_x* (interval/1000)) + 0.02*acc_x;
+    f_acc_y = filter_coeff*(acc_y + acc_y* (interval/1000)) + 0.02*acc_y;
+    f_acc_z = filter_coeff*(acc_z + acc_z* (interval/1000)) + 0.02*acc_z;
+
+    // filter the gyro 
+    f_gyro_x = filter_coeff*(gyro_x + gyro_x* (interval/1000)) + 0.02*gyro_x;
+    f_gyro_y = filter_coeff*(gyro_y + gyro_y* (interval/1000)) + 0.02*gyro_y;
+    f_gyro_z = filter_coeff*(gyro_z + gyro_z* (interval/1000)) + 0.02*gyro_z;
+
+    // update the time
+    previous_time = current_time;    
+  }
+  
 }
 
 void setup() {
@@ -117,9 +151,9 @@ void loop() {
   acc_x = Wire.read()<<8 | Wire.read();
   acc_y = Wire.read()<<8 | Wire.read();
   acc_z = Wire.read()<<8 | Wire.read();
-  acc_x_real = (float) acc_x / 16384.0;
-  acc_y_real = (float) acc_y / 16384.0; 
-  acc_z_real = (float) acc_z / 16384.0;
+  acc_x_real = (float) acc_x / 16384.0 - 0.10; // these values are got from callibration. see the README
+  acc_y_real = (float) acc_y / 16384.0 - 0.03; 
+  acc_z_real = (float) acc_z / 16384.0 - 0.11;
 
   // read gyroscope
   Wire.beginTransmission(0x68);
@@ -130,19 +164,39 @@ void loop() {
   gyro_x = Wire.read()<<8 | Wire.read();
   gyro_y = Wire.read()<<8 | Wire.read();
   gyro_z = Wire.read()<<8 | Wire.read();
-  gyro_x_real = (float) gyro_x / 32.8;
-  gyro_y_real = (float) gyro_y / 32.8;
-  gyro_z_real = (float) gyro_z / 32.8;
+  gyro_x_real = (float) gyro_x / 32.8 + 3.5;
+  gyro_y_real = (float) gyro_y / 32.8 + 1.5;
+  gyro_z_real = (float) gyro_z / 32.8 - 0.15;
 
-//  printf("ACC: %.2f,%.2f, %.2f GY:%.2f,%.2f,%.2f\n",
-//          acc_x_real - x_acc_err, 
-//          acc_y_real - y_acc_err,
-//          acc_z_real - z_acc_err,
-//          gyro_x_real,
-//          gyro_y_real,
-//          gyro_z_real
-//          );
-           
+  // filter the data 
+  complementary_filter(
+    acc_x_real, 
+    acc_y_real,
+    acc_z_real,
+    gyro_x_real,
+    gyro_y_real,
+    gyro_z_real);    
+
+
+  printf("%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
+          acc_x_real, 
+          acc_y_real,
+          acc_z_real,
+          gyro_x_real,
+          gyro_y_real,
+          gyro_z_real
+          );
+
   delay(50);
+
+//  printf("%.2f,%.2f,%.2f,%.2f,%.2f,%.2f\n",
+//          f_acc_x , 
+//          f_acc_y,
+//          f_acc_z,
+//          f_gyro_x,
+//          f_gyro_y,
+//          f_gyro_z
+//          );
+
   
 }

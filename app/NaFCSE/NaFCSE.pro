@@ -1,4 +1,4 @@
-QT       += core gui charts
+QT       += core gui charts serialport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -10,10 +10,12 @@ CONFIG += c++17
 
 SOURCES += \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    serialport.cpp
 
 HEADERS += \
     mainwindow.h \
+    serialport.h \
     window_defs.h
 
 FORMS += \
