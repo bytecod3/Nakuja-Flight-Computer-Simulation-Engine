@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include "serialport.h"
+#include <QTimer> // to scan the ports periodically
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,13 +23,16 @@ public:
 
 private slots:
     void on_btnRun_clicked();
+    void on_btnChooseFile_clicked();
 
 private:
     Ui::MainWindow *ui;
     uint8_t numBaudRates;
     uint64_t baudRates[9];
-    void loadPorts();
+    uint64_t numTimeSteps;
     SerialPort port;
-
+    QTimer* mSerialScanTimer; // to scan the serial ports periodically
+    void loadPorts();
+    void updateSerialPorts();
 };
 #endif // MAINWINDOW_H

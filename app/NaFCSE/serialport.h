@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSerialPort>
+#include <QTimer>
 
 class SerialPort : public QObject
 {
@@ -15,8 +16,6 @@ signals:
 
 private:
     QSerialPort* _serialPort;
-
-
 };
 
 #endif // SERIALPORT_H

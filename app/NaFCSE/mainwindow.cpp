@@ -7,6 +7,8 @@
 #include <QDebug>
 #include <QMessageBox>
 #include <QString>
+#include <QFileDialog>
+#include <QFileInfo>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -23,6 +25,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     for (int i =0; i < numBaudRates; i++) {
         ui->cmbBaudRates->addItem(baudRates[i]);
+    }
+
+    // set the possible timesteps in milliseconds
+    this->numTimeSteps = 8;
+    QString time_steps[numTimeSteps] = {"200", "400", "600", "800", "1000", "1500", "2000", "5000"};
+    for(int i =0; i < numTimeSteps; i++) {
+        ui->cmbTimeStep->addItem(time_steps[i]);
     }
 
     ////////////////// DRAW SPLINE CHART ///////////////////////
@@ -51,7 +60,6 @@ MainWindow::MainWindow(QWidget *parent)
     chartView->setRenderHint(QPainter::Antialiasing); // make lines look nicer
 
     ui->accelerationChart->addWidget(chartView);
-
 
     // create dummy graph 2
     QSplineSeries* series2 = new QSplineSeries();
@@ -117,4 +125,41 @@ void MainWindow::on_btnRun_clicked()
     qDebug() << baudRate;
 
 }
+
+/**
+ * @brief MainWindow::on_toolButton_clicked
+ * Open file dialog chooser to choose trajectory file
+ */
+void MainWindow::on_btnChooseFile_clicked()
+{
+    QString trajectory_file =  QFileDialog::getOpenFileName(this, tr("Choose file"), "/", tr("CSV Files (*.csv)"));
+    QFileInfo t_file(trajectory_file);
+    QString file_ext = t_file.completeSuffix();
+    qDebug() << file_ext;
+
+    if (trajectory_file == "") {
+        QMessageBox::critical(this, "File error", "Please select a file");
+    } else if (file_ext != "csv") {
+        QMessageBox::critical(this, "File error", "Please select a csv file");
+        return;
+    } else {
+        qDebug() <<trajectory_file;
+    }
+
+    // set the filename in the filename field
+    ui->lnFilename->setText(trajectory_file);
+
+}
+
+/**
+ * @brief MainWindow::updateSerialPorts
+ * rescan the serial ports and update the combo box, such that when a new device
+ * is connected, it is automatically detected
+ */
+void MainWindow::updateSerialPorts() {
+    foreach(auto &port, QSerialPortInfo::availablePorts()) {
+        ui->cmbSerialPorts->addItem(port->portName());
+    }
+}
+
 

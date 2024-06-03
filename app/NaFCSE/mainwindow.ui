@@ -183,8 +183,8 @@ color: #000080;</string>
         <widget class="QLabel" name="label_14">
          <property name="styleSheet">
           <string notr="true">border: 1px solid #a0a0a0;
-color: #000000;
-background: #FFD700;
+color: #00FF00;
+background: black;
 font: 700 9pt &quot;Segoe UI&quot;;</string>
          </property>
          <property name="text">
@@ -203,12 +203,12 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
             <item>
              <widget class="QLabel" name="label_12">
               <property name="text">
-               <string>TimeStep</string>
+               <string>Time step (ms)</string>
               </property>
              </widget>
             </item>
             <item>
-             <widget class="QComboBox" name="comboBox_3"/>
+             <widget class="QComboBox" name="cmbTimeStep"/>
             </item>
            </layout>
           </item>
@@ -222,7 +222,7 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
               <item>
                <widget class="QLabel" name="label_10">
                 <property name="text">
-                 <string>PortNum</string>
+                 <string>Port </string>
                 </property>
                </widget>
               </item>
@@ -236,7 +236,7 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
               <item>
                <widget class="QLabel" name="label_11">
                 <property name="text">
-                 <string>BaudRate</string>
+                 <string>Baud rate</string>
                 </property>
                </widget>
               </item>
@@ -252,7 +252,7 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
             <item>
              <widget class="QLabel" name="label_9">
               <property name="text">
-               <string>SimulationFile </string>
+               <string>Simulation file </string>
               </property>
              </widget>
             </item>
@@ -270,10 +270,10 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
              </spacer>
             </item>
             <item>
-             <widget class="QLineEdit" name="lineEdit"/>
+             <widget class="QLineEdit" name="lnFilename"/>
             </item>
             <item>
-             <widget class="QToolButton" name="toolButton">
+             <widget class="QToolButton" name="btnChooseFile">
               <property name="text">
                <string>...</string>
               </property>
@@ -315,7 +315,6 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
             <widget class="QLabel" name="label_19">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
-border-radius: 4px;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;</string>
              </property>
@@ -331,7 +330,6 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
             <widget class="QLabel" name="label_17">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
-border-radius: 4px;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;
 background: #32CD32;</string>
@@ -348,7 +346,6 @@ background: #32CD32;</string>
             <widget class="QLabel" name="label_18">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
-border-radius: 4px;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;</string>
              </property>
@@ -364,7 +361,6 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
             <widget class="QLabel" name="label_22">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
-border-radius: 4px;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;
 </string>
@@ -381,7 +377,6 @@ font: 700 9pt &quot;Segoe UI&quot;;
             <widget class="QLabel" name="label_20">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
-border-radius: 4px;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;
 </string>
@@ -398,7 +393,6 @@ font: 700 9pt &quot;Segoe UI&quot;;
             <widget class="QLabel" name="label_21">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
-border-radius: 4px;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;</string>
              </property>
@@ -414,7 +408,6 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
             <widget class="QLabel" name="label_23">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
-border-radius: 4px;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;</string>
              </property>
@@ -512,8 +505,17 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
         </item>
         <item>
          <widget class="QPushButton" name="btnRun">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true"/>
+          </property>
           <property name="text">
-           <string>Run</string>
+           <string>RUN</string>
           </property>
          </widget>
         </item>

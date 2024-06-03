@@ -4,7 +4,16 @@
 SerialPort::SerialPort(QObject *parent)
     : QObject{parent},
     _serialPort(nullptr)
-{}
+{
+
+    /* create a timer to be scanning the serial ports every 5 seconds */
+    mSerialScanTimer = new QTimer(this);
+    mSerialScanTimer->setInterval(5000);
+    mSerialScanTimer->start();
+
+    connect(mSerialScanTimer, &QTimer::timeout,
+            this, &updateSerialPorts);
+}
 
 
 /**
