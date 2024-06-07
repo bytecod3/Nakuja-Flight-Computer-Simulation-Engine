@@ -19,7 +19,7 @@ These subsystems are described below:
 
 ### 1. Simulation Parameter and Serial Port Selection
 
-![serial-port](.\images\serial-port-manager.png)
+![serial-port](./images/serial-port-manager.png)
 
 This subsystem is responsible for setting how you want the simulation to take place. Here, the user can select Port connected to the hardware interface, the baud rate, simulation file and the time step.
 
