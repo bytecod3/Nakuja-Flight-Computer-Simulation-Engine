@@ -30,9 +30,17 @@ MainWindow::MainWindow(QWidget *parent)
     // set the possible timesteps in milliseconds
     this->numTimeSteps = 8;
     QString time_steps[numTimeSteps] = {"200", "400", "600", "800", "1000", "1500", "2000", "5000"};
-    for(int i =0; i < numTimeSteps; i++) {
+    for(int64_t i =0; i < numTimeSteps; i++) {
         ui->cmbTimeStep->addItem(time_steps[i]);
     }
+
+    // connect the timer elapse signal to update Serial function
+    /* create a timer to be scanning the serial ports every 5 seconds */
+    mSerialScanTimer = new QTimer(this);
+    mSerialScanTimer->setInterval(5000);
+    mSerialScanTimer->start();
+    connect(mSerialScanTimer, &QTimer::timeout,
+            this, &updateSerialPorts);
 
     ////////////////// DRAW SPLINE CHART ///////////////////////
     QSplineSeries* series = new QSplineSeries();
@@ -157,9 +165,13 @@ void MainWindow::on_btnChooseFile_clicked()
  * is connected, it is automatically detected
  */
 void MainWindow::updateSerialPorts() {
+
     foreach(auto &port, QSerialPortInfo::availablePorts()) {
-        ui->cmbSerialPorts->addItem(port->portName());
+        ui->cmbSerialPorts->addItem(port.portName());
     }
+
+    qDebug() << "NEW device";
+
 }
 
 

@@ -311,12 +311,33 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
            <property name="spacing">
             <number>6</number>
            </property>
+           <item row="1" column="0">
+            <widget class="QLabel" name="label_20">
+             <property name="styleSheet">
+              <string notr="true">border: 2px solid grey;
+color: black;
+font: 700 9pt &quot;Segoe UI&quot;;
+border: 1px solid black;</string>
+             </property>
+             <property name="text">
+              <string>WIFI</string>
+             </property>
+             <property name="margin">
+              <number>4</number>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="2">
             <widget class="QLabel" name="label_19">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
 color: black;
-font: 700 9pt &quot;Segoe UI&quot;;</string>
+font: 700 9pt &quot;Segoe UI&quot;;
+border: 0px solid gray;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right: 2px solid black;
+border-left: 2px solid #a0a0a0;</string>
              </property>
              <property name="text">
               <string>GPS</string>
@@ -332,7 +353,12 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
               <string notr="true">border: 2px solid grey;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;
-background: #32CD32;</string>
+background: #32CD32;
+border: 0px solid gray;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right: 2px solid black;
+border-left: 2px solid #a0a0a0;</string>
              </property>
              <property name="text">
               <string>IMU</string>
@@ -342,15 +368,20 @@ background: #32CD32;</string>
              </property>
             </widget>
            </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_18">
+           <item row="1" column="1">
+            <widget class="QLabel" name="label_21">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
 color: black;
-font: 700 9pt &quot;Segoe UI&quot;;</string>
+font: 700 9pt &quot;Segoe UI&quot;;
+border: 0px solid gray;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right: 2px solid black;
+border-left: 2px solid #a0a0a0;</string>
              </property>
              <property name="text">
-              <string>Altimeter</string>
+              <string>Battery</string>
              </property>
              <property name="margin">
               <number>4</number>
@@ -363,6 +394,11 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
               <string notr="true">border: 2px solid grey;
 color: black;
 font: 700 9pt &quot;Segoe UI&quot;;
+border: 0px solid gray;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right: 2px solid black;
+border-left: 2px solid #a0a0a0;
 </string>
              </property>
              <property name="text">
@@ -373,46 +409,19 @@ font: 700 9pt &quot;Segoe UI&quot;;
              </property>
             </widget>
            </item>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_20">
+           <item row="0" column="1">
+            <widget class="QLabel" name="label_18">
              <property name="styleSheet">
               <string notr="true">border: 2px solid grey;
-color: black;
+color: #191970;
 font: 700 9pt &quot;Segoe UI&quot;;
-</string>
+border: 1px solid black;</string>
              </property>
              <property name="text">
-              <string>WIFI</string>
+              <string>Altimeter</string>
              </property>
              <property name="margin">
               <number>4</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="label_21">
-             <property name="styleSheet">
-              <string notr="true">border: 2px solid grey;
-color: black;
-font: 700 9pt &quot;Segoe UI&quot;;</string>
-             </property>
-             <property name="text">
-              <string>Battery</string>
-             </property>
-             <property name="margin">
-              <number>4</number>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QLabel" name="label_23">
-             <property name="styleSheet">
-              <string notr="true">border: 2px solid grey;
-color: black;
-font: 700 9pt &quot;Segoe UI&quot;;</string>
-             </property>
-             <property name="text">
-              <string>Battery</string>
              </property>
             </widget>
            </item>
@@ -448,10 +457,20 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
            <item>
             <widget class="QLabel" name="label_16">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">border: 0px solid gray;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right: 2px solid black;
+border-left: 2px solid #a0a0a0;
+color: #191970;
+font: 700 9pt &quot;Segoe UI&quot;;
+padding: 4px;</string>
              </property>
              <property name="text">
               <string>Flight Mode</string>
@@ -461,10 +480,21 @@ font: 700 9pt &quot;Segoe UI&quot;;</string>
            <item>
             <widget class="QLabel" name="label_15">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
+              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">color: #00FF00;
+background-color: black;
+font: 700 9pt &quot;Segoe UI&quot;;
+padding: 4px;
+border: 0px solid gray;
+border-bottom: 2px solid black;
+border-top: 2px solid #a0a0a0;
+border-right: 2px solid black;
+border-left: 2px solid #a0a0a0;</string>
              </property>
              <property name="text">
               <string>Safe Mode</string>
