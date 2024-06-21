@@ -39,6 +39,12 @@ MainWindow::MainWindow(QWidget *parent)
     mSerialScanTimer = new QTimer(this);
     mSerialScanTimer->setInterval(5000);
     mSerialScanTimer->start();
+
+    /////////////////// SIGNALS AND SLOTS ////////////////////////
+    /// 1. handle data received from serial
+    connect(&port, &SerialPort::dataReceived, this, &MainWindow::readData);
+
+    /// 2. handles plug-n-play
     connect(mSerialScanTimer, &QTimer::timeout,
             this, &updateSerialPorts);
 
@@ -170,8 +176,11 @@ void MainWindow::updateSerialPorts() {
         ui->cmbSerialPorts->addItem(port.portName());
     }
 
-    qDebug() << "NEW device";
-
 }
 
+void MainWindow::readData(QByteArray data) {
+    ui->serialMonitor->insertPlainText(QString(data));
+    QScrollBar* sb = ui->serialMonitor->verticalScrollBar();
+    sb->setValue(sb->maximum());
+}
 

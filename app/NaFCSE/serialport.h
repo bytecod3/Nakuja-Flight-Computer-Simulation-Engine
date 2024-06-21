@@ -12,10 +12,17 @@ public:
     explicit SerialPort(QObject *parent = nullptr);
     bool connectToSerial(QString portName, QString baudRate);
 
-signals:
+    ~SerialPort(); // destructor
 
 private:
     QSerialPort* _serialPort;
+
+signals:
+    void dataReceived(QByteArray(b));
+
+private slots:
+    void dataReady();
+
 };
 
 #endif // SERIALPORT_H

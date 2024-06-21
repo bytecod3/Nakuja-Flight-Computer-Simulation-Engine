@@ -9,6 +9,18 @@ SerialPort::SerialPort(QObject *parent)
 
 }
 
+/**
+ * @brief SerialPort::~serialPort
+ *
+ * Destructor - close any open serial port
+ */
+SerialPort::~SerialPort() {
+    if(_serialPort !=nullptr) {
+        _serialPort->close();
+        delete _serialPort;
+    }
+}
+
 
 /**
  * @brief SerialPort::scanSerial
@@ -30,11 +42,19 @@ bool SerialPort::connectToSerial(QString portName, QString baudRate) {
     _serialPort->setBaudRate(baudRate.toInt());
 
     if(_serialPort->open(QIODevice::ReadWrite)) {
-        // QObject::connect(_serialPort, &QSerialPort::readyRead,
-        //                  this, &SerialPort::dataReady);
-        qDebug() << "Connected";
+        QObject::connect(_serialPort, &QSerialPort::readyRead,this, &SerialPort::dataReady);
+
     }
 
     return _serialPort->isOpen();
 
 }
+
+void SerialPort::dataReady() {
+    if( _serialPort->isOpen()) {
+        emit dataReceived(_serialPort->readAll());
+    }
+}
+
+
+
