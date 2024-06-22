@@ -2,15 +2,20 @@
 #define SERIALPARSER_H
 
 #include <QObject>
+#include <QVector>
 
 class SerialParser : public QObject
 {
     Q_OBJECT
 public:
     explicit SerialParser(QObject *parent = nullptr);
-    void parseAll(QByteArray data);
+
+    QVector<QString> packet_vector; // store parsed csv packet
+
+    void parseAll(const QByteArray data);
     void decodeStates();
     void testParse();
+
 
 signals:
 };

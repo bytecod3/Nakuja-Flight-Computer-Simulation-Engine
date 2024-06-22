@@ -41,12 +41,14 @@ MainWindow::MainWindow(QWidget *parent)
     mSerialScanTimer->start();
 
     /////////////////// SIGNALS AND SLOTS ////////////////////////
-    /// 1. handle data received from serial
+    /// 1. display data received from serial
+    connect(&port, &SerialPort::dataReceived, this, &MainWindow::updateSerialMonitor);
+
+    /// 2. process data received from the serial monitor
     connect(&port, &SerialPort::dataReceived, this, &MainWindow::readData);
 
-    /// 2. handles plug-n-play
-    connect(mSerialScanTimer, &QTimer::timeout,
-            this, &updateSerialPorts);
+    /// 3. handles plug-n-play
+    connect(mSerialScanTimer, &QTimer::timeout, this, &updateSerialPorts);
 
     ////////////////// DRAW SPLINE CHART ///////////////////////
     QSplineSeries* series = new QSplineSeries();
@@ -178,23 +180,27 @@ void MainWindow::updateSerialPorts() {
 
 }
 
-void MainWindow::readData(QByteArray data) {
+/**
+ * @brief MainWindow::updateSerialMonitor
+ * @param data
+ * show received data on the serial monitor of the app
+ */
+void MainWindow::updateSerialMonitor(const QByteArray data) {
 
     // display the data on the plain text widget
     ui->serialMonitor->insertPlainText(QString(data));
     QScrollBar* sb = ui->serialMonitor->verticalScrollBar();
     sb->setValue(sb->maximum()); // enable auto-scrolling
 
-    // // save received data into a buffer
-    // char serial_buff[SERIAL_BUFF_LENGTH];
-    // sprintf(serial_buff, );
+}
 
-    // // set the flight state based on data received
-    // if () {
-
-    // }
-
-    parser.testParse();
+/**
+ * @brief MainWindow::readData
+ * @param data
+ * process the data received on serial
+ */
+void MainWindow::readData(const QByteArray data) {
+    parser.parseAll(data);
 
 }
 
