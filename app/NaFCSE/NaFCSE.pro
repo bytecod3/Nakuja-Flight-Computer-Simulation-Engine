@@ -11,10 +11,12 @@ CONFIG += c++17
 SOURCES += \
     main.cpp \
     mainwindow.cpp \
+    serialparser.cpp \
     serialport.cpp
 
 HEADERS += \
     mainwindow.h \
+    serialparser.h \
     serialport.h \
     window_defs.h
 

@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <QString>
 #include "serialport.h"
+#include "serialparser.h"
 #include <QTimer> // to scan the ports periodically
 
 QT_BEGIN_NAMESPACE
@@ -18,7 +19,7 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
-
+    int SERIAL_BUFF_LENGTH = 256;
     ~MainWindow();
 
 private slots:
@@ -32,6 +33,7 @@ private:
     uint64_t baudRates[9];
     uint64_t numTimeSteps;
     SerialPort port;
+    SerialParser parser;
     QTimer* mSerialScanTimer; // to scan the serial ports periodically
     void loadPorts();
     void updateSerialPorts();
