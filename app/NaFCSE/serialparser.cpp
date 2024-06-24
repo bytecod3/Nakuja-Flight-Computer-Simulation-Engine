@@ -27,14 +27,20 @@ void SerialParser::parseAll(const QString data) {
     // sanitize data
     QString clean_data = data.trimmed();
 
+    // split the received packet into csv
     QStringList telemetry_packet = clean_data.split(',');
 
+    // record number
     QString recordNumber = telemetry_packet.at(0);
 
+    // flight state
     QString state = telemetry_packet.at(1); // see telemetry packet structure
-    this->flight_state = state.toInt();
 
-    this->decodeStates(state);
+    this->flight_state = state.toUInt();
+
+    qDebug() << this-> flight_state;
+
+    // this->decodeStates(state);
 
 }
 
@@ -46,7 +52,7 @@ void SerialParser::parseAll(const QString data) {
  *
  */
 void SerialParser::decodeStates(const QString s) {
-    qint8 state = s.toInt();
+    quint8 state = s.toInt();
 
 // print states on console
 #if DEBUG_STATES

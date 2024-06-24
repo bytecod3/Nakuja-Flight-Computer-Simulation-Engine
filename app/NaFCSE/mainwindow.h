@@ -27,7 +27,7 @@ private slots:
     void on_btnRun_clicked();
     void on_btnChooseFile_clicked();
     void updateSerialMonitor(const QString data);
-    void updateStateUI(qint8 state);
+    void updateStateUI(quint8 state);
     void readData(const QString data);
 
     void on_connectSerial_clicked();

@@ -179,20 +179,13 @@ void MainWindow::updateSerialPorts() {
  * show received data on the serial monitor of the app
  */
 void MainWindow::updateSerialMonitor(const QString data) {
-    // qDebug() << data;
+    // get the current state
+    qint8 current_state = parser.getCurrentState();
 
     // display the data on the plain text widget
     ui->serialMonitor->insertPlainText(data);
     QScrollBar* sb = ui->serialMonitor->verticalScrollBar();
     sb->setValue(sb->maximum()); // enable auto-scrolling
-
-    // get the current state
-    qint8 current_state = parser.getCurrentState();
-
-    // update UI
-    this->updateStateUI(current_state);
-
-
 }
 
 /**
@@ -202,6 +195,8 @@ void MainWindow::updateSerialMonitor(const QString data) {
  */
 void MainWindow::readData(const QString data) {
     parser.parseAll(data);
+    // update UI
+    this->updateStateUI(parser.getCurrentState());
 }
 
 /**
@@ -223,7 +218,6 @@ void MainWindow::on_connectSerial_clicked()
     } else {
         // update the status bar
         ui->statusbar->showMessage("Connected to " + portName);
-
     }
 
 }
@@ -235,7 +229,7 @@ void MainWindow::on_connectSerial_clicked()
  *
  * updates the state labels on screen to show change of flight states
  */
-void MainWindow::updateStateUI(qint8 s) {
+void MainWindow::updateStateUI(quint8 s) {
 
     // to hold labels that represent the state
     // TODO: move 10 to  #DEFINE constant
@@ -258,56 +252,53 @@ void MainWindow::updateStateUI(qint8 s) {
 
     switch (s) {
     case 0:
-        qDebug() << "PREFLIGHT";
-        ui->preflightLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "PREFLIGHT";
+        stateLabels[0]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 1:
-        qDebug() << "POWEREDFLIGHT";
-        ui->poweredflightLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "POWEREDFLIGHT";
+        stateLabels[1]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 2:
-        qDebug() << "COASTING";
-        ui->coastingLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "COASTING";
+        stateLabels[2]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 3:
-        qDebug() << "APOGEE";
-        ui->apogeeLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "APOGEE";
+        stateLabels[3]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 4:
-        qDebug() << "BALLISTIC DESCENT";
-        ui->ballisticdescentLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "BALLISTIC DESCENT";
+        stateLabels[4]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 5:
-        qDebug() << "DROGUE EJECT";
-        ui->droguechuteejectLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "DROGUE EJECT";
+        stateLabels[5]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 6:
-        qDebug() << "DROGUE DESCENT";
-        ui->droguechutedescentLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "DROGUE DESCENT";
+        stateLabels[6]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 7:
-        qDebug() << "MAIN CHUTE EJECT";
-        ui->mainchuteejectLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "MAIN CHUTE EJECT";
+        stateLabels[7]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 8:
-        qDebug() << "MAIN CHUTE DESCENT";
-        ui->mainchutedescentLabel->setStyleSheet(this->activeStateStyle);
+        // qDebug() << "MAIN CHUTE DESCENT";
+        stateLabels[8]->setStyleSheet(this->activeStateStyle);
         break;
 
     case 9:
-        qDebug() << "POST FLIGHT";
-        ui->postflightLabel->setStyleSheet(this->activeStateStyle);
-        break;
-
-    default:
+        // qDebug() << "POST FLIGHT";
+        stateLabels[9]->setStyleSheet(this->activeStateStyle);
         break;
     }
 
