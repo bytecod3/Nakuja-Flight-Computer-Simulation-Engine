@@ -28,6 +28,8 @@ private slots:
     void updateSerialMonitor(const QString data);
     void readData(const QString data);
 
+    void on_connectSerial_clicked();
+
 private:
     Ui::MainWindow *ui;
     uint8_t numBaudRates;

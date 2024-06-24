@@ -130,17 +130,7 @@ MainWindow::~MainWindow()
  */
 void MainWindow::on_btnRun_clicked()
 {
-    // connect to serial port
-    QString portName = ui->cmbSerialPorts->currentText();
-    QString baudRate = ui->cmbBaudRates->currentText();
-    auto isConnected = port.connectToSerial(portName, baudRate);
-
-    if(!isConnected) {
-        QMessageBox::critical(this, "Port error", "Could not connect to port");
-    }
-
-    qDebug() << baudRate;
-
+    qDebug() << "Running";
 }
 
 /**
@@ -203,5 +193,30 @@ void MainWindow::updateSerialMonitor(const QString data) {
  */
 void MainWindow::readData(const QString data) {
     parser.parseAll(data);
+}
+
+/**
+ * @brief MainWindow::on_connectSerial_clicked
+ * connect to serial port
+ *
+ */
+void MainWindow::on_connectSerial_clicked()
+{
+    // connect to serial port
+    QString portName = ui->cmbSerialPorts->currentText();
+    QString baudRate = ui->cmbBaudRates->currentText();
+    auto isConnected = port.connectToSerial(portName, baudRate);
+
+    if(!isConnected) {
+        QMessageBox::critical(this, "Port error", "Could not connect to port");
+        // update the status bar
+
+    } else {
+        // update the status bar
+        ui->statusbar->showMessage("Connected to " + portName);
+
+    }
+
+
 }
 
