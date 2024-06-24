@@ -51,8 +51,24 @@ bool SerialPort::connectToSerial(QString portName, QString baudRate) {
 }
 
 void SerialPort::dataReady() {
-    if( _serialPort->isOpen()) {
-        emit dataReceived(_serialPort->readAll());
+    QString serial_buffer;
+
+    if(_serialPort->isOpen()) {
+
+        if(_serialPort->canReadLine()) {
+            QString data = _serialPort->readAll();
+            serial_buffer.append(data);
+
+            // wait for complete data
+            if(!data.contains("\n")) {
+                serial_buffer.append(data);
+            } else {
+                serial_buffer.clear();
+                emit dataReceived(data);
+            }
+
+        }
+
     }
 }
 

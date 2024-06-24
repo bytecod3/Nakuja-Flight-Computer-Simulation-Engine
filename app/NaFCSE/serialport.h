@@ -18,7 +18,8 @@ private:
     QSerialPort* _serialPort;
 
 signals:
-    void dataReceived(QByteArray(b));
+    // void dataReceived(QByteArray(b));
+    void dataReceived(QString s);
 
 private slots:
     void dataReady();

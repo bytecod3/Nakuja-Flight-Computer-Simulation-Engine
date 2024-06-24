@@ -12,7 +12,7 @@ public:
 
     QVector<QString> packet_vector; // store parsed csv packet
 
-    void parseAll(const QByteArray data);
+    void parseAll(const QString data);
     void decodeStates();
     void testParse();
 

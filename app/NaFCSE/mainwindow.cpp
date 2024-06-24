@@ -185,10 +185,11 @@ void MainWindow::updateSerialPorts() {
  * @param data
  * show received data on the serial monitor of the app
  */
-void MainWindow::updateSerialMonitor(const QByteArray data) {
+void MainWindow::updateSerialMonitor(const QString data) {
+    // qDebug() << data;
 
     // display the data on the plain text widget
-    ui->serialMonitor->insertPlainText(QString(data));
+    ui->serialMonitor->insertPlainText(data);
     QScrollBar* sb = ui->serialMonitor->verticalScrollBar();
     sb->setValue(sb->maximum()); // enable auto-scrolling
 
@@ -199,7 +200,7 @@ void MainWindow::updateSerialMonitor(const QByteArray data) {
  * @param data
  * process the data received on serial
  */
-void MainWindow::readData(const QByteArray data) {
+void MainWindow::readData(const QString data) {
     parser.parseAll(data);
 
 }

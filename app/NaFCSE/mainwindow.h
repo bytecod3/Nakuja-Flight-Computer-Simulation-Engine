@@ -25,8 +25,8 @@ public:
 private slots:
     void on_btnRun_clicked();
     void on_btnChooseFile_clicked();
-    void updateSerialMonitor(const QByteArray data);
-    void readData(const QByteArray data);
+    void updateSerialMonitor(const QString data);
+    void readData(const QString data);
 
 private:
     Ui::MainWindow *ui;

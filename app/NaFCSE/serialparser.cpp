@@ -23,30 +23,14 @@ void SerialParser::testParse() {
  *
  * TODO: add a mechanism to make the data points variable
  */
-void SerialParser::parseAll(const QByteArray data) {
+void SerialParser::parseAll(const QString data) {
     // sanitize data
-    std::string clean_data = data.trimmed();
+    QString clean_data = data.trimmed();
 
-    std::stringstream ss(clean_data);
-    // for(int i; ss >> i;){
-    //     packet_vector.push_back(i);
-    //     if(ss.peek() == ',') { // skip ',' delimiter
-    //         ss.ignore();
-    //     }
-    // }
+    QStringList telemetry_packet = clean_data.split(',');
+    QString recordNumber = telemetry_packet.at(0);
 
-    while (ss.good()) {
-        std::string substr;
-        getline(ss, substr, ",");
-        packet_vector.push_back(substr);
-    }
-
-    // qDebug() << clean_data;
-
-    // debug splitted packet
-    for(std::size_t i=0; i < packet_vector.size(); i++) {
-        qDebug() << packet_vector[i];
-    }
+    qDebug() << clean_data;
 
 }
 
