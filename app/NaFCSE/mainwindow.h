@@ -20,12 +20,14 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     int SERIAL_BUFF_LENGTH = 256;
+    QString activeStateStyle = "QLabel { background-color : black; color : #00FF00; border: 1px solid gray; border-radius: 4px; font: 700 9pt; }";
     ~MainWindow();
 
 private slots:
     void on_btnRun_clicked();
     void on_btnChooseFile_clicked();
     void updateSerialMonitor(const QString data);
+    void updateStateUI(qint8 state);
     void readData(const QString data);
 
     void on_connectSerial_clicked();

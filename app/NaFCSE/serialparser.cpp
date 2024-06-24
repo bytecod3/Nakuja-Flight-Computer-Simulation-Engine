@@ -31,7 +31,9 @@ void SerialParser::parseAll(const QString data) {
 
     QString recordNumber = telemetry_packet.at(0);
 
-    QString state = telemetry_packet.at(1);
+    QString state = telemetry_packet.at(1); // see telemetry packet structure
+    this->flight_state = state.toInt();
+
     this->decodeStates(state);
 
 }
@@ -45,9 +47,9 @@ void SerialParser::parseAll(const QString data) {
  */
 void SerialParser::decodeStates(const QString s) {
     qint8 state = s.toInt();
-    qDebug() << state;
 
-
+// print states on console
+#if DEBUG_STATES
     switch (state) {
     case 0:
         qDebug() << "PREFLIGHT";
@@ -88,6 +90,15 @@ void SerialParser::decodeStates(const QString s) {
     default:
         break;
     }
+#endif
 
+}
 
+/**
+ * @brief SerialParser::getCurrentState
+ * @return return the current state
+ *
+ */
+quint8 SerialParser::getCurrentState() {
+    return this->flight_state;
 }
