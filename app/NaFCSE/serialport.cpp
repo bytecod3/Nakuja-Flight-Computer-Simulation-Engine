@@ -50,6 +50,10 @@ bool SerialPort::connectToSerial(QString portName, QString baudRate) {
 
 }
 
+/**
+ * @brief SerialPort::dataReady
+ * process data received from serial port
+ */
 void SerialPort::dataReady() {
     QString serial_buffer;
 

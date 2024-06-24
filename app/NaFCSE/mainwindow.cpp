@@ -27,6 +27,7 @@ MainWindow::MainWindow(QWidget *parent)
         ui->cmbBaudRates->addItem(baudRates[i]);
     }
 
+
     // set the possible timesteps in milliseconds
     this->numTimeSteps = 8;
     QString time_steps[numTimeSteps] = {"200", "400", "600", "800", "1000", "1500", "2000", "5000"};
@@ -202,6 +203,5 @@ void MainWindow::updateSerialMonitor(const QString data) {
  */
 void MainWindow::readData(const QString data) {
     parser.parseAll(data);
-
 }
 

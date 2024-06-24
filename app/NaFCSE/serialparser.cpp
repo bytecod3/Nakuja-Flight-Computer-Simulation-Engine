@@ -28,12 +28,66 @@ void SerialParser::parseAll(const QString data) {
     QString clean_data = data.trimmed();
 
     QStringList telemetry_packet = clean_data.split(',');
+
     QString recordNumber = telemetry_packet.at(0);
 
-    qDebug() << clean_data;
+    QString state = telemetry_packet.at(1);
+    this->decodeStates(state);
 
 }
 
-void decodeStates() {
+/**
+ * @brief decodeStates
+ * @param s
+ *
+ * Handle the states received from the serial monitor
+ *
+ */
+void SerialParser::decodeStates(const QString s) {
+    qint8 state = s.toInt();
+    qDebug() << state;
+
+
+    switch (state) {
+    case 0:
+        qDebug() << "PREFLIGHT";
+        break;
+
+    case 1:
+        qDebug() << "POWERED FLIGHT";
+        break;
+
+    case 2:
+        qDebug() << "COASTING";
+        break;
+
+    case 3:
+        qDebug() << "APOGEE";
+        break;
+
+    case 4:
+        qDebug() << "DROGUE-CHUTE-DEPLOY";
+        break;
+
+    case 5:
+        qDebug() << "DROGUE-CHUTE-DESCENT";
+        break;
+
+    case 6:
+        qDebug() << "MAIN-CHUTE-DEPLOY";
+        break;
+
+    case 7:
+        qDebug() << "MAIN-CHUTE-DESCENT";
+        break;
+
+    case 8:
+        qDebug() << "POST-FLIGHT";
+        break;
+
+    default:
+        break;
+    }
+
 
 }

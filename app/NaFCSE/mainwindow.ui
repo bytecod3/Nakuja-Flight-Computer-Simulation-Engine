@@ -168,11 +168,7 @@ color: black;</string>
        <item>
         <widget class="QLabel" name="label_13">
          <property name="styleSheet">
-          <string notr="true">border: 0px solid black;
-border-bottom: 2px solid black;
-border-top: 2px solid #a0a0a0;
-border-right:  2px solid black;
-border-left:  2px solid #a0a0a0;
+          <string notr="true">border-radius: 4px;
 color: black;</string>
          </property>
          <property name="text">
@@ -625,7 +621,7 @@ border-left: 2px solid #a0a0a0;</string>
      <x>0</x>
      <y>0</y>
      <width>1242</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

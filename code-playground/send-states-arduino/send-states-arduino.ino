@@ -49,9 +49,6 @@ void loop() {
   current_time = millis();
   
   if(current_time - previous_time >= burst_interval){
-    previous_time = current_time;
-    state_counter++;
-    counter++;
     
     // record number 
     uint8_t record_number = counter;
@@ -123,12 +120,19 @@ void loop() {
         velocity
       );
     
-    // reset counter 
-    if(state_counter > NUM_OF_STATES-1) {
-      state_counter = 0;
-    }
+    
 
     Serial.println(telemetry_packet);
+
+    state_counter++;
+    
+    // reset counter 
+    if(state_counter > NUM_OF_STATES - 1) {
+      state_counter = 0;
+    }
+    
+    counter++;
+    previous_time = current_time;
   }
 
 }
