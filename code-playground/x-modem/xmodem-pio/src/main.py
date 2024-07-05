@@ -25,7 +25,7 @@ while 1:
         data + str(d)
         ser.write(data.encode())
         ser.write(EOT.encode()) # end of header
-
+        
         # ser.close()
 
 

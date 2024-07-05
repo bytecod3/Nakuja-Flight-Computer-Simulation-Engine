@@ -15,9 +15,11 @@
 #include <Arduino.h>
 #define BAUDRATE        115200
 #define NAK_INTERVAL    4000 /*!< Interval in which to send the NAK command to the transmitter */
+uint8_t SOH_recvd_flag = 0; /*!< Transmitter acknowledged?  */
 
 unsigned long last_NAK_time = 0;
 unsigned long current_NAK_time = 0;
+char SOH_CHR[6] = "SOH";
 
 /* define XMODEM commands in HEX */
 #define SOH     "0x01"    /*!< start of header */
@@ -37,7 +39,7 @@ int16_t serial_index = 0;
  */
 void InitXMODEM();
 void SerialEvent();
-void ParseSerial(char* serialString);
+void ParseSerial(char*);
 
 /**
  * XMODEM serial function definition
@@ -58,25 +60,38 @@ void InitXMODEM() {
     
 }
 
+/*!****************************************************************************
+ * @brief Parse the received serial command
+ *******************************************************************************/
+void ParseSerial(char* buffer) {
+
+    if(strcmp(buffer, SOH_CHR)) {
+        Serial.println("Start of transmission");
+        SOH_recvd_flag = 1;
+    } else {
+        Serial.println("Unknown");
+    }
+}
+
 
 /*!****************************************************************************
- * @brief Receive and process a serial command
+ * @brief Receive serial data
  *******************************************************************************/
-void SerialEvent() {
-    while (Serial.available() > 0) {
+void serialEvent() {
+    while (Serial.available()) {
         char ch = Serial.read();
+        Serial.write(ch);
 
-        if(serial_index < MAX_CSV_LENGTH) {
+        if(serial_index < MAX_CSV_LENGTH && (ch != '\n') ) { // use newline to signal end of command
             serial_buffer[serial_index++] = ch;
         } else {
-            serial_buffer[serial_index] = 0;
-        }
-
-        if(ch == '\n') {
+            // here when buffer is full or a newline is received
+            serial_buffer[serial_index] = 0; // terminate the string with a 0
             serial_index = 0;
-            Serial.println(serial_buffer);
+            ParseSerial(serial_buffer);
+            
         }
-        
+       
     }
 
 }
@@ -86,15 +101,17 @@ void setup() {
 }
 
 void loop() {
-    SerialEvent();
 
-    current_NAK_time = millis();
-    if( (current_NAK_time - last_NAK_time) > NAK_INTERVAL) {
-        // send a NAK command
-        // TODO: check is ACK received flag
-        InitXMODEM();
+    if(!SOH_recvd_flag) {
+        current_NAK_time = millis();
+        if( (current_NAK_time - last_NAK_time) > NAK_INTERVAL) {
+            // send a NAK command
+            // TODO: check is ACK received flag
+            // InitXMODEM();
 
-        last_NAK_time = current_NAK_time;
+            last_NAK_time = current_NAK_time;
+        }
     }
+    
     
 }
