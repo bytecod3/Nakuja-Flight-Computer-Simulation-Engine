@@ -44,10 +44,11 @@ void ParseSerial(char* serialString);
  * @param none
  *******************************************************************************/
 void InitXMODEM() {
+
     Serial.begin(BAUDRATE);
-    Serial.println(NAK);
+    Serial.println("0x15");
+    Serial.flush();
     
-    Serial.end();
 }
 
 /**
