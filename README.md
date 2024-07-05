@@ -1,7 +1,7 @@
 # Nakuja Flight Computer Simulation Engine
 Nakuja Flight Computer Simulation Engine
 
-### Desktop application  documentation
+### Desktop application 
 
 The desktop application built with Qt with C++. The main function of the app is to visualize the data coming from the flight computer. Using this data, we can get the thought process of the flight computer, helping us to debug the flight software in real-time. 
 
@@ -81,8 +81,12 @@ Transmission and reception modes are set to 8 bits no parity automatically.
 ### Data flow
 XMODEM is receiver-driven protocol. The receiver initiates the protocol and controls the flow of data with a control character to indicate correct or incorrect reception of data record. 
 
-The XMODEM process begins with the receiver sending a NAK (Not acknowledge) for checksum mode or a 'C' for CRC16 mode. If the transmitter does not acknowledge after the reeiver has sent 3 'C' characters, it switches to checksum mode a
+The XMODEM process begins with the receiver sending a NAK (Not acknowledge) for checksum mode or a 'C' for CRC16 mode. If the transmitter does not acknowledge after the receiver has sent 3 'C' characters, it switches to checksum mode and sends a NAK command. If the transmitter receives a NAK, it re-transmits the the previous data block. If it receives an ACK, it sends the next data block. 
 
+After the last message has been sent (EOF), the receiver will be looking for another SOH to start the next data packet. The transmitter will send an EOT(0x04) to signify the end of file. The receiver will ACK the EOT as the final step. t
+
+
+![xmodem-transfer-flow](./project-documentation/images-and-screenshots/xmodem-transfer-flow.png)
 
 
 
