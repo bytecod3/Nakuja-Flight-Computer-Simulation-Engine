@@ -81,7 +81,7 @@ Transmission and reception modes are set to 8 bits no parity automatically.
 ### Data flow
 XMODEM is receiver-driven protocol. The receiver initiates the protocol and controls the flow of data with a control character to indicate correct or incorrect reception of data record. 
 
-The XMODEM process begins with the receiver sending a NAK (Not acknowledge) for checksum mode or a 'C' for CRC16 mode. If the transmitter does not acknowledge after the reeiver has sent 3 'C' characters, it switches to checksum mode a
+The XMODEM process begins with the receiver sendinh
 
 
 
