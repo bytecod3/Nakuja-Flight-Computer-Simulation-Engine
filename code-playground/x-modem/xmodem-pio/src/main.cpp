@@ -13,7 +13,11 @@
  *******************************************************************************/
 
 #include <Arduino.h>
-#define BAUDRATE 115200
+#define BAUDRATE        115200
+#define NAK_INTERVAL    4000 /*!< Interval in which to send the NAK command to the transmitter */
+
+unsigned long last_NAK_time = 0;
+unsigned long current_NAK_time = 0;
 
 /* define XMODEM commands in HEX */
 #define SOH     0x01    /*!< start of header */
@@ -36,11 +40,14 @@ void ParseSerial(char* serialString);
  */
 
 /*!****************************************************************************
- * @brief Initiate XMODEM protocol by sends a NAK command every 4 seconds until the transmitter returns an ACK signal
+ * @brief Initiate XMODEM protocol by sending a NAK command every 4 seconds until the transmitter returns an ACK signal
  * @param none
  *******************************************************************************/
 void InitXMODEM() {
-
+    Serial.begin(BAUDRATE);
+    Serial.println(NAK);
+    
+    Serial.end();
 }
 
 /**
@@ -53,12 +60,19 @@ void SerialEvent() {
 
 }
 
-
 void setup() {
-    Serial.begin(BAUDRATE);
-    
+     
 }
 
 void loop() {
 
+    current_NAK_time = millis();
+    if( (current_NAK_time - last_NAK_time) > NAK_INTERVAL) {
+        // send a NAK command
+        // TODO: check is ACK received flag
+        InitXMODEM();
+
+        last_NAK_time = current_NAK_time;
+    }
+    
 }
