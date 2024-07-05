@@ -77,17 +77,27 @@ Where:
 
 Transmission and reception modes are set to 8 bits no parity automatically. 
 
+#### ASCII commands interpretation
+|Command|HEX|Description|
+|---|---|---|
+|SOH|01|Start of Heading|
+|ACK|06|Positive acknowledge|
+|NAK|15|Negative acknowledge|
+|CAN|18|Cancel|
+|EOT|04|End of transmission|
+
 
 ### Data flow
 XMODEM is receiver-driven protocol. The receiver initiates the protocol and controls the flow of data with a control character to indicate correct or incorrect reception of data record. 
 
 The XMODEM process begins with the receiver sending a NAK (Not acknowledge) for checksum mode or a 'C' for CRC16 mode. If the transmitter does not acknowledge after the receiver has sent 3 'C' characters, it switches to checksum mode and sends a NAK command. If the transmitter receives a NAK, it re-transmits the the previous data block. If it receives an ACK, it sends the next data block. 
 
-After the last message has been sent (EOF), the receiver will be looking for another SOH to start the next data packet. The transmitter will send an EOT(0x04) to signify the end of file. The receiver will ACK the EOT as the final step. t
+After the last message has been sent (EOF), the receiver will be looking for another SOH to start the next data packet. The transmitter will send an EOT(0x04) to signify the end of file. The receiver will ACK the EOT as the final step. 
 
 
-![]()
+![xmodem-transfer-flow](./project-documentation/images-and-screenshots/xmodem-transfer-flow.png)
 
+### Implementation
 
 
 ### References
