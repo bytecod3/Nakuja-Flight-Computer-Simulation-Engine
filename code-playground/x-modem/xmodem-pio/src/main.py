@@ -2,7 +2,7 @@ import serial
 import random
 from time import sleep
 
-EOT = "0x04"
+EOT = 0x04
 ACK = "0x06"
 CAN = "0x18"
 NAK = 0x15
@@ -20,7 +20,6 @@ def start():
     else :
         # receive serial message
         msg = ser.readline().decode("utf-8").rstrip()
-        # print(int(msg))
 
         # NACK received from MCU
         if msg == str(int(NAK)):
@@ -29,10 +28,20 @@ def start():
             ser.write(SOH)
             ser.write("\n".encode("utf-8"))
 
-def startTransmission():
-    ser.write(SOH.encode())
-    print(SOH)
-    # ser.write("\n".encode())
+            # THIS is the actual test data 
+            # GET it from a csv file 
+
+            ser.write("This is the data".encode("utf-8"))
+            ser.write("\n".encode("utf-8"))
+
+            # after done sendng data 
+            # send End of Transmission (EOT)
+            # ser.write(EOT)
+
+        else: 
+            # message is not NAK
+            print(msg)
+
 
 def SerialWrite(x):
     ser.write(bytes())

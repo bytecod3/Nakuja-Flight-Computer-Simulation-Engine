@@ -28,24 +28,60 @@ char SOH_CHR[6] = "SOH";
 #define NAK     0x15    /*!< negative acknowledgement */
 #define CAN     0x18    /*!< cancel */
 
-#define MAX_CSV_LENGTH 10 /*!< Maximum length of the csv string that can be received */
+#define MAX_CMD_LENGTH 10 /*!< Maximum length of the XMODEM command string that can be received */
+#define MAX_CSV_LENGTH 256 /*!< Maximum length of the csv string that can be received */
 
-char serial_buffer[MAX_CSV_LENGTH];
+// buffer to store the XMODEM commands 
+char serial_buffer[MAX_CMD_LENGTH];
 int16_t serial_index = 0;
 
-uint8_t test_led = 15;
+// buffer to store the CSV test data
+char test_data_buffer[MAX_CSV_LENGTH]; 
+int16_t test_data_serial_index = 0;
+
+uint8_t soh_ack_led = 15;
+uint8_t recv_data_led = 2;
+
+// states 
+enum STATE {
+    HANDSHAKE = 0,
+    RECEIVE_TEST_DATA
+};
+
+uint8_t current_state = STATE::HANDSHAKE;
 
 /**
  * XMODEM serial function prototypes
  * 
  */
+void InitLEDS();
+void SwitchLEDs();
 void InitXMODEM();
 void SerialEvent();
 void ParseSerial(char*);
 
+/*!****************************************************************************
+ * @brief Inititlaize the LED GPIOs
+ *******************************************************************************/
+void InitLEDS() {
+    pinMode(soh_ack_led, OUTPUT);
+    pinMode(recv_data_led, OUTPUT);
+
+    // set LEDs to a known starting state
+    digitalWrite(soh_ack_led, LOW);
+    digitalWrite(recv_data_led, LOW);
+}
+
+/*!****************************************************************************
+ * @brief Switch the LEDS states
+ *******************************************************************************/
+void SwitchLEDs() {
+    digitalWrite(soh_ack_led, LOW);
+    digitalWrite(recv_data_led, HIGH);
+}
+
 /**
  * XMODEM serial function definition
- * 
  */
 
 /*!****************************************************************************
@@ -68,9 +104,15 @@ void InitXMODEM() {
 void ParseSerial(char* buffer) {
 
     if(strcmp(buffer, SOH_CHR)) {
-        Serial.println("Start of transmission");
+        Serial.println("<Start of transmission>");
         SOH_recvd_flag = 1;
-        digitalWrite(test_led, HIGH);
+        digitalWrite(soh_ack_led, HIGH);
+        Serial.println("<SOH rcvd> Waiting for data");
+
+        // put the MCU in data receive state 
+        current_state = STATE::RECEIVE_TEST_DATA;
+        SwitchLEDs();
+
     } else {
         Serial.println("Unknown");
     }
@@ -78,14 +120,14 @@ void ParseSerial(char* buffer) {
 }
 
 /*!****************************************************************************
- * @brief Receive serial message
+ * @brief Receive serial message during handshake
  *******************************************************************************/
-void serialEvent() {
+void handshakeSerialEvent() {
     while (Serial.available()) {
         char ch = Serial.read();
         Serial.write(ch);
 
-        if(serial_index < MAX_CSV_LENGTH && (ch != '\n') ) { // use newline to signal end of command
+        if(serial_index < MAX_CMD_LENGTH && (ch != '\n') ) { // use newline to signal end of command
             serial_buffer[serial_index++] = ch;
         } else {
             // here when buffer is full or a newline is received
@@ -97,24 +139,68 @@ void serialEvent() {
     }
 }
 
+/*!****************************************************************************
+ * @brief Receive serial message during RECEIVE_TEST_DATA state
+ * Data received in this state is the actual test data. It is saved into the test flash memory 
+ * 
+ *******************************************************************************/
+void receiveTestDataSerialEvent() {
+    while(Serial.available()) {
+        char ch = Serial.read();
+        Serial.write(ch);
+
+        // each CSV string ends with a newline 
+        if(test_data_serial_index < MAX_CSV_LENGTH && (ch != '\n') ) {
+            test_data_buffer[test_data_serial_index++] = ch;
+        } else {
+            // buffer is full or newline is received
+            test_data_buffer[test_data_serial_index] = 0; // NUL terminator
+            test_data_serial_index = 0;
+
+            // HERE - LOG THE CSV STRING TO THE FLASH MEMORY
+            //Serial.println(test_data_buffer);
+
+        }
+
+    }
+}
+
 void setup() {
      Serial.begin(BAUDRATE);
-     pinMode(test_led, OUTPUT);
-     digitalWrite(test_led, LOW);
+     InitLEDS();
 }
 
 void loop() {
 
-    if(!SOH_recvd_flag) {
-        current_NAK_time = millis();
-        if( (current_NAK_time - last_NAK_time) > NAK_INTERVAL) {
-            // send a NAK command
-            // TODO: check is ACK received flag
-            InitXMODEM();
+    switch (current_state) {
+        // HANDSHAKE STATE
+        case STATE::HANDSHAKE:
+            handshakeSerialEvent();
+            if(!SOH_recvd_flag) {
+                    current_NAK_time = millis();
+                    if( (current_NAK_time - last_NAK_time) > NAK_INTERVAL) {
+                        // send a NAK command
+                        // TODO: check is ACK received flag
+                        InitXMODEM();
 
-            last_NAK_time = current_NAK_time;
-        }
+                        last_NAK_time = current_NAK_time;
+                    }
+                }  
+            break;
+
+        // RECEIVE_DATA_STATE
+        case STATE::RECEIVE_TEST_DATA:
+            receiveTestDataSerialEvent();
+            Serial.println(test_data_buffer);
+            // Serial.println("<RECEIVING_DATA_STATE>");
+            break;
+        
+        default:
+            break;
     }
+
+    // check the current state
     
+         
     
 }
