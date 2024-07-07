@@ -22,16 +22,18 @@ unsigned long current_NAK_time = 0;
 char SOH_CHR[6] = "SOH";
 
 /* define XMODEM commands in HEX */
-#define SOH     "0x01"    /*!< start of header */
-#define EOT     "0x04"    /*!< end of transmission */
-#define ACK     "0x06"    /*!< positive acknowledgement */
-#define NAK     "0x15"    /*!< negative acknowledgement */
-#define CAN     "0x18"    /*!< cancel */
+#define SOH     0x01    /*!< start of header */
+#define EOT     0x04    /*!< end of transmission */
+#define ACK     0x06    /*!< positive acknowledgement */
+#define NAK     0x15    /*!< negative acknowledgement */
+#define CAN     0x18    /*!< cancel */
 
 #define MAX_CSV_LENGTH 10 /*!< Maximum length of the csv string that can be received */
 
 char serial_buffer[MAX_CSV_LENGTH];
 int16_t serial_index = 0;
+
+uint8_t test_led = 15;
 
 /**
  * XMODEM serial function prototypes
@@ -68,14 +70,15 @@ void ParseSerial(char* buffer) {
     if(strcmp(buffer, SOH_CHR)) {
         Serial.println("Start of transmission");
         SOH_recvd_flag = 1;
+        digitalWrite(test_led, HIGH);
     } else {
         Serial.println("Unknown");
     }
+
 }
 
-
 /*!****************************************************************************
- * @brief Receive serial data
+ * @brief Receive serial message
  *******************************************************************************/
 void serialEvent() {
     while (Serial.available()) {
@@ -89,15 +92,15 @@ void serialEvent() {
             serial_buffer[serial_index] = 0; // terminate the string with a 0
             serial_index = 0;
             ParseSerial(serial_buffer);
-            
         }
        
     }
-
 }
 
 void setup() {
      Serial.begin(BAUDRATE);
+     pinMode(test_led, OUTPUT);
+     digitalWrite(test_led, LOW);
 }
 
 void loop() {
@@ -107,7 +110,7 @@ void loop() {
         if( (current_NAK_time - last_NAK_time) > NAK_INTERVAL) {
             // send a NAK command
             // TODO: check is ACK received flag
-            // InitXMODEM();
+            InitXMODEM();
 
             last_NAK_time = current_NAK_time;
         }
