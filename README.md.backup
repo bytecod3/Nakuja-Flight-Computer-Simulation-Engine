@@ -99,7 +99,15 @@ After the last message has been sent (EOF), the receiver will be looking for ano
 
 ### Implementation
 
+#### On the flight computer 
+1. Choose a partition scheme   
+Since we are using SPIFFS to ave the test data into the ESP, we need to divide the memory regions appropiately, one for the APP the other for SPIFFS. 
+On the Arduino IDE, go to tools>Partition scheme   
+Select Default 4MB WITH SPIFFS (1.2MB APP)/(1.5MB SPIFFS). 
+2. 
+
 
 ### References
 1. https://www.advsofteng.com/doc/cdcppdoc/realtimedemoqt.htm
 2. https://web.mit.edu/6.121/www/other/pcplot_man/pcplot14.htm
+3. https://www.linkedin.com/pulse/doxygen-santosh-s-malagi/

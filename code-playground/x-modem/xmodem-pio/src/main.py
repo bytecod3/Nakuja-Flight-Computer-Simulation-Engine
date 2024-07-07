@@ -31,10 +31,10 @@ def start():
             # THIS is the actual test data 
             # GET it from a csv file 
 
-            ser.write("This is the data".encode("utf-8"))
+            ser.write("23,34,54,12".encode("utf-8"))
             ser.write("\n".encode("utf-8"))
 
-            # after done sendng data 
+            # after done sending data 
             # send End of Transmission (EOT)
             # ser.write(EOT)
 

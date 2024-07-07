@@ -99,6 +99,10 @@ After the last message has been sent (EOF), the receiver will be looking for ano
 
 ### Implementation
 
+#### On the flight computer 
+1. 
+2. 
+
 
 ### References
 1. https://www.advsofteng.com/doc/cdcppdoc/realtimedemoqt.htm

@@ -13,6 +13,9 @@
  *******************************************************************************/
 
 #include <Arduino.h>
+#include <FS.h>
+#include <SPIFFS.h>
+
 #define BAUDRATE        115200
 #define NAK_INTERVAL    4000 /*!< Interval in which to send the NAK command to the transmitter */
 uint8_t SOH_recvd_flag = 0; /*!< Transmitter acknowledged?  */
@@ -45,7 +48,8 @@ uint8_t recv_data_led = 2;
 // states 
 enum STATE {
     HANDSHAKE = 0,
-    RECEIVE_TEST_DATA
+    RECEIVE_TEST_DATA,
+    CONFIRM_TEST_DATA
 };
 
 uint8_t current_state = STATE::HANDSHAKE;
@@ -54,11 +58,123 @@ uint8_t current_state = STATE::HANDSHAKE;
  * XMODEM serial function prototypes
  * 
  */
+void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
+void InitSPIFFS();
 void InitLEDS();
 void SwitchLEDs();
 void InitXMODEM();
 void SerialEvent();
 void ParseSerial(char*);
+
+//////////////////// SPIFFS FILE OPERATIONS ///////////////////////////
+#define FORMAT_SPIFFS_IF_FAILED 1
+const char* test_data_file = "/data.csv";
+
+void listDir(fs::FS &fs, const char * dirname, uint8_t levels){
+    Serial.printf("Listing directory: %s\r\n", dirname);
+    File root = fs.open(dirname);
+    if(!root){
+        Serial.println("- failed to open directory");
+        return;
+    }
+    if(!root.isDirectory()){
+        Serial.println(" - not a directory");
+        return;
+    }
+    File file = root.openNextFile();
+    while(file){
+        if(file.isDirectory()){
+            Serial.print("  DIR : ");
+            Serial.println(file.name());
+            if(levels){
+                listDir(fs, file.name(), levels -1);
+            }
+        } else {
+            Serial.print("  FILE: ");
+            Serial.print(file.name());
+            Serial.print("\tSIZE: ");
+            Serial.println(file.size());
+        }
+        file = root.openNextFile();
+    }
+}
+
+void readFile(fs::FS &fs, const char * path){
+    Serial.printf("Reading file: %s\r\n", path);
+    File file = fs.open(path);
+    if(!file || file.isDirectory()){
+        Serial.println("- failed to open file for reading");
+        return;
+    }
+    Serial.println("- read from file:");
+    while(file.available()){
+        Serial.write(file.read());
+    }
+    file.close();
+}
+
+void writeFile(fs::FS &fs, const char * path, const char * message){
+    Serial.printf("Writing file: %s\r\n", path);
+    File file = fs.open(path, FILE_WRITE);
+    if(!file){
+        Serial.println("- failed to open file for writing");
+        return;
+    }
+    if(file.print(message)){
+        Serial.println("- file written");
+    } else {
+        Serial.println("- write failed");
+    }
+    file.close();
+}
+
+void appendFile(fs::FS &fs, const char * path, const char * message){
+    Serial.printf("Appending to file: %s\r\n", path);
+    File file = fs.open(path, FILE_APPEND);
+    if(!file){
+        Serial.println("- failed to open file for appending");
+        return;
+    }
+    if(file.print(message)){
+        Serial.println("- message appended");
+    } else {
+        Serial.println("- append failed");
+    }
+    file.close();
+}
+
+void deleteFile(fs::FS &fs, const char * path){
+    Serial.printf("Deleting file: %s\r\n", path);
+    if(fs.remove(path)){
+        Serial.println("- file deleted");
+    } else {
+        Serial.println("- delete failed");
+    }
+}
+
+void readTestDataFile() {
+    File logFile = SPIFFS.open(test_data_file, "r");
+    if (logFile) {
+    Serial.println("Log file contents:");
+    while (logFile.available()) {
+        Serial.write(logFile.read());
+    }
+    logFile.close();
+    } else {
+    Serial.println("Failed to open log file for reading.");
+    }
+}
+
+void InitSPIFFS() {
+    if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
+        Serial.println("SPIFFS mount failed"); // TODO: Set a flag for test GUI
+        return;
+    } else {
+        Serial.println("<SPIFFS init success>");
+    }
+}
+
+//////////////////// END OF SPIFFS FILE OPERATIONS ///////////////////////////
 
 /*!****************************************************************************
  * @brief Inititlaize the LED GPIOs
@@ -90,7 +206,7 @@ void SwitchLEDs() {
  *******************************************************************************/
 void InitXMODEM() {
 
-    // check if the transmitter has acknowledged our call
+    // call the trasmitter 
     Serial.begin(BAUDRATE);
     Serial.print(NAK);
     Serial.print("\n");
@@ -159,6 +275,15 @@ void receiveTestDataSerialEvent() {
 
             // HERE - LOG THE CSV STRING TO THE FLASH MEMORY
             //Serial.println(test_data_buffer);
+            // open file in append mode
+            File data_file = SPIFFS.open(test_data_file, "a");
+            if(data_file) {
+                data_file.print(test_data_buffer);
+                data_file.println(); // start a new line
+                data_file.close();
+            } else {
+                Serial.println("<Faield tp write to file>");
+            }
 
         }
 
@@ -166,11 +291,28 @@ void receiveTestDataSerialEvent() {
 }
 
 void setup() {
-     Serial.begin(BAUDRATE);
-     InitLEDS();
+    Serial.begin(BAUDRATE);
+    InitLEDS();
+    InitSPIFFS();
+
+    // listDir(SPIFFS, "/", 0);
+    // writeFile(SPIFFS, "/test-data.txt", "TEST-DATA\r\n");
+    // readFile(SPIFFS, test_data_file);
+
 }
 
 void loop() {
+
+    ////////////////// TEST IF DATA RECEIVED IN DATA FILE /////////////////
+    if(Serial.available() > 0) {
+        char cmd = Serial.read();
+        if(cmd == 'R') { // r for read
+            current_state = STATE::CONFIRM_TEST_DATA;
+            
+        }
+
+    }
+    //////////////////////////////////////////////////////////////////////
 
     switch (current_state) {
         // HANDSHAKE STATE
@@ -188,19 +330,21 @@ void loop() {
                 }  
             break;
 
-        // RECEIVE_DATA_STATE
+        // RECEIVE DATA STATE
         case STATE::RECEIVE_TEST_DATA:
             receiveTestDataSerialEvent();
-            Serial.println(test_data_buffer);
+            // Serial.println(test_data_buffer);
             // Serial.println("<RECEIVING_DATA_STATE>");
             break;
         
+        // CONFIRM TEST DATA
+        case STATE::CONFIRM_TEST_DATA:
+            // Serial.println(F("<CONFIRM_SERIAL_STATE>")); //TODO: MOVE to F 
+            readTestDataFile();
+            break;
+
         default:
             break;
-    }
-
-    // check the current state
-    
-         
+    }    
     
 }
