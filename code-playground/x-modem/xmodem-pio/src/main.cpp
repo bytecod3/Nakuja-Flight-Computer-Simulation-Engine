@@ -206,6 +206,8 @@ void SwitchLEDs() {
  *******************************************************************************/
 void InitXMODEM() {
 
+    Serial.println(SOH);
+
     // call the trasmitter 
     Serial.begin(BAUDRATE);
     Serial.print(NAK);
@@ -217,9 +219,15 @@ void InitXMODEM() {
 /*!****************************************************************************
  * @brief Parse the received serial command
  *******************************************************************************/
+int value = 0;
 void ParseSerial(char* buffer) {
 
-    if(strcmp(buffer, SOH_CHR)) {
+    // parse the int
+    
+
+    if(strcmp(buffer, SOH_CHR) == 0) {
+    // if(buffer == SOH){
+        
         Serial.println("<Start of transmission>");
         SOH_recvd_flag = 1;
         digitalWrite(soh_ack_led, HIGH);
@@ -243,14 +251,18 @@ void handshakeSerialEvent() {
         char ch = Serial.read();
         Serial.write(ch);
 
-        if(serial_index < MAX_CMD_LENGTH && (ch != '\n') ) { // use newline to signal end of command
-            serial_buffer[serial_index++] = ch;
-        } else {
-            // here when buffer is full or a newline is received
-            serial_buffer[serial_index] = 0; // terminate the string with a 0
-            serial_index = 0;
-            ParseSerial(serial_buffer);
-        }
+        value = value*ch + (ch - '0');
+        
+        // if(serial_index < MAX_CMD_LENGTH && (ch != '\n') ) { // use newline to signal end of command
+        //     serial_buffer[serial_index++] = ch;
+        // } else {
+        //     // here when buffer is full or a newline is received
+        //     Serial.println(serial_buffer);
+        //     ParseSerial(serial_buffer);
+        //     serial_buffer[serial_index] = 0; // terminate the string with a 0
+        //     serial_index = 0;
+            
+        // }
        
     }
 }
@@ -268,12 +280,13 @@ void receiveTestDataSerialEvent() {
         // each CSV string ends with a newline 
         if(test_data_serial_index < MAX_CSV_LENGTH && (ch != '\n') ) {
             test_data_buffer[test_data_serial_index++] = ch;
+
         } else {
             // buffer is full or newline is received
             test_data_buffer[test_data_serial_index] = 0; // NUL terminator
             test_data_serial_index = 0;
 
-            // HERE - LOG THE CSV STRING TO THE FLASH MEMORY
+            // HERE - LOG THE CSV STRING TO EXTERNAL FLASH MEMORY
             //Serial.println(test_data_buffer);
             // open file in append mode
             File data_file = SPIFFS.open(test_data_file, "a");
@@ -282,7 +295,7 @@ void receiveTestDataSerialEvent() {
                 data_file.println(); // start a new line
                 data_file.close();
             } else {
-                Serial.println("<Faield tp write to file>");
+                Serial.println("<Failed to write to file>");
             }
 
         }
@@ -304,14 +317,19 @@ void setup() {
 void loop() {
 
     ////////////////// TEST IF DATA RECEIVED IN DATA FILE /////////////////
-    if(Serial.available() > 0) {
-        char cmd = Serial.read();
-        if(cmd == 'R') { // r for read
-            current_state = STATE::CONFIRM_TEST_DATA;
+    // if(Serial.available() > 0) {
+    //     char cmd = Serial.read();
+    //     if(cmd == 'R') { // r for read
+    //         current_state = STATE::CONFIRM_TEST_DATA;
             
-        }
+    //     }
 
-    }
+    //     if(cmd == EOT) {
+    //         Serial.println("END OF TRANSMISSION");
+    //     }
+
+    // }
+
     //////////////////////////////////////////////////////////////////////
 
     switch (current_state) {
