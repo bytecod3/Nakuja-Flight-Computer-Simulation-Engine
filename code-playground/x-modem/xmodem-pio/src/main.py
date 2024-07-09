@@ -3,8 +3,8 @@ import random
 from time import sleep
 
 EOT = 0x04
-ACK = "0x06"
-CAN = "0x18"
+# ACK = "0x06"
+# CAN = "0x18"
 NAK = 0x15
 SOH = 0x01
 
@@ -50,6 +50,7 @@ def SerialWrite(x):
 
 while 1:
     start()
+    
 
 
 # while 1:

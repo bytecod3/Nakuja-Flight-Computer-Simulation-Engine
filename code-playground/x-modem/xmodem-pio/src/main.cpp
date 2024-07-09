@@ -206,21 +206,19 @@ void SwitchLEDs() {
  *******************************************************************************/
 void InitXMODEM() {
 
-    Serial.println(SOH);
-
     // call the trasmitter 
     Serial.begin(BAUDRATE);
-    Serial.print(NAK);
+    Serial.print(NAK); // numeric 21
     Serial.print("\n");
     Serial.flush();
     
 }
 
 /*!****************************************************************************
- * @brief Parse the received serial command
+ * @brief Parse the received serial command if it is a string 
  *******************************************************************************/
 int value = 0;
-void ParseSerial(char* buffer) {
+void ParseSerialBuffer(char* buffer) {
 
     // parse the int
     
@@ -244,14 +242,44 @@ void ParseSerial(char* buffer) {
 }
 
 /*!****************************************************************************
+ * @brief Parse the received serial command if it is a digit
+ Here we are interested in numeric values being send by the transmitter to us, the receivers
+ *******************************************************************************/
+void ParseSerialNumeric(int value) {
+    if(value == 1) // SOH: numeric 1
+    {        
+        Serial.println("<Start of transmission>");
+        SOH_recvd_flag = 1;
+        digitalWrite(soh_ack_led, HIGH);
+        Serial.println("<SOH rcvd> Waiting for data");
+
+        // put the MCU in data receive state 
+        // any serial data after this will be the actual test data being received
+        current_state = STATE::RECEIVE_TEST_DATA;
+        SwitchLEDs();
+
+    } else if(value == 4) // EOT: numeric 4 
+    {
+        Serial.println("Unknown");
+    }
+
+}
+
+/*!****************************************************************************
  * @brief Receive serial message during handshake
  *******************************************************************************/
 void handshakeSerialEvent() {
     while (Serial.available()) {
         char ch = Serial.read();
-        Serial.write(ch);
 
-        value = value*ch + (ch - '0');
+        if(isDigit(ch)) { // character between 0 an 9
+            // accumulate value
+            value = value*ch + (ch - '0');
+        } else if (ch == '\n') {
+            ParseSerialNumeric(value);
+            value = 0; // reset value for the next transmission burst
+        }
+
         
         // if(serial_index < MAX_CMD_LENGTH && (ch != '\n') ) { // use newline to signal end of command
         //     serial_buffer[serial_index++] = ch;
@@ -297,7 +325,6 @@ void receiveTestDataSerialEvent() {
             } else {
                 Serial.println("<Failed to write to file>");
             }
-
         }
 
     }
