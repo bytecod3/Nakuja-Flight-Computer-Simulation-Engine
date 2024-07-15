@@ -1,4 +1,4 @@
-# Flight Computer (FC) Conceptual Design 
+# Flight-Computer-Conceptual-Design 
 ## Broad outline of FC PCB
 ### Components
 * Microcontroller Unit - ESP32 WROOM
