@@ -283,7 +283,7 @@ padding-bottom: 4px;</string>
       <item>
        <widget class="QFrame" name="verticalFrame_7">
         <property name="styleSheet">
-         <string notr="true">border-image: url(:/images/render.png) 0 0 0 0 stretch stretch;</string>
+         <string notr="true">border-image: url(:/images/render.jpg) 0 0 0 0 cover;</string>
         </property>
         <layout class="QVBoxLayout" name="rocketOrientation"/>
        </widget>
@@ -598,7 +598,7 @@ color: black;</string>
      <x>0</x>
      <y>0</y>
      <width>1242</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>

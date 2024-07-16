@@ -133,6 +133,8 @@ void MainWindow::on_btnRun_clicked()
 {
     qDebug() << "Running";
 
+    // check if the simualtion data select box is empty
+
 }
 
 /**

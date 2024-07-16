@@ -97,14 +97,32 @@ After the last message has been sent (EOF), the receiver will be looking for ano
 
 ![xmodem-transfer-flow](./project-documentation/images-and-screenshots/xmodem-transfer-flow.png)
 
-### Implementation
+### Installation 
+
+#### Windows
+***BEWARE: UNTESTED***
+1. Download this repo as a zip file 
+2. Unzip the repo into a new directory
+3. In the install folder, double click on ```nafcse.exe```
+#### Linux
+```coming soon```
+#### MacOS
+```coming soon```
+
+### How to run tests and integration
+
+Follow the procedure below to run flight software and hardware integration tests using this engine.
 
 #### On the flight computer 
-1. 
-2. 
-
+1. Connect the flight computer using a USB cable to your PC. NOTE: DO NOT CONNECT THE BATTERY OR PYROS.
+2. On the flight computer, move the header pin jumper from the RUN mode to TEST mode as shown in the image below: (INSERT IMAGE HERE)
+3. The RED LED should turn ON to indicate TESTING MODE. The buzzer will buzz twice in successive fashion to indicate change of state. In this mode, the flight computer is waiting for test flight data from the UART0 channel. 
+4. Open the NAFCSE APP on your PC (check the installations above on how to install).
+5. Select the simulation file on the 
 
 ### References
 1. https://www.advsofteng.com/doc/cdcppdoc/realtimedemoqt.htm
 2. https://web.mit.edu/6.121/www/other/pcplot_man/pcplot14.htm
 3. https://www.linkedin.com/pulse/doxygen-santosh-s-malagi/
+4. https://embeddedinventor.com/guide-to-configure-doxygen-to-document-c-source-code-for-beginners/
+4. https://randomnerdtutorials.com/esp32-pinout-reference-gpios/

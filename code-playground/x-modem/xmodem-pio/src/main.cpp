@@ -16,8 +16,13 @@
 #include <FS.h>
 #include <SPIFFS.h>
 
+uint8_t RUN_MODE = 0;
+uint8_t TEST_MODE = 0;
+
 #define BAUDRATE        115200
 #define NAK_INTERVAL    4000 /*!< Interval in which to send the NAK command to the transmitter */
+
+//  Flags
 uint8_t SOH_recvd_flag = 0; /*!< Transmitter acknowledged?  */
 
 unsigned long last_NAK_time = 0;
@@ -42,17 +47,25 @@ int16_t serial_index = 0;
 char test_data_buffer[MAX_CSV_LENGTH]; 
 int16_t test_data_serial_index = 0;
 
-uint8_t soh_ack_led = 15;
-uint8_t recv_data_led = 2;
+// pins 
+// uint8_t soh_ack_led = 15;
+uint8_t recv_data_led = 2;      /*!< External flash memory chip select pin */  
+uint8_t red_led = 15;           /*!< Red LED pin */
+uint8_t green_led = 4;          /*!< Green LED pin */
+uint8_t buzzer = 22;            // TODO: change this pin - it is used as SCL
+uint8_t SET_TEST_MODE_PIN = 14;     /*!< Pin to set the flight computer to TEST mode */
+uint8_t SET_RUN_MODE_PIN = 13;      /*!< Pin to set the flight computer to RUN mode */
 
-// states 
+/*!*****************************************************************************
+ * @brief This enum holds the states during flight computer test mode 
+ *******************************************************************************/
 enum STATE {
-    HANDSHAKE = 0,
-    RECEIVE_TEST_DATA,
+    HANDSHAKE = 0,      /*!< state to establish initial communication with transmitter */
+    RECEIVE_TEST_DATA,  /*!< sets the flight computer to receive test data over serial */
     CONFIRM_TEST_DATA
 };
 
-uint8_t current_state = STATE::HANDSHAKE;
+uint8_t current_state = STATE::HANDSHAKE; /*!< Define current state the flight computer is in */
 
 /**
  * XMODEM serial function prototypes
@@ -65,6 +78,7 @@ void SwitchLEDs();
 void InitXMODEM();
 void SerialEvent();
 void ParseSerial(char*);
+void checkRunTestToggle();
 
 //////////////////// SPIFFS FILE OPERATIONS ///////////////////////////
 #define FORMAT_SPIFFS_IF_FAILED 1
@@ -180,20 +194,46 @@ void InitSPIFFS() {
  * @brief Inititlaize the LED GPIOs
  *******************************************************************************/
 void InitLEDS() {
-    pinMode(soh_ack_led, OUTPUT);
-    pinMode(recv_data_led, OUTPUT);
+    pinMode(red_led, OUTPUT);
+    pinMode(green_led, OUTPUT);
 
     // set LEDs to a known starting state
-    digitalWrite(soh_ack_led, LOW);
-    digitalWrite(recv_data_led, LOW);
+    digitalWrite(red_led, LOW);
+    digitalWrite(green_led, LOW);
 }
 
 /*!****************************************************************************
  * @brief Switch the LEDS states
  *******************************************************************************/
 void SwitchLEDs() {
-    digitalWrite(soh_ack_led, LOW);
-    digitalWrite(recv_data_led, HIGH);
+    digitalWrite(red_led, LOW);
+    digitalWrite(green_led, HIGH);
+}
+
+/*!****************************************************************************
+ * @brief Sample the RUN/TEST toggle pins to check whether the fligh tcomputer is in test mode 
+ * or run mode.
+ * If in TEST mode, define the TEST flag
+ * If in RUN mode, define the RUN flag
+ *******************************************************************************/
+void checkRunTestToggle() {
+    if(digitalRead(SET_RUN_MODE_PIN) == 1) {
+        RUN_MODE = 1;
+    } else {
+        RUN_MODE = 0;
+    }
+
+    if(digitalRead(SET_TEST_MODE_PIN) == 1) {
+        TEST_MODE = 1;
+    } else {
+        TEST_MODE = 0;
+    }
+
+}
+
+void buzz() {
+
+    // non-blocking 
 }
 
 /**
@@ -220,15 +260,12 @@ void InitXMODEM() {
 int value = 0;
 void ParseSerialBuffer(char* buffer) {
 
-    // parse the int
-    
-
     if(strcmp(buffer, SOH_CHR) == 0) {
     // if(buffer == SOH){
         
         Serial.println("<Start of transmission>");
         SOH_recvd_flag = 1;
-        digitalWrite(soh_ack_led, HIGH);
+        digitalWrite(red_led, HIGH);
         Serial.println("<SOH rcvd> Waiting for data");
 
         // put the MCU in data receive state 
@@ -250,7 +287,7 @@ void ParseSerialNumeric(int value) {
     {        
         Serial.println("<Start of transmission>");
         SOH_recvd_flag = 1;
-        digitalWrite(soh_ack_led, HIGH);
+        digitalWrite(red_led, HIGH);
         Serial.println("<SOH rcvd> Waiting for data");
 
         // put the MCU in data receive state 
@@ -333,7 +370,24 @@ void receiveTestDataSerialEvent() {
 void setup() {
     Serial.begin(BAUDRATE);
     InitLEDS();
-    InitSPIFFS();
+    pinMode(buzzer, OUTPUT);
+
+    checkRunTestToggle();
+
+    if(RUN_MODE) {
+        Serial.println(F("[RUN MODE SET]"));
+        digitalWrite(buzzer, HIGH);
+        delay(200);
+        digitalWrite(buzzer, LOW);
+        delay(200);
+
+        digitalWrite(green_led,HIGH);
+
+    } else {
+        Serial.println(F("[RUN MODE NOT ACTIVE]"));
+    }
+
+    // InitSPIFFS();
 
     // listDir(SPIFFS, "/", 0);
     // writeFile(SPIFFS, "/test-data.txt", "TEST-DATA\r\n");

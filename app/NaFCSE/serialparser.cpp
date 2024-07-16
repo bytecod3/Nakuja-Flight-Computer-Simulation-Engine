@@ -27,7 +27,7 @@ void SerialParser::parseAll(const QString data) {
     // sanitize data
     QString clean_data = data.trimmed();
 
-    // split the received packet into csv
+    // split the received packet into csv variables
     QStringList telemetry_packet = clean_data.split(',');
 
     // record number
@@ -38,7 +38,7 @@ void SerialParser::parseAll(const QString data) {
 
     this->flight_state = state.toUInt();
 
-    qDebug() << this-> flight_state;
+    qDebug() << this->flight_state;
 
     // this->decodeStates(state);
 

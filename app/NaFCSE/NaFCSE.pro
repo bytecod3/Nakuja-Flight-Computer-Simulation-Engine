@@ -29,4 +29,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
-    render-placeholder.qrc
+    rocket-render.qrc
+
+DISTFILES += \
+    render.jpg
