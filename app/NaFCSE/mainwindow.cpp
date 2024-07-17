@@ -9,6 +9,7 @@
 #include <QString>
 #include <QFileDialog>
 #include <QFileInfo>
+#include "defines.h"
 #include "serialparser.h"
 
 MainWindow::MainWindow(QWidget *parent)
@@ -21,13 +22,12 @@ MainWindow::MainWindow(QWidget *parent)
     this->loadPorts();
 
     // update the baud Rate combo box with possible baud rates
-    this->numBaudRates = 9;
+    this-> numBaudRates=9;
     QString baudRates[numBaudRates] = {"4800", "9600", "19200", "38400","57600", "115200","230400", "460800", "921600"};
 
     for (int i =0; i < numBaudRates; i++) {
         ui->cmbBaudRates->addItem(baudRates[i]);
     }
-
 
     // set the possible timesteps in milliseconds
     this->numTimeSteps = 8;
@@ -119,7 +119,6 @@ void MainWindow::loadPorts() {
     }
 }
 
-
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -131,9 +130,14 @@ MainWindow::~MainWindow()
  */
 void MainWindow::on_btnRun_clicked()
 {
-    qDebug() << "Running";
+    // check the current app state
+    if(current_app_state == APP_STATES::NOMINAL) {
+        qDebug() << "NOMINAL STATE";
+    } else if(current_app_state == APP_STATES::HANDSHAKE) {
+        qDebug() << "HANDSHAKE STATE";
+    }
 
-    // check if the simualtion data select box is empty
+    // check if the simulation data select box is empty
 
 }
 
@@ -173,6 +177,7 @@ void MainWindow::updateSerialPorts() {
         ui->cmbSerialPorts->addItem(port.portName());
     }
 
+
 }
 
 /**
@@ -181,8 +186,6 @@ void MainWindow::updateSerialPorts() {
  * show received data on the serial monitor of the app
  */
 void MainWindow::updateSerialMonitor(const QString data) {
-    // get the current state
-    qint8 current_state = parser.getCurrentState();
 
     // display the data on the plain text widget
     ui->serialMonitor->insertPlainText(data);
@@ -194,11 +197,12 @@ void MainWindow::updateSerialMonitor(const QString data) {
  * @brief MainWindow::readData
  * @param data
  * process the data received on serial
+ * this data can be anything received from serial
  */
 void MainWindow::readData(const QString data) {
     parser.parseAll(data);
     // update UI
-    this->updateStateUI(parser.getCurrentState());
+    this->updateStateUI(parser.getCurrentFlightState());
 }
 
 /**

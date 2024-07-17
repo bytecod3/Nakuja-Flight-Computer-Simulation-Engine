@@ -1,8 +1,8 @@
-#include "serialparser.h"
+
 #include <QVector>
 #include <QDebug>
-#include <sstream>
-#include <string>
+#include "serialparser.h"
+#include "defines.h"
 
 SerialParser::SerialParser(QObject *parent)
     : QObject{parent}
@@ -27,20 +27,34 @@ void SerialParser::parseAll(const QString data) {
     // sanitize data
     QString clean_data = data.trimmed();
 
-    // split the received packet into csv variables
-    QStringList telemetry_packet = clean_data.split(',');
+    if (current_app_state == APP_STATES::NOMINAL) {
+        // we have already established XMODEM connection with hardware
+        // we are in the NOMINAL state
 
-    // record number
-    QString recordNumber = telemetry_packet.at(0);
+        // split the received packet into csv variables
+        QStringList telemetry_packet = clean_data.split(',');
 
-    // flight state
-    QString state = telemetry_packet.at(1); // see telemetry packet structure
+        // record number
+        QString recordNumber = telemetry_packet.at(0);
 
-    this->flight_state = state.toUInt();
+        // flight state
+        QString state = telemetry_packet.at(1); // see telemetry packet structure
 
-    qDebug() << this->flight_state;
+        this->flight_state = state.toUInt();
 
-    // this->decodeStates(state);
+        qDebug() << this->flight_state;
+        qDebug() << "NOMINAL STATE";
+
+        // this->decodeStates(state);
+    } else if(current_app_state == APP_STATES::HANDSHAKE) {
+        // here we are trying to establish XMODEM connection with the hardware
+        // check for NACK command from serial
+        if(data.toInt() == this->NAK) {
+            qDebug() << "NAK received";
+
+        }
+
+    }
 
 }
 
@@ -105,6 +119,6 @@ void SerialParser::decodeStates(const QString s) {
  * @return return the current state
  *
  */
-quint8 SerialParser::getCurrentState() {
+quint8 SerialParser::getCurrentFlightState() {
     return this->flight_state;
 }

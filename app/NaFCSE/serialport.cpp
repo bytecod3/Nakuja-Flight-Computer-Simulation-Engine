@@ -1,13 +1,11 @@
+
 #include "serialport.h"
 #include <QDebug>
 
 SerialPort::SerialPort(QObject *parent)
     : QObject{parent},
     _serialPort(nullptr)
-{
-
-
-}
+{}
 
 /**
  * @brief SerialPort::~serialPort

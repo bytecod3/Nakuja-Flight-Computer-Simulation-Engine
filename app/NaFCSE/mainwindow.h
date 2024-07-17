@@ -4,8 +4,9 @@
 #include <QMainWindow>
 #include <QString>
 #include "serialport.h"
+// #include "defines.h"
 #include "serialparser.h"
-#include <QTimer> // to scan the ports periodically
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

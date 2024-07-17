@@ -103,7 +103,7 @@ After the last message has been sent (EOF), the receiver will be looking for ano
 ***BEWARE: UNTESTED***
 1. Download this repo as a zip file 
 2. Unzip the repo into a new directory
-3. In the install folder, double click on ```nafcse.exe```
+3. In the ```install folder```, double click on ```nafcse.exe```
 #### Linux
 ```coming soon```
 #### MacOS
@@ -117,7 +117,7 @@ Follow the procedure below to run flight software and hardware integration tests
 1. Connect the flight computer using a USB cable to your PC. NOTE: DO NOT CONNECT THE BATTERY OR PYROS.
 2. On the flight computer, move the header pin jumper from the RUN mode to TEST mode as shown in the image below: (INSERT IMAGE HERE)
 3. The RED LED should turn ON to indicate TESTING MODE. The buzzer will buzz twice in successive fashion to indicate change of state. In this mode, the flight computer is waiting for test flight data from the UART0 channel. 
-4. Open the NAFCSE APP on your PC (check the installations above on how to install).
+4. Open the NAFCSE APP on your PC (check the installation steps above on how to install).
 5. Select the simulation file on the 
 
 ### References
