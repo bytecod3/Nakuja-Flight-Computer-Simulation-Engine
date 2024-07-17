@@ -73,8 +73,8 @@ uint8_t current_state = STATE::HANDSHAKE; /*!< Define current state the flight c
  */
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
 void InitSPIFFS();
-void InitLEDS();
-void SwitchLEDs();
+void InitGPIO();
+void SwitchLEDs(uint8_t, uint8_t);
 void InitXMODEM();
 void SerialEvent();
 void ParseSerial(char*);
@@ -191,11 +191,13 @@ void InitSPIFFS() {
 //////////////////// END OF SPIFFS FILE OPERATIONS ///////////////////////////
 
 /*!****************************************************************************
- * @brief Inititlaize the LED GPIOs
+ * @brief Inititialize the GPIOs
  *******************************************************************************/
-void InitLEDS() {
+void InitGPIO() {
     pinMode(red_led, OUTPUT);
     pinMode(green_led, OUTPUT);
+    pinMode(SET_TEST_MODE_PIN, INPUT);
+    pinMode(SET_RUN_MODE_PIN, INPUT);
 
     // set LEDs to a known starting state
     digitalWrite(red_led, LOW);
@@ -205,9 +207,9 @@ void InitLEDS() {
 /*!****************************************************************************
  * @brief Switch the LEDS states
  *******************************************************************************/
-void SwitchLEDs() {
-    digitalWrite(red_led, LOW);
-    digitalWrite(green_led, HIGH);
+void SwitchLEDs(uint8_t red_state, uint8_t green_state) {
+    digitalWrite(red_led, red_state);
+    digitalWrite(green_led, green_state);
 }
 
 /*!****************************************************************************
@@ -215,25 +217,57 @@ void SwitchLEDs() {
  * or run mode.
  * If in TEST mode, define the TEST flag
  * If in RUN mode, define the RUN flag
+ * TEST_MODE Pin and RUN_MODE pin are both pulled HIGH. When you set the jumper, you pull that pin to 
+ * LOW.    
  *******************************************************************************/
 void checkRunTestToggle() {
-    if(digitalRead(SET_RUN_MODE_PIN) == 1) {
+
+    if( (digitalRead(SET_RUN_MODE_PIN) == 0) && (digitalRead(SET_TEST_MODE_PIN) == 1) ) {
+        // run mode
         RUN_MODE = 1;
-    } else {
+        TEST_MODE = 0;
+    }
+    
+    if((digitalRead(SET_RUN_MODE_PIN) == 1) && (digitalRead(SET_TEST_MODE_PIN) == 0)){
+        // test mode
+        TEST_MODE = 1;
         RUN_MODE = 0;
     }
 
-    if(digitalRead(SET_TEST_MODE_PIN) == 1) {
-        TEST_MODE = 1;
-    } else {
+    // here the jumper has been removed. we are neither in the TEST or RUN mode
+    // INVALID STATE 
+    if((digitalRead(SET_RUN_MODE_PIN) == 1) && (digitalRead(SET_TEST_MODE_PIN) == 1)) {
         TEST_MODE = 0;
+        RUN_MODE = 0;
     }
+
+    // Serial.print("RUN MODE PIN: "); Serial.print(digitalRead(SET_RUN_MODE_PIN));
+    // Serial.print(", TEST MODE PIN: "); Serial.print(digitalRead(SET_TEST_MODE_PIN));
+    // Serial.println();
 
 }
 
-void buzz() {
+unsigned long last_buzz = 0;
+unsigned long current_buzz = 0;
+unsigned long buzz_interval = 200;
+uint8_t buzzer_state = LOW;
 
-    // non-blocking 
+/*!****************************************************************************
+ * @brief Buzz the buzzer for a given buzz_interval 
+ * This function is non-blocking
+ *******************************************************************************/
+void buzz() {
+    current_buzz = millis();
+    if(current_buzz - last_buzz > buzz_interval) {
+        if(buzzer_state == LOW) {
+            buzzer_state = HIGH;
+        } else {
+            buzzer_state = LOW;
+        }
+
+        digitalWrite(buzzer, buzzer_state);
+    }
+
 }
 
 /**
@@ -270,7 +304,7 @@ void ParseSerialBuffer(char* buffer) {
 
         // put the MCU in data receive state 
         current_state = STATE::RECEIVE_TEST_DATA;
-        SwitchLEDs();
+        SwitchLEDs(1, 0);
 
     } else {
         Serial.println("Unknown");
@@ -293,7 +327,7 @@ void ParseSerialNumeric(int value) {
         // put the MCU in data receive state 
         // any serial data after this will be the actual test data being received
         current_state = STATE::RECEIVE_TEST_DATA;
-        SwitchLEDs();
+        SwitchLEDs(0, 1);
 
     } else if(value == 4) // EOT: numeric 4 
     {
@@ -369,23 +403,10 @@ void receiveTestDataSerialEvent() {
 
 void setup() {
     Serial.begin(BAUDRATE);
-    InitLEDS();
+    InitGPIO();
     pinMode(buzzer, OUTPUT);
 
     checkRunTestToggle();
-
-    if(RUN_MODE) {
-        Serial.println(F("[RUN MODE SET]"));
-        digitalWrite(buzzer, HIGH);
-        delay(200);
-        digitalWrite(buzzer, LOW);
-        delay(200);
-
-        digitalWrite(green_led,HIGH);
-
-    } else {
-        Serial.println(F("[RUN MODE NOT ACTIVE]"));
-    }
 
     // InitSPIFFS();
 
@@ -396,6 +417,9 @@ void setup() {
 }
 
 void loop() {
+
+    // check whether we are in the RUN or TEST mode
+    checkRunTestToggle();
 
     ////////////////// TEST IF DATA RECEIVED IN DATA FILE /////////////////
     // if(Serial.available() > 0) {
@@ -412,38 +436,48 @@ void loop() {
     // }
 
     //////////////////////////////////////////////////////////////////////
+    if(TEST_MODE) {
+        Serial.println(F("[TEST MODE]"));
+        switch (current_state) {
+            // HANDSHAKE STATE
+            case STATE::HANDSHAKE:
+                handshakeSerialEvent();
+                if(!SOH_recvd_flag) {
+                        current_NAK_time = millis();
+                        if( (current_NAK_time - last_NAK_time) > NAK_INTERVAL) {
+                            // send a NAK command
+                            // TODO: check is ACK received flag
+                            InitXMODEM();
 
-    switch (current_state) {
-        // HANDSHAKE STATE
-        case STATE::HANDSHAKE:
-            handshakeSerialEvent();
-            if(!SOH_recvd_flag) {
-                    current_NAK_time = millis();
-                    if( (current_NAK_time - last_NAK_time) > NAK_INTERVAL) {
-                        // send a NAK command
-                        // TODO: check is ACK received flag
-                        InitXMODEM();
+                            last_NAK_time = current_NAK_time;
+                        }
+                    }  
+                break;
 
-                        last_NAK_time = current_NAK_time;
-                    }
-                }  
-            break;
+            // RECEIVE DATA STATE
+            case STATE::RECEIVE_TEST_DATA:
+                receiveTestDataSerialEvent();
+                // Serial.println(test_data_buffer);
+                // Serial.println("<RECEIVING_DATA_STATE>");
+                break;
+            
+            // CONFIRM TEST DATA
+            case STATE::CONFIRM_TEST_DATA:
+                // Serial.println(F("<CONFIRM_SERIAL_STATE>")); //TODO: MOVE to F 
+                readTestDataFile();
+                break;
 
-        // RECEIVE DATA STATE
-        case STATE::RECEIVE_TEST_DATA:
-            receiveTestDataSerialEvent();
-            // Serial.println(test_data_buffer);
-            // Serial.println("<RECEIVING_DATA_STATE>");
-            break;
-        
-        // CONFIRM TEST DATA
-        case STATE::CONFIRM_TEST_DATA:
-            // Serial.println(F("<CONFIRM_SERIAL_STATE>")); //TODO: MOVE to F 
-            readTestDataFile();
-            break;
+            default:
+                break;
+        }   
 
-        default:
-            break;
-    }    
+    } // end of TEST mode 
+    else if(RUN_MODE)  {
+        Serial.println(F("[RUN MODE]"));
+    } else if((RUN_MODE == 0) && (TEST_MODE) == 0 ) {
+        Serial.println(F("[INVALID MODE]"));
+    }
+
+    // start of RUN mode
     
 }
