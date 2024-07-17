@@ -14,6 +14,7 @@
 
 #include <Arduino.h>
 #include <FS.h>
+#include <SD.h>
 #include <SPIFFS.h>
 
 uint8_t RUN_MODE = 0;
@@ -55,6 +56,7 @@ uint8_t green_led = 4;          /*!< Green LED pin */
 uint8_t buzzer = 22;            // TODO: change this pin - it is used as SCL
 uint8_t SET_TEST_MODE_PIN = 14;     /*!< Pin to set the flight computer to TEST mode */
 uint8_t SET_RUN_MODE_PIN = 13;      /*!< Pin to set the flight computer to RUN mode */
+uint8_t SD_CS_PIN = 25;             /*!< Chip select pin for SD card */
 
 /*!*****************************************************************************
  * @brief This enum holds the states during flight computer test mode 
@@ -73,6 +75,7 @@ uint8_t current_state = STATE::HANDSHAKE; /*!< Define current state the flight c
  */
 void listDir(fs::FS &fs, const char * dirname, uint8_t levels);
 void InitSPIFFS();
+void initSD(); // TODO: return a bool
 void InitGPIO();
 void SwitchLEDs(uint8_t, uint8_t);
 void InitXMODEM();
@@ -81,6 +84,7 @@ void ParseSerial(char*);
 void checkRunTestToggle();
 
 //////////////////// SPIFFS FILE OPERATIONS ///////////////////////////
+
 #define FORMAT_SPIFFS_IF_FAILED 1
 const char* test_data_file = "/data.csv";
 
@@ -188,6 +192,33 @@ void InitSPIFFS() {
     }
 }
 
+void initSD() {
+    if(!SD.begin(SD_CS_PIN)) {
+        Serial.println(F("[SD Card mounting failed]"));
+        return;
+    }
+
+    uint8_t cardType = SD.cardType();
+    if(cardType == CARD_NONE) {
+        Serial.println("[No SD card attached]");
+        return;
+    }
+
+    // initialize test data file 
+    File file = SD.open("/data.csv", FILE_WRITE);
+
+    if(!file) {
+        Serial.println("[File does not exist. Creating file]");
+        writeFile(SD, "/data.csv", "SSID, SECURITY, CHANNEL, LAT, LONG, TIME \r\n");
+    } else {
+        Serial.println("[Data file already exists]");
+    }
+
+    file.close();
+    
+}
+
+
 //////////////////// END OF SPIFFS FILE OPERATIONS ///////////////////////////
 
 /*!****************************************************************************
@@ -212,41 +243,6 @@ void SwitchLEDs(uint8_t red_state, uint8_t green_state) {
     digitalWrite(green_led, green_state);
 }
 
-/*!****************************************************************************
- * @brief Sample the RUN/TEST toggle pins to check whether the fligh tcomputer is in test mode 
- * or run mode.
- * If in TEST mode, define the TEST flag
- * If in RUN mode, define the RUN flag
- * TEST_MODE Pin and RUN_MODE pin are both pulled HIGH. When you set the jumper, you pull that pin to 
- * LOW.    
- *******************************************************************************/
-void checkRunTestToggle() {
-
-    if( (digitalRead(SET_RUN_MODE_PIN) == 0) && (digitalRead(SET_TEST_MODE_PIN) == 1) ) {
-        // run mode
-        RUN_MODE = 1;
-        TEST_MODE = 0;
-    }
-    
-    if((digitalRead(SET_RUN_MODE_PIN) == 1) && (digitalRead(SET_TEST_MODE_PIN) == 0)){
-        // test mode
-        TEST_MODE = 1;
-        RUN_MODE = 0;
-    }
-
-    // here the jumper has been removed. we are neither in the TEST or RUN mode
-    // INVALID STATE 
-    if((digitalRead(SET_RUN_MODE_PIN) == 1) && (digitalRead(SET_TEST_MODE_PIN) == 1)) {
-        TEST_MODE = 0;
-        RUN_MODE = 0;
-    }
-
-    // Serial.print("RUN MODE PIN: "); Serial.print(digitalRead(SET_RUN_MODE_PIN));
-    // Serial.print(", TEST MODE PIN: "); Serial.print(digitalRead(SET_TEST_MODE_PIN));
-    // Serial.println();
-
-}
-
 unsigned long last_buzz = 0;
 unsigned long current_buzz = 0;
 unsigned long buzz_interval = 200;
@@ -269,6 +265,46 @@ void buzz() {
     }
 
 }
+
+/*!****************************************************************************
+ * @brief Sample the RUN/TEST toggle pins to check whether the fligh tcomputer is in test mode 
+ * or run mode.
+ * If in TEST mode, define the TEST flag
+ * If in RUN mode, define the RUN flag
+ * TEST_MODE Pin and RUN_MODE pin are both pulled HIGH. When you set the jumper, you pull that pin to 
+ * LOW.    
+ *******************************************************************************/
+void checkRunTestToggle() {
+
+    if( (digitalRead(SET_RUN_MODE_PIN) == 0) && (digitalRead(SET_TEST_MODE_PIN) == 1) ) {
+        // run mode
+        RUN_MODE = 1;
+        TEST_MODE = 0;
+        SwitchLEDs(TEST_MODE, RUN_MODE);
+    }
+    
+    if((digitalRead(SET_RUN_MODE_PIN) == 1) && (digitalRead(SET_TEST_MODE_PIN) == 0)){
+        // test mode
+        TEST_MODE = 1;
+        RUN_MODE = 0;
+        SwitchLEDs(TEST_MODE, RUN_MODE);
+    }
+
+    // here the jumper has been removed. we are neither in the TEST or RUN mode
+    // INVALID STATE 
+    if((digitalRead(SET_RUN_MODE_PIN) == 1) && (digitalRead(SET_TEST_MODE_PIN) == 1)) {
+        TEST_MODE = 0;
+        RUN_MODE = 0;
+        SwitchLEDs(!TEST_MODE, !RUN_MODE);
+    }
+
+    // Serial.print("RUN MODE PIN: "); Serial.print(digitalRead(SET_RUN_MODE_PIN));
+    // Serial.print(", TEST MODE PIN: "); Serial.print(digitalRead(SET_TEST_MODE_PIN));
+    // Serial.println();
+
+}
+
+
 
 /**
  * XMODEM serial function definition
@@ -406,7 +442,9 @@ void setup() {
     InitGPIO();
     pinMode(buzzer, OUTPUT);
 
-    checkRunTestToggle();
+    // checkRunTestToggle();
+
+    initSD();
 
     // InitSPIFFS();
 
@@ -437,7 +475,7 @@ void loop() {
 
     //////////////////////////////////////////////////////////////////////
     if(TEST_MODE) {
-        Serial.println(F("[TEST MODE]"));
+        // Serial.println(F("[TEST MODE]"));
         switch (current_state) {
             // HANDSHAKE STATE
             case STATE::HANDSHAKE:
@@ -472,8 +510,9 @@ void loop() {
         }   
 
     } // end of TEST mode 
+
     else if(RUN_MODE)  {
-        Serial.println(F("[RUN MODE]"));
+        // Serial.println(F("[RUN MODE]"));
     } else if((RUN_MODE == 0) && (TEST_MODE) == 0 ) {
         Serial.println(F("[INVALID MODE]"));
     }
