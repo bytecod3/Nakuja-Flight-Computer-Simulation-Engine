@@ -35,12 +35,15 @@ private slots:
 
     void on_writeSerialButton_clicked();
 
+    void on_closeSerialButton_clicked();
+
 private:
     Ui::MainWindow *ui;
     uint8_t numBaudRates;
     uint64_t baudRates[9];
     uint64_t numTimeSteps;
     SerialPort port;
+    bool isConnected = false;
     SerialParser parser;
     QTimer* mSerialScanTimer; // to scan the serial ports periodically
     void loadPorts();

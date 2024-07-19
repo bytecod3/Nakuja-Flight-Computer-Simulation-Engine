@@ -49,6 +49,17 @@ bool SerialPort::connectToSerial(QString portName, QString baudRate) {
 }
 
 /**
+ * @brief SerialPort::closeSerial
+ * Close serial connection
+ */
+void SerialPort::closeSerial() {
+    if(_serialPort !=nullptr) {
+        _serialPort->close();
+        delete _serialPort;
+    }
+}
+
+/**
  * @brief SerialPort::writeToSerial
  * write data to serial
  */

@@ -11,11 +11,12 @@
 #include <QFileInfo>
 #include "defines.h"
 #include "serialparser.h"
+#include "typeinfo.h"
 
 // variables to use during handshake
 // ASCII numeric values
-quint8 NAK = 21; // NAK command sent from the receiver (flight computer)
-quint8 SOH = 1;
+QString NAK = "21\n"; // NAK command sent from the receiver (flight computer)
+QString SOH = "1";
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -204,21 +205,35 @@ void MainWindow::updateSerialMonitor(const QString data) {
  * process the data received on serial
  * this data can be anything received from serial
  */
-void MainWindow::readData(const QString data) {
+void MainWindow::readData(QString data) {
     // TODO: parser to set some vectors
     parser.parseAll(data);
 
+    // get type of data
+    qDebug() << data.trimmed();
+
+
     // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
-    if(data.toInt() == NAK) {
-        qDebug() << "NAK received";
-        QByteArray QB_SOH;
-        QB_SOH.setNum(SOH);
-        port.writeToSerial(QB_SOH);
-        qDebug() << QB_SOH;
+    if(current_app_state == APP_STATES::HANDSHAKE) {
+        // if(!data.isEmpty() && data[data.length()-1] == '\n') {
+        //     data.remove(data.length()-1);
+        // }
+
+        if(data == NAK) {
+            qDebug() << "NAK received";
+
+            // if NAK received, we respond with SOH to signify start of header to the MCU
+            // we send this -> "21\n"
+            QByteArray SOH_BYTE(QString(SOH).toUtf8());
+            SOH_BYTE.append('\n');
+            port.writeToSerial(SOH_BYTE);
+
+        }
+    } else if(current_app_state == APP_STATES::NOMINAL) {
+        // update UI
+        this->updateStateUI(parser.getCurrentFlightState());
     }
 
-    // update UI
-    this->updateStateUI(parser.getCurrentFlightState());
 }
 
 /**
@@ -231,7 +246,7 @@ void MainWindow::on_connectSerial_clicked()
     // connect to serial port
     QString portName = ui->cmbSerialPorts->currentText();
     QString baudRate = ui->cmbBaudRates->currentText();
-    auto isConnected = port.connectToSerial(portName, baudRate);
+    isConnected = port.connectToSerial(portName, baudRate);
 
     if(!isConnected) {
         QMessageBox::critical(this, "Port error", "Could not connect to port");
@@ -240,6 +255,7 @@ void MainWindow::on_connectSerial_clicked()
     } else {
         // update the status bar
         ui->statusbar->showMessage("Connected to " + portName);
+        isConnected = true; // redundant
     }
 
 }
@@ -340,5 +356,22 @@ void MainWindow::on_writeSerialButton_clicked() {
     // QByteArray QB_SOH;
     // QB_SOH.setNum(SOH);
     port.writeToSerial(serial_comm);
+}
+
+/**
+ * @brief MainWindow::on_closeSerial_clicked
+ * Close the serial connection
+ */
+void MainWindow::on_closeSerialButton_clicked()
+{
+    if(isConnected) {
+        port.closeSerial();
+        ui->statusbar->showMessage("Serial port disconnected");
+
+    } else {
+        ui->statusbar->showMessage("Serial not available");
+    }
+
+    isConnected = false;
 }
 

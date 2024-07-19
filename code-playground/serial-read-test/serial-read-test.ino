@@ -3,6 +3,27 @@ int i = 0;
 char buffer[20];
 int numeric_value;
 
+void parseCmd(int v) {
+  // parse
+  switch(v){
+    case 1:
+      Serial.println("SOH");
+      break;
+
+    case 4:
+      Serial.println("EOT");
+      break;
+
+    case 21:
+      Serial.println("NAK");
+      break;
+
+    default:
+      Serial.println(F("INVALID"));
+  }
+
+}
+
 void setup() {
   
   Serial.begin(115200);
@@ -15,11 +36,8 @@ void loop() {
       numeric_value = (numeric_value*10) + (c - '0');
     } else if (c == 10) { // newline character
       Serial.println(numeric_value);
-      
-      // parse
-      if(numeric_value=1) {
-        Serial.println("SOH");
-      }
+
+      parseCmd(numeric_value);
       numeric_value = 0;
     }
 

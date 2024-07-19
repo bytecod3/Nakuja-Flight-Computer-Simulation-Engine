@@ -45,15 +45,15 @@ char serial_buffer[MAX_CMD_LENGTH];
 int16_t serial_index = 0;
 
 // buffer to store the CSV test data
-char test_data_buffer[MAX_CSV_LENGTH]; 
+char test_data_buffer[MAX_CSV_LENGTH];
 int16_t test_data_serial_index = 0;
 
 // pins 
 // uint8_t soh_ack_led = 15;
-uint8_t recv_data_led = 2;      /*!< External flash memory chip select pin */  
-uint8_t red_led = 15;           /*!< Red LED pin */
-uint8_t green_led = 4;          /*!< Green LED pin */
-uint8_t buzzer = 22;            // TODO: change this pin - it is used as SCL
+uint8_t recv_data_led = 2;          /*!< External flash memory chip select pin */  
+uint8_t red_led = 15;               /*!< Red LED pin */
+uint8_t green_led = 4;              /*!< Green LED pin */
+uint8_t buzzer = 22;                // TODO: change this pin - it is used as SCL
 uint8_t SET_TEST_MODE_PIN = 14;     /*!< Pin to set the flight computer to TEST mode */
 uint8_t SET_RUN_MODE_PIN = 13;      /*!< Pin to set the flight computer to RUN mode */
 uint8_t SD_CS_PIN = 25;             /*!< Chip select pin for SD card */
@@ -318,7 +318,7 @@ void InitXMODEM() {
 
     // call the trasmitter 
     Serial.begin(BAUDRATE);
-    Serial.print(NAK); // numeric 21
+    Serial.print(NAK); 
     Serial.print("\n");
     Serial.flush();
     
@@ -350,7 +350,7 @@ void ParseSerialBuffer(char* buffer) {
 
 /*!****************************************************************************
  * @brief Parse the received serial command if it is a digit
- Here we are interested in numeric values being send by the transmitter to us, the receivers
+ We are only interested in numeric values being sent by the transmitter to us, the receiver
  *******************************************************************************/
 void ParseSerialNumeric(int value) {
     Serial.print("Receive val: ");
@@ -360,10 +360,9 @@ void ParseSerialNumeric(int value) {
     {        
         Serial.println("<Start of transmission>");
         SOH_recvd_flag = 1;
-        digitalWrite(red_led, HIGH);
         Serial.println("<SOH rcvd> Waiting for data");
 
-        // put the MCU in data receive state 
+        // put the MCU in data receive state
         // any serial data after this will be the actual test data being received
         current_state = STATE::RECEIVE_TEST_DATA;
         SwitchLEDs(0, 1);
