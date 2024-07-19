@@ -25,7 +25,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_btnRun_clicked();
+    void on_btnRun_clicked(QString);
     void on_btnChooseFile_clicked();
     void updateSerialMonitor(const QString data);
     void updateStateUI(quint8 state);

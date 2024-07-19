@@ -134,13 +134,32 @@ MainWindow::~MainWindow()
  * @brief MainWindow::on_btnRun_clicked
  * Run the application
  */
-void MainWindow::on_btnRun_clicked()
+void MainWindow::on_btnRun_clicked(QString data)
 {
+    // remove the trailing newline
+    data = data.trimmed();
+
     // check the current app state
-    if(current_app_state == APP_STATES::NOMINAL) {
-        qDebug() << "NOMINAL STATE";
-    } else if(current_app_state == APP_STATES::HANDSHAKE) {
+     if(current_app_state == APP_STATES::HANDSHAKE) {
         qDebug() << "HANDSHAKE STATE";
+
+         if(data == NAK) {
+            // if NAK received, we respond with SOH to signify start of header to the MCU
+            // we send this -> "21\n"
+            QByteArray SOH_BYTE(QString(SOH).toUtf8());
+            SOH_BYTE.append('\n');
+            port.writeToSerial(SOH_BYTE);
+
+            // at this point we should start sending test data to the MCU
+
+            // send EOT
+
+            // done sending data, change state to NOMINAL
+
+        }
+
+    } else if(current_app_state == APP_STATES::NOMINAL) {
+        qDebug() << "NOMINAL STATE";
     }
 
     // check if the simulation data select box is empty
@@ -215,20 +234,8 @@ void MainWindow::readData(QString data) {
 
     // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
     if(current_app_state == APP_STATES::HANDSHAKE) {
-        // if(!data.isEmpty() && data[data.length()-1] == '\n') {
-        //     data.remove(data.length()-1);
-        // }
 
-        if(data == NAK) {
-            qDebug() << "NAK received";
 
-            // if NAK received, we respond with SOH to signify start of header to the MCU
-            // we send this -> "21\n"
-            QByteArray SOH_BYTE(QString(SOH).toUtf8());
-            SOH_BYTE.append('\n');
-            port.writeToSerial(SOH_BYTE);
-
-        }
     } else if(current_app_state == APP_STATES::NOMINAL) {
         // update UI
         this->updateStateUI(parser.getCurrentFlightState());

@@ -56,7 +56,7 @@ uint8_t green_led = 4;              /*!< Green LED pin */
 uint8_t buzzer = 22;                // TODO: change this pin - it is used as SCL
 uint8_t SET_TEST_MODE_PIN = 14;     /*!< Pin to set the flight computer to TEST mode */
 uint8_t SET_RUN_MODE_PIN = 13;      /*!< Pin to set the flight computer to RUN mode */
-uint8_t SD_CS_PIN = 25;             /*!< Chip select pin for SD card */
+uint8_t SD_CS_PIN = 26;             /*!< Chip select pin for SD card */
 
 /*!*****************************************************************************
  * @brief This enum holds the states during flight computer test mode 
@@ -194,8 +194,11 @@ void InitSPIFFS() {
 
 void initSD() {
     if(!SD.begin(SD_CS_PIN)) {
+        delay(100);
         Serial.println(F("[SD Card mounting failed]"));
         return;
+    } else {
+        Serial.println(F("[SD card Init OK!"));
     }
 
     uint8_t cardType = SD.cardType();
@@ -205,7 +208,7 @@ void initSD() {
     }
 
     // initialize test data file 
-    File file = SD.open("/data.csv", FILE_WRITE);
+    File file = SD.open("/data.csv", FILE_WRITE); // TODO: change file name to const char*
 
     if(!file) {
         Serial.println("[File does not exist. Creating file]");
@@ -217,7 +220,6 @@ void initSD() {
     file.close();
     
 }
-
 
 //////////////////// END OF SPIFFS FILE OPERATIONS ///////////////////////////
 
@@ -243,10 +245,16 @@ void SwitchLEDs(uint8_t red_state, uint8_t green_state) {
     digitalWrite(green_led, green_state);
 }
 
+// non blocking timings
 unsigned long last_buzz = 0;
 unsigned long current_buzz = 0;
 unsigned long buzz_interval = 200;
 uint8_t buzzer_state = LOW;
+
+unsigned long last_blink = 0;
+unsigned long current_blink = 0;
+unsigned long blink_interval = 200;
+uint8_t led_state = LOW;
 
 /*!****************************************************************************
  * @brief Buzz the buzzer for a given buzz_interval 
@@ -254,7 +262,7 @@ uint8_t buzzer_state = LOW;
  *******************************************************************************/
 void buzz() {
     current_buzz = millis();
-    if(current_buzz - last_buzz > buzz_interval) {
+    if((current_buzz - last_buzz) > buzz_interval) {
         if(buzzer_state == LOW) {
             buzzer_state = HIGH;
         } else {
@@ -262,8 +270,27 @@ void buzz() {
         }
 
         digitalWrite(buzzer, buzzer_state);
+
+        last_buzz = current_buzz;
     }
 
+}
+
+/*!****************************************************************************
+ * @brief implements non-blocking blink
+ *******************************************************************************/
+void blink_200ms(uint8_t led_pin) {
+    current_blink = millis();
+    if((current_blink - last_blink) > blink_interval) {
+        if(led_state == LOW) {
+            led_state = HIGH;
+        } else if(led_state == HIGH) {
+            led_state = LOW;
+        }
+
+        digitalWrite(led_pin, led_state);
+        last_blink = current_blink;
+    }
 }
 
 /*!****************************************************************************
@@ -285,8 +312,9 @@ void checkRunTestToggle() {
     
     if((digitalRead(SET_RUN_MODE_PIN) == 1) && (digitalRead(SET_TEST_MODE_PIN) == 0)){
         // test mode
-        TEST_MODE = 1;
         RUN_MODE = 0;
+        TEST_MODE = 1;
+
         SwitchLEDs(TEST_MODE, RUN_MODE);
     }
 
@@ -333,14 +361,14 @@ void ParseSerialBuffer(char* buffer) {
     if(strcmp(buffer, SOH_CHR) == 0) {
     // if(buffer == SOH){
         
-        Serial.println("<Start of transmission>");
+        Serial.println(F("<Start of transmission>"));
         SOH_recvd_flag = 1;
         digitalWrite(red_led, HIGH);
-        Serial.println("<SOH rcvd> Waiting for data");
+        Serial.println(F("<SOH rcvd from receiver> Waiting for data..."));
 
         // put the MCU in data receive state 
         current_state = STATE::RECEIVE_TEST_DATA;
-        SwitchLEDs(1, 0);
+        SwitchLEDs(0, 1);
 
     } else {
         Serial.println("Unknown");
@@ -364,20 +392,20 @@ void ParseSerialNumeric(int value) {
 
         // put the MCU in data receive state
         // any serial data after this will be the actual test data being received
+        SwitchLEDs(0, 1); // red off, green on
         current_state = STATE::RECEIVE_TEST_DATA;
-        SwitchLEDs(0, 1);
 
     } else if(value == 4) {
         // EOT: numeric 4 
         Serial.println("Unknown");
     }
-
 }
 
 /*!****************************************************************************
  * @brief Receive serial message during handshake
  *******************************************************************************/
 void handshakeSerialEvent() {
+    SwitchLEDs(1,0);
     while (Serial.available()) {
         char ch = Serial.read();
 
@@ -499,6 +527,7 @@ void loop() {
             // RECEIVE DATA STATE
             case STATE::RECEIVE_TEST_DATA:
                 receiveTestDataSerialEvent();
+                // blink_200ms(green_led);
                 // Serial.println(test_data_buffer);
                 // Serial.println("<RECEIVING_DATA_STATE>");
                 break;
