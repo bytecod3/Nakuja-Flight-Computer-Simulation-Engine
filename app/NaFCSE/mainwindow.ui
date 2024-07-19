@@ -26,7 +26,7 @@
      <verstretch>0</verstretch>
     </sizepolicy>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,0,0,0">
+   <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,0,0,0,0">
     <item>
      <widget class="QGroupBox" name="groupBox">
       <property name="maximumSize">
@@ -209,20 +209,6 @@ margin-right: 10</string>
             </item>
            </layout>
           </item>
-          <item row="2" column="0">
-           <layout class="QHBoxLayout" name="horizontalLayout_4">
-            <item>
-             <widget class="QLabel" name="label_12">
-              <property name="text">
-               <string>Time step (ms)</string>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QComboBox" name="cmbTimeStep"/>
-            </item>
-           </layout>
-          </item>
           <item row="0" column="0">
            <layout class="QVBoxLayout" name="verticalLayout_2">
             <property name="sizeConstraint">
@@ -255,6 +241,20 @@ margin-right: 10</string>
                <widget class="QComboBox" name="cmbBaudRates"/>
               </item>
              </layout>
+            </item>
+           </layout>
+          </item>
+          <item row="2" column="0">
+           <layout class="QHBoxLayout" name="horizontalLayout_4">
+            <item>
+             <widget class="QLabel" name="label_12">
+              <property name="text">
+               <string>Time step (ms)</string>
+              </property>
+             </widget>
+            </item>
+            <item>
+             <widget class="QComboBox" name="cmbTimeStep"/>
             </item>
            </layout>
           </item>
@@ -299,116 +299,93 @@ padding-bottom: 4px;</string>
            <property name="spacing">
             <number>6</number>
            </property>
-           <item row="1" column="0">
-            <widget class="QLabel" name="label_20">
-             <property name="styleSheet">
-              <string notr="true">border: 1px solid gray;
-border-radius: 4px;
-color: black;</string>
-             </property>
-             <property name="text">
-              <string>WIFI</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-             <property name="margin">
-              <number>4</number>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="2">
-            <widget class="QLabel" name="label_19">
-             <property name="styleSheet">
-              <string notr="true">border: 1px solid gray;
-border-radius: 4px;
-color: black;</string>
-             </property>
-             <property name="text">
-              <string>GPS</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-             <property name="margin">
-              <number>4</number>
-             </property>
-            </widget>
-           </item>
            <item row="0" column="0">
-            <widget class="QLabel" name="label_17">
-             <property name="minimumSize">
-              <size>
-               <width>30</width>
-               <height>1</height>
-              </size>
-             </property>
-             <property name="styleSheet">
-              <string notr="true">border: 1px solid gray;
+            <layout class="QVBoxLayout" name="verticalLayout">
+             <item>
+              <widget class="QLabel" name="label">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid gray;
 border-radius: 4px;
 color: black;</string>
-             </property>
-             <property name="text">
-              <string>IMU</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-             <property name="margin">
-              <number>4</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="1">
-            <widget class="QLabel" name="label_21">
-             <property name="styleSheet">
-              <string notr="true">border: 1px solid gray;
+               </property>
+               <property name="text">
+                <string>IMU</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_2">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid gray;
 border-radius: 4px;
 color: black;</string>
-             </property>
-             <property name="text">
-              <string>Battery</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-             <property name="margin">
-              <number>4</number>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="2">
-            <widget class="QLabel" name="label_22">
-             <property name="styleSheet">
-              <string notr="true">border: 1px solid gray;
+               </property>
+               <property name="text">
+                <string>ALTIMETER</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_3">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid gray;
 border-radius: 4px;
 color: black;</string>
-             </property>
-             <property name="text">
-              <string>Data Logger</string>
-             </property>
-             <property name="alignment">
-              <set>Qt::AlignCenter</set>
-             </property>
-             <property name="margin">
-              <number>4</number>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="1">
-            <widget class="QLabel" name="label_18">
-             <property name="styleSheet">
-              <string notr="true">border: 1px solid gray;
+               </property>
+               <property name="text">
+                <string>GPS</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_7">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid gray;
 border-radius: 4px;
 color: black;</string>
-             </property>
-             <property name="text">
-              <string>Altimeter</string>
-             </property>
-             <property name="margin">
-              <number>4</number>
-             </property>
-            </widget>
+               </property>
+               <property name="text">
+                <string>COMMS</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_4">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid gray;
+border-radius: 4px;
+color: black;</string>
+               </property>
+               <property name="text">
+                <string>FLASH</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_5">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid gray;
+border-radius: 4px;
+color: black;</string>
+               </property>
+               <property name="text">
+                <string>TEST-FLASH</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_6">
+               <property name="styleSheet">
+                <string notr="true">border: 1px solid gray;
+border-radius: 4px;
+color: black;</string>
+               </property>
+               <property name="text">
+                <string>POWER</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </item>
@@ -588,7 +565,57 @@ color: black;</string>
      </layout>
     </item>
     <item>
-     <widget class="QTextBrowser" name="serialMonitor"/>
+     <widget class="QFrame" name="verticalFrame_3">
+      <property name="styleSheet">
+       <string notr="true">border: 1 px solid black;
+</string>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_10">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="serialWriteTextEntry">
+           <property name="styleSheet">
+            <string notr="true">border: 1 px solid black;</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QPushButton" name="writeSerialButton">
+           <property name="text">
+            <string>SEND</string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_8">
+         <property name="text">
+          <string>Serial Monitor</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QTextBrowser" name="serialMonitor"/>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item>
+     <layout class="QVBoxLayout" name="verticalLayout_5"/>
     </item>
    </layout>
   </widget>

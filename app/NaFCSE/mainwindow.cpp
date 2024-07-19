@@ -12,6 +12,11 @@
 #include "defines.h"
 #include "serialparser.h"
 
+// variables to use during handshake
+// ASCII numeric values
+quint8 NAK = 21; // NAK command sent from the receiver (flight computer)
+quint8 SOH = 1;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -200,7 +205,18 @@ void MainWindow::updateSerialMonitor(const QString data) {
  * this data can be anything received from serial
  */
 void MainWindow::readData(const QString data) {
+    // TODO: parser to set some vectors
     parser.parseAll(data);
+
+    // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
+    if(data.toInt() == NAK) {
+        qDebug() << "NAK received";
+        QByteArray QB_SOH;
+        QB_SOH.setNum(SOH);
+        port.writeToSerial(QB_SOH);
+        qDebug() << QB_SOH;
+    }
+
     // update UI
     this->updateStateUI(parser.getCurrentFlightState());
 }
@@ -310,3 +326,19 @@ void MainWindow::updateStateUI(quint8 s) {
 
 
 }
+
+/**
+ * @brief MainWindow::on_writeSerial_clicked
+ * Test writing data to serial
+ */
+void MainWindow::on_writeSerialButton_clicked() {
+    QString serial_command = ui->serialWriteTextEntry->text();
+    QByteArray serial_comm(QString(serial_command).toUtf8());
+    serial_comm.append('\n');
+    qDebug() << serial_comm;
+
+    // QByteArray QB_SOH;
+    // QB_SOH.setNum(SOH);
+    port.writeToSerial(serial_comm);
+}
+

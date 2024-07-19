@@ -353,6 +353,9 @@ void ParseSerialBuffer(char* buffer) {
  Here we are interested in numeric values being send by the transmitter to us, the receivers
  *******************************************************************************/
 void ParseSerialNumeric(int value) {
+    Serial.print("Receive val: ");
+    Serial.println(value);
+
     if(value == 1) // SOH: numeric 1
     {        
         Serial.println("<Start of transmission>");
@@ -365,8 +368,8 @@ void ParseSerialNumeric(int value) {
         current_state = STATE::RECEIVE_TEST_DATA;
         SwitchLEDs(0, 1);
 
-    } else if(value == 4) // EOT: numeric 4 
-    {
+    } else if(value == 4) {
+        // EOT: numeric 4 
         Serial.println("Unknown");
     }
 
@@ -383,6 +386,8 @@ void handshakeSerialEvent() {
             // accumulate value
             value = value*ch + (ch - '0');
         } else if (ch == '\n') {
+            Serial.print("SerEvent: ");
+            Serial.println(value);
             ParseSerialNumeric(value);
             value = 0; // reset value for the next transmission burst
         }

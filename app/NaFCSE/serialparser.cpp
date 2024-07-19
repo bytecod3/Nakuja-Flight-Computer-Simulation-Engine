@@ -46,16 +46,7 @@ void SerialParser::parseAll(const QString data) {
         qDebug() << "NOMINAL STATE";
 
         // this->decodeStates(state);
-    } else if(current_app_state == APP_STATES::HANDSHAKE) {
-        // here we are trying to establish XMODEM connection with the hardware
-        // check for NACK command from serial
-        if(data.toInt() == this->NAK) {
-            qDebug() << "NAK received";
-
-        }
-
     }
-
 }
 
 /**

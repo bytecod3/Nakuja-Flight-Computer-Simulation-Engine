@@ -1,5 +1,6 @@
 #ifndef DEFINES_H
 #define DEFINES_H
+#include <QtTypes>
 
 /*!< This enum contains states that the app can be in at any given time  */
 enum APP_STATES {
@@ -8,5 +9,6 @@ enum APP_STATES {
 };
 
 extern int current_app_state;
+
 
 #endif // DEFINES_H

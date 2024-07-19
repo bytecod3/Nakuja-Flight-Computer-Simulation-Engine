@@ -20,11 +20,6 @@ public:
     QVector<QString> packet_vector; // store parsed csv packet
     quint8 flight_state;
 
-    // variables to use durng handshake
-    // ASCII numeric values
-    quint8 NAK = 21; // NAK command sent from the receiver (flight computer)
-    quint8 SOH = 1;
-
     void parseAll(const QString data);
     void decodeStates(const QString s);
     quint8 getCurrentFlightState();

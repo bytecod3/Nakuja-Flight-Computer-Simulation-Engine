@@ -49,6 +49,16 @@ bool SerialPort::connectToSerial(QString portName, QString baudRate) {
 }
 
 /**
+ * @brief SerialPort::writeToSerial
+ * write data to serial
+ */
+void SerialPort::writeToSerial(QByteArray &data) {
+    const quint64 written = _serialPort->write(data);
+    // TODO: check size of data written
+
+}
+
+/**
  * @brief SerialPort::dataReady
  * process data received from serial port
  */

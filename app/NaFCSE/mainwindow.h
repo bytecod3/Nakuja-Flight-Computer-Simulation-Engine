@@ -4,9 +4,9 @@
 #include <QMainWindow>
 #include <QString>
 #include "serialport.h"
-// #include "defines.h"
 #include "serialparser.h"
 #include <QTimer>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -32,6 +32,8 @@ private slots:
     void readData(const QString data);
 
     void on_connectSerial_clicked();
+
+    void on_writeSerialButton_clicked();
 
 private:
     Ui::MainWindow *ui;
