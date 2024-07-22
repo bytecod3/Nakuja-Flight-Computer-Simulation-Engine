@@ -15,7 +15,7 @@ int main(int argc, char *argv[])
     // w.setWindowIcon();
 
     w.setFixedSize(WINDOW_WIDTH, WINDOW_HEIGHT);
-    w.setWindowTitle("Nakuja Flight Computer Simulation Engine. v"+version);
+    w.setWindowTitle("Nakuja Flight Computer Simulation and Testing Engine. v"+version);
 
 
     w.show();
