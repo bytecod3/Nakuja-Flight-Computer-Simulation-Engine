@@ -309,7 +309,7 @@ padding-bottom: 4px;</string>
            <item row="0" column="0">
             <layout class="QVBoxLayout" name="verticalLayout">
              <item>
-              <widget class="QLabel" name="label">
+              <widget class="QLabel" name="IMU_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
 border-radius: 4px;
@@ -321,7 +321,7 @@ color: black;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_2">
+              <widget class="QLabel" name="ALT_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
 border-radius: 4px;
@@ -333,7 +333,7 @@ color: black;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_3">
+              <widget class="QLabel" name="GPS_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
 border-radius: 4px;
@@ -345,7 +345,7 @@ color: black;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_7">
+              <widget class="QLabel" name="COMMS_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
 border-radius: 4px;
@@ -357,7 +357,7 @@ color: black;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_4">
+              <widget class="QLabel" name="FLASH_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
 border-radius: 4px;
@@ -369,7 +369,7 @@ color: black;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_5">
+              <widget class="QLabel" name="TESTFLASH_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
 border-radius: 4px;
@@ -381,7 +381,7 @@ color: black;</string>
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_6">
+              <widget class="QLabel" name="POWER_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
 border-radius: 4px;

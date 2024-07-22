@@ -25,28 +25,37 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_btnRun_clicked(QString);
-    void on_btnChooseFile_clicked();
+    // serial monitor functions
     void updateSerialMonitor(const QString data);
-    void updateStateUI(quint8 state);
     void readData(const QString data);
 
+    // button press handlers
+    void on_btnRun_clicked(QString);
+    void on_btnChooseFile_clicked();
     void on_connectSerial_clicked();
-
     void on_writeSerialButton_clicked();
-
     void on_closeSerialButton_clicked();
+
+    // update UI functions
+    void updateStateUI(quint8 state);
+    void updateSystemDiagnosticsUI();
 
 private:
     Ui::MainWindow *ui;
-    uint8_t numBaudRates;
+    static constexpr uint8_t numBaudRates = 9;
     uint64_t baudRates[9];
-    uint64_t numTimeSteps;
+    static constexpr uint64_t numTimeSteps = 8;
     SerialPort port;
     bool isConnected = false;
     SerialParser parser;
     QTimer* mSerialScanTimer; // to scan the serial ports periodically
     void loadPorts();
     void updateSerialPorts();
+
+    // test
+    // order -> imu, altimeter, gps, comms, flash, test-flash, power
+    static constexpr int num_sub_systems = 7;
+    int sys_diag[num_sub_systems] = {1,1,1,1,0,1,0};
+
 };
 #endif // MAINWINDOW_H

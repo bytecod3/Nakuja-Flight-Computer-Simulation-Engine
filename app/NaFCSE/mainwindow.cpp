@@ -18,6 +18,12 @@
 QString NAK = "21\n"; // NAK command sent from the receiver (flight computer)
 QString SOH = "1";
 
+/**
+ * @brief MainWindow::MainWindow
+ * @param parent
+ *
+ * Constructor
+ */
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -28,7 +34,6 @@ MainWindow::MainWindow(QWidget *parent)
     this->loadPorts();
 
     // update the baud Rate combo box with possible baud rates
-    this-> numBaudRates=9;
     QString baudRates[numBaudRates] = {"4800", "9600", "19200", "38400","57600", "115200","230400", "460800", "921600"};
 
     for (int i =0; i < numBaudRates; i++) {
@@ -36,7 +41,6 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     // set the possible timesteps in milliseconds
-    this->numTimeSteps = 8;
     QString time_steps[numTimeSteps] = {"200", "400", "600", "800", "1000", "1500", "2000", "5000"};
     for(int64_t i =0; i < numTimeSteps; i++) {
         ui->cmbTimeStep->addItem(time_steps[i]);
@@ -115,6 +119,10 @@ MainWindow::MainWindow(QWidget *parent)
 
 }
 
+/////////////////////////////////////////////////////////////////////
+//////////             SERIAL PORT FUNCTIONS             ////////////
+/////////////////////////////////////////////////////////////////////
+
 /**
  * @brief MainWindow::loadPorts
  * scan for available com ports and add them to combo box
@@ -125,10 +133,59 @@ void MainWindow::loadPorts() {
     }
 }
 
-MainWindow::~MainWindow()
-{
-    delete ui;
+/**
+ * @brief MainWindow::updateSerialPorts
+ * rescan the serial ports and update the combo box, such that when a new device
+ * is connected, it is automatically detected
+ */
+void MainWindow::updateSerialPorts() {
+
+    foreach(auto &port, QSerialPortInfo::availablePorts()) {
+        ui->cmbSerialPorts->addItem(port.portName());
+    }
 }
+
+/**
+ * @brief MainWindow::updateSerialMonitor
+ * @param data
+ * show received data on the serial monitor of the app
+ */
+void MainWindow::updateSerialMonitor(const QString data) {
+
+    // display the data on the plain text widget
+    ui->serialMonitor->insertPlainText(data);
+    QScrollBar* sb = ui->serialMonitor->verticalScrollBar();
+    sb->setValue(sb->maximum()); // enable auto-scrolling
+}
+
+/**
+ * @brief MainWindow::readData
+ * @param data
+ * process the data received on serial
+ * this data can be anything received from serial
+ */
+void MainWindow::readData(QString data) {
+    // TODO: parser to set some vectors
+    parser.parseAll(data);
+
+    // get type of data
+    qDebug() << data.trimmed();
+
+
+    // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
+    if(current_app_state == APP_STATES::HANDSHAKE) {
+
+
+    } else if(current_app_state == APP_STATES::NOMINAL) {
+        // update UI
+        this->updateStateUI(parser.getCurrentFlightState());
+    }
+
+}
+
+/////////////////////////////////////////////////////////////////////
+//////////             BUTTON PRESS HANDLERS             ////////////
+/////////////////////////////////////////////////////////////////////
 
 /**
  * @brief MainWindow::on_btnRun_clicked
@@ -191,57 +248,6 @@ void MainWindow::on_btnChooseFile_clicked()
 
 }
 
-/**
- * @brief MainWindow::updateSerialPorts
- * rescan the serial ports and update the combo box, such that when a new device
- * is connected, it is automatically detected
- */
-void MainWindow::updateSerialPorts() {
-
-    foreach(auto &port, QSerialPortInfo::availablePorts()) {
-        ui->cmbSerialPorts->addItem(port.portName());
-    }
-
-
-}
-
-/**
- * @brief MainWindow::updateSerialMonitor
- * @param data
- * show received data on the serial monitor of the app
- */
-void MainWindow::updateSerialMonitor(const QString data) {
-
-    // display the data on the plain text widget
-    ui->serialMonitor->insertPlainText(data);
-    QScrollBar* sb = ui->serialMonitor->verticalScrollBar();
-    sb->setValue(sb->maximum()); // enable auto-scrolling
-}
-
-/**
- * @brief MainWindow::readData
- * @param data
- * process the data received on serial
- * this data can be anything received from serial
- */
-void MainWindow::readData(QString data) {
-    // TODO: parser to set some vectors
-    parser.parseAll(data);
-
-    // get type of data
-    qDebug() << data.trimmed();
-
-
-    // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
-    if(current_app_state == APP_STATES::HANDSHAKE) {
-
-
-    } else if(current_app_state == APP_STATES::NOMINAL) {
-        // update UI
-        this->updateStateUI(parser.getCurrentFlightState());
-    }
-
-}
 
 /**
  * @brief MainWindow::on_connectSerial_clicked
@@ -267,6 +273,43 @@ void MainWindow::on_connectSerial_clicked()
 
 }
 
+/**
+ * @brief MainWindow::on_writeSerial_clicked
+ * Test writing data to serial
+ */
+void MainWindow::on_writeSerialButton_clicked() {
+    QString serial_command = ui->serialWriteTextEntry->text();
+    QByteArray serial_comm(QString(serial_command).toUtf8());
+    serial_comm.append('\n');
+    qDebug() << serial_comm;
+
+    // QByteArray QB_SOH;
+    // QB_SOH.setNum(SOH);
+    port.writeToSerial(serial_comm);
+}
+
+/**
+ * @brief MainWindow::on_closeSerial_clicked
+ * Close the serial connection
+ */
+void MainWindow::on_closeSerialButton_clicked()
+{
+    // if(isConnected) {
+    //     port.closeSerial();
+    //     ui->statusbar->showMessage("Serial port disconnected");
+
+    // } else {
+    //     ui->statusbar->showMessage("Serial not available");
+    // }
+
+    // isConnected = false;
+
+    this->updateSystemDiagnosticsUI();
+}
+
+/////////////////////////////////////////////////////////////////////
+//////////            UI UPDATE HANDLERS                 ////////////
+/////////////////////////////////////////////////////////////////////
 /**
  *
  * @brief SerialParser::updateStateUI
@@ -351,34 +394,43 @@ void MainWindow::updateStateUI(quint8 s) {
 }
 
 /**
- * @brief MainWindow::on_writeSerial_clicked
- * Test writing data to serial
+ * @brief MainWindow::updateSystemDiagnosticsUI
+ *
+ * Display the status of the subsystems on the UI
  */
-void MainWindow::on_writeSerialButton_clicked() {
-    QString serial_command = ui->serialWriteTextEntry->text();
-    QByteArray serial_comm(QString(serial_command).toUtf8());
-    serial_comm.append('\n');
-    qDebug() << serial_comm;
+void MainWindow::updateSystemDiagnosticsUI() {
+    // get the susbsytems labels
+    QLabel* sub_system_labels[this->num_sub_systems] = {
+        ui->IMU_subsys_label,
+        ui->ALT_subsys_label,
+        ui->GPS_subsys_label,
+        ui->COMMS_subsys_label,
+        ui->FLASH_subsys_label,
+        ui->TESTFLASH_subsys_label,
+        ui->POWER_subsys_label
+    };
 
-    // QByteArray QB_SOH;
-    // QB_SOH.setNum(SOH);
-    port.writeToSerial(serial_comm);
+    // loop each susbsytem label
+    // check if its value is set to 1 or 0
+    // if 1, set GREEN, else set RED
+
+    for(int j = 0; j < this->num_sub_systems; j++) {
+        if(sys_diag[j] == 1) {
+            sub_system_labels[j]->setAutoFillBackground(true);
+            sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+        } else {
+            sub_system_labels[j]->setAutoFillBackground(true);
+            sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
+        }
+    }
+
 }
 
 /**
- * @brief MainWindow::on_closeSerial_clicked
- * Close the serial connection
+ * @brief MainWindow::~MainWindow
+ * Destructor
  */
-void MainWindow::on_closeSerialButton_clicked()
+MainWindow::~MainWindow()
 {
-    if(isConnected) {
-        port.closeSerial();
-        ui->statusbar->showMessage("Serial port disconnected");
-
-    } else {
-        ui->statusbar->showMessage("Serial not available");
-    }
-
-    isConnected = false;
+    delete ui;
 }
-

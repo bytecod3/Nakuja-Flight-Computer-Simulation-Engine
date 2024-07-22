@@ -40,8 +40,6 @@ void write_csv( std::string filename, std::vector<std::pair<std::string, std::ve
         myFile << "\n";
     }
 
-    
-
     // close the file 
     myFile.close();   
 
