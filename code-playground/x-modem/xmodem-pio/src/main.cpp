@@ -17,6 +17,7 @@
 #include <SD.h>
 #include <SPIFFS.h>
 
+
 uint8_t RUN_MODE = 0;
 uint8_t TEST_MODE = 0;
 
@@ -48,7 +49,7 @@ int16_t serial_index = 0;
 char test_data_buffer[MAX_CSV_LENGTH];
 int16_t test_data_serial_index = 0;
 
-// pins 
+// pins
 // uint8_t soh_ack_led = 15;
 uint8_t recv_data_led = 2;          /*!< External flash memory chip select pin */  
 uint8_t red_led = 15;               /*!< Red LED pin */
@@ -185,10 +186,10 @@ void readTestDataFile() {
 
 void InitSPIFFS() {
     if(!SPIFFS.begin(FORMAT_SPIFFS_IF_FAILED)) {
-        Serial.println("SPIFFS mount failed"); // TODO: Set a flag for test GUI
+        Serial.println(F("SPIFFS mount failed")); // TODO: Set a flag for test GUI
         return;
     } else {
-        Serial.println("<SPIFFS init success>");
+        Serial.println(F("SPIFFS init success"));
     }
 }
 
@@ -477,8 +478,10 @@ void setup() {
     // checkRunTestToggle();
 
     initSD();
+    InitSPIFFS();
 
-    // InitSPIFFS();
+    // reset the system log file
+    system_logger.logToFile(SPIFFS, 1, client, level, system_log_file, "readData Function call OK!");
 
     // listDir(SPIFFS, "/", 0);
     // writeFile(SPIFFS, "/test-data.txt", "TEST-DATA\r\n");
