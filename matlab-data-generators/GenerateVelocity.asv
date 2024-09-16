@@ -1,0 +1,15 @@
+%{
+Function to generate velocity curve to mimic the rocket's 
+velocity trajectory
+
+v_initial The initial velocity of the rocket 
+g Acceleration due to gravity
+t_flight Time of flight
+
+v Velocity at a given time instance
+%}
+
+function [v] = GenerateVelocity(v_initial, g, t_flight)
+
+
+end 
