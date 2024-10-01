@@ -99,6 +99,11 @@ After the last message has been sent (EOF), the receiver will be looking for ano
 
 ### Installation 
 
+### [IMPORTANT] Setting up the project compiler options
+qcustom plot download and installation 
+
+c++17 options 
+
 #### Windows
 ***BEWARE: UNTESTED***
 1. Download this repo as a zip file 
