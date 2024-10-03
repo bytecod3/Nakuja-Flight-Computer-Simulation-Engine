@@ -104,6 +104,8 @@ qcustom plot download and installation
 
 c++17 options 
 
+moving qcustom.h and qcustom.cpp to include directory of the build output
+
 #### Windows
 ***BEWARE: UNTESTED***
 1. Download this repo as a zip file 

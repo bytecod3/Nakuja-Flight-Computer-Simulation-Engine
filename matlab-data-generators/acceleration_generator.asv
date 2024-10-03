@@ -1,0 +1,10 @@
+% generate acceleration values with a maximum value of 16G 
+% as configured in the flight software MPU6050
+
+Fs = 1000; % sampling frequency
+Ts = 1/no_samples; 
+
+flight_time = 15; % 15 seconds 
+no_samples = Fs * flight_time;
+
+noise = rand
