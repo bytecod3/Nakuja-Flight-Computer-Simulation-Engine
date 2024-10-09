@@ -1,44 +1,69 @@
-% generate acceleration values with a maximum value of 16G 
-% as configured in the flight software MPU6050
+rise_time = 4; % 4 seconds
+drop_time = 4; % 4 seconds curve drop time 
 
-no_of_samples = 1000;
-Ts = 1/no_of_samples;
+const_time = 6; % 6 seconds const time 
 
-% generate x_axis acceleration
-x_acceleration_noisy = rand(16, no_of_samples+1);
+samples = 1000;
+ts =1/samples;
 
-% to hold acceleration values 
-x_acc = ones(no_of_samples, 1);
-noise = ones(no_of_samples, 1);
+%%%%%%%%%%%%%%%%%%%%%% GENERATE Y ACCELLERATION %%%%%%%%%%%%%%%%%%%%
+% powered flight acceleration
+t_rise_vector = 0:ts:rise_time;
+t_rise_vector = t_rise_vector(:); % change to a column vector
+rise_acc_vector = t_rise_vector .^2;
 
-for n = 1:no_of_samples
-    r = abs(random('Normal', 1, 16));
-    noise(n) = r;
-end
+% descent stage acceleration
+t_drop_vector = drop_time:-ts:0;
+t_drop_vector = t_drop_vector(:);
+drop_acc_vector = t_drop_vector .^ 2;
+t_drop = 4:ts:8;
 
-% add noise to the acceleration data
-x_acc = x_acc .* noise;
+% free fall - zeroa acceleration
+const_time_vector = 8:ts:12;
+const_time_vector = const_time_vector(:);
+const_acc_vector = 0 .^ const_time_vector;
 
-% plot
-flight_time = 10;
-t = 0:Ts:10;
-t = t(:);
-% plot(t, x_acc);
+% save this data to csv file 
+filename_y = 'acc_y.csv';
+csvwrite(filename_y,rise_acc_vector);
+dlmwrite(filename_y,drop_acc_vector, '-append');
+dlmwrite(filename_y,const_acc_vector, '-append');
 
-% fit the curve to exponential functions to model 
-% rocket acceleration
-x = 0:0.0005:5;
-y = exp(x/2);
+%%%%%%%%%%%%%%%%%%%%%% GENERATE X ACCELLERATION %%%%%%%%%%%%%%%%%%%%
 
-j = length(x) - 1;
-y_a = ones(length(x));
-for n = 1:j
-    y_a(n) = y .* x_acc(1:j);
-end
+%{
+If the MPU6050 is mounted vertically, our acceleration of interest is 
+the y acceleration.
+X acceleration remains approximately zero throughout unless at apogee 
+where it changes BUT we cannot predict how the rocket orients iteself
 
-disp(y_a);
-%plot(x, y_a);
+%}
+
+% powered flight acceleration
+t_rise_vector = 0:ts:rise_time;
+t_rise_vector = t_rise_vector(:); % change to a column vector
+r = rand(length(t_rise_vector), 1) / 4; % very small x acceleration
+x_rise_acc_vector = r .^2;
+
+% t_rise_vector = 0:ts:rise_time;
+% t_rise_vector = t_rise_vector(:); % change to a column vector
+% r = rand(length(t_rise_vector), 1) / 4; % very small x acceleration
+% rise_acc_vector = r .^2;
+% 
+
+% x_acc_time_vector = 0:ts:12;
+% x_acc_time_vector = x_acc_time_vector(:);
+% 
+% m = rand(length(x_acc_time_vector),1) / 4; % very small values of x acceleration
+% x_acc_vector = 0.2 .^ m;
+% 
+% disp(x_acc_vector);
 
 
+acc_y = csvread('acc_y.csv');
+t = 0:ts:12;
+plot(t,acc_y(3:end)); % slice the matrix to make elements in acc_y equal to t vector
+hold on;
+plot(t_rise_vector, x_rise_acc_vector)
 
-
+grid on;
