@@ -29,21 +29,6 @@ csvwrite(filename_y,rise_acc_vector);
 dlmwrite(filename_y,drop_acc_vector, '-append');
 dlmwrite(filename_y,const_acc_vector, '-append');
 
-%%%%%%%%%%%%%%%%%%%%%% GENERATE X ACCELLERATION %%%%%%%%%%%%%%%%%%%%
-
-%{
-If the MPU6050 is mounted vertically, our acceleration of interest is 
-the y acceleration.
-X acceleration remains approximately zero throughout unless at apogee 
-where it changes BUT we cannot predict how the rocket orients iteself
-
-%}
-
-% powered flight acceleration
-t_rise_vector = 0:ts:rise_time;
-t_rise_vector = t_rise_vector(:); % change to a column vector
-r = rand(length(t_rise_vector), 1) / 4; % very small x acceleration
-x_rise_acc_vector = r .^2;
 
 % t_rise_vector = 0:ts:rise_time;
 % t_rise_vector = t_rise_vector(:); % change to a column vector

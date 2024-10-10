@@ -1,0 +1,6 @@
+t - linpace(0, 3000, 30001);
+tmin = 50;
+xmin = 16;
+xmax = 65;
+k = -log(xmin/65)/(60*tmin);
+T = xmax * exp(-k
