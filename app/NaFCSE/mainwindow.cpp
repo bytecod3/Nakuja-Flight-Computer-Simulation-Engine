@@ -16,7 +16,7 @@
 // variables to use during handshake
 // ASCII numeric values
 QString NAK = "21\n"; // NAK command sent from the receiver (flight computer)
-QString SOH = "1";
+QString SOH = "1\n";
 
 /**
  * @brief MainWindow::MainWindow
@@ -408,11 +408,9 @@ void MainWindow::on_btnLink_clicked()
     qDebug() << "LINK CLICKED";
 
     if(current_app_state == APP_STATES::HANDSHAKE) {
-        qDebug() << "HANDSHAKE STATE";
-
         // send SOH signal to the device under test
         QByteArray soh_byte = SOH.toUtf8();
-        port->writeSerial(*soh_byte);
+        this->port.writeToSerial(soh_byte);
         qDebug() << soh_byte;
     }
 
