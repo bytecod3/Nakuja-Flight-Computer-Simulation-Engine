@@ -340,7 +340,8 @@ void checkRunTestToggle() {
  */
 
 /*!****************************************************************************
- * @brief Initiate XMODEM protocol by sending a NAK command every 4 seconds until the transmitter returns an ACK signal
+ * @brief Initiate XMODEM protocol by sending a NAK command every 4 seconds until the 
+ * transmitter(test PC) returns an ACK signal
  * @param none
  *******************************************************************************/
 void InitXMODEM() {

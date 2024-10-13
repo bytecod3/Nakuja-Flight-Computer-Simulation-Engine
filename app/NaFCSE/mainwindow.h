@@ -24,13 +24,17 @@ public:
     QString activeStateStyle = "QLabel { background-color : black; color : #00FF00; border: 1px solid gray; border-radius: 4px; font: 700 9pt; }";
     ~MainWindow();
 
+    void on_btnRun_clicked(QString);
+
+    void on_btnLink_clicked(QString);
+
 private slots:
     // serial monitor functions
     void updateSerialMonitor(const QString data);
     void readData(const QString data);
 
     // button press handlers
-    void on_btnRun_clicked(QString);
+    //void on_btnRun_clicked(QString);
     void on_btnChooseFile_clicked();
     void on_connectSerial_clicked();
     void on_writeSerialButton_clicked();
@@ -42,6 +46,7 @@ private slots:
 
     // graphing capabilities
     void initPlotArea();
+
 
 private:
     Ui::MainWindow *ui;

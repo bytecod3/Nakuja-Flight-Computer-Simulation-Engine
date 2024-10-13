@@ -59,12 +59,23 @@ MainWindow::MainWindow(QWidget *parent)
     /// 2. process data received from the serial monitor
     connect(&port, &SerialPort::dataReceived, this, &MainWindow::readData);
 
-    /// 3. handles plug-n-play
+    /// 3. handles plug-n-play for serial port
     connect(mSerialScanTimer, &QTimer::timeout, this, &updateSerialPorts);
 
     ////////////////// INIT PLOT AREA ///////////////////////
     ui->plotWidget->resize(300, 200);
     this->initPlotArea();
+
+    // check our current app state to display on status bar
+    if(current_app_state == APP_STATES::HANDSHAKE) {
+        ui->statusbar->showMessage("STATE: HANDSHAKE");
+    } else if (current_app_state == APP_STATES::HANDSHAKE){
+        ui->statusbar->showMessage("STATE: NOMINAL");
+    } else if (current_app_state == APP_STATES::RUNNING) {
+        ui->statusbar->showMessage("STATE: RUNNING");
+    } else {
+        ui->statusbar->showMessage("Waiting");
+    }
 
 }
 
@@ -140,37 +151,11 @@ void MainWindow::readData(QString data) {
  * @brief MainWindow::on_btnRun_clicked
  * Run the application
  */
-void MainWindow::on_btnRun_clicked(QString data)
-{
-    // remove the trailing newline
-    data = data.trimmed();
+// void MainWindow::on_btnRun_clicked(QString data)
+// {
 
-    // check the current app state
-     if(current_app_state == APP_STATES::HANDSHAKE) {
-        qDebug() << "HANDSHAKE STATE";
 
-         if(data == NAK) {
-            // if NAK received, we respond with SOH to signify start of header to the MCU
-            // we send this -> "21\n"
-            QByteArray SOH_BYTE(QString(SOH).toUtf8());
-            SOH_BYTE.append('\n');
-            port.writeToSerial(SOH_BYTE);
-
-            // at this point we should start sending test data to the MCU
-
-            // send EOT
-
-            // done sending data, change state to NOMINAL
-
-        }
-
-    } else if(current_app_state == APP_STATES::NOMINAL) {
-        qDebug() << "NOMINAL STATE";
-    }
-
-    // check if the simulation data select box is empty
-
-}
+// }
 
 /**
  * @brief MainWindow::on_toolButton_clicked
@@ -411,3 +396,20 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
+/**
+ * @brief MainWindow::on_btnLink_clicked
+ * Establish handshake with the flight computer hardware via XMODEM
+ * @param data command received from serial port from the device under test
+ */
+void MainWindow::on_btnLink_clicked(QString data)
+{
+    qDebug() << "Linking";
+
+    if(current_app_state == APP_STATES::HANDSHAKE) {
+        qDebug() << "HANDSHAKE STATE";
+
+    }
+}
+
