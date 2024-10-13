@@ -62,6 +62,7 @@ MainWindow::MainWindow(QWidget *parent)
     /// 3. handles plug-n-play for serial port
     connect(mSerialScanTimer, &QTimer::timeout, this, &updateSerialPorts);
 
+
     ////////////////// INIT PLOT AREA ///////////////////////
     ui->plotWidget->resize(300, 200);
     this->initPlotArea();
@@ -397,19 +398,23 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 /**
  * @brief MainWindow::on_btnLink_clicked
  * Establish handshake with the flight computer hardware via XMODEM
  * @param data command received from serial port from the device under test
  */
-void MainWindow::on_btnLink_clicked(QString data)
+void MainWindow::on_btnLink_clicked()
 {
-    qDebug() << "Linking";
+    qDebug() << "LINK CLICKED";
 
     if(current_app_state == APP_STATES::HANDSHAKE) {
         qDebug() << "HANDSHAKE STATE";
 
+        // send SOH signal to the device under test
+        QByteArray soh_byte = SOH.toUtf8();
+        port->writeSerial(*soh_byte);
+        qDebug() << soh_byte;
     }
+
 }
 
