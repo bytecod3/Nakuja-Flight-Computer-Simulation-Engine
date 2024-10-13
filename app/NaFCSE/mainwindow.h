@@ -40,6 +40,9 @@ private slots:
     void updateStateUI(quint8 state);
     void updateSystemDiagnosticsUI();
 
+    // graphing capabilities
+    void initPlotArea();
+
 private:
     Ui::MainWindow *ui;
     static constexpr uint8_t numBaudRates = 9;

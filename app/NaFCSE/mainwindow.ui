@@ -562,10 +562,14 @@ color: black;</string>
          </widget>
         </item>
         <item>
-         <layout class="QHBoxLayout" name="simulatedDataChart"/>
-        </item>
-        <item>
-         <layout class="QHBoxLayout" name="accelerationChart"/>
+         <widget class="QCustomPlot" name="plotWidget" native="true">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+            <horstretch>3</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -616,7 +620,14 @@ color: black;</string>
         </widget>
        </item>
        <item>
-        <widget class="QTextBrowser" name="serialMonitor"/>
+        <widget class="QTextBrowser" name="serialMonitor">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -635,6 +646,14 @@ color: black;</string>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

@@ -62,60 +62,9 @@ MainWindow::MainWindow(QWidget *parent)
     /// 3. handles plug-n-play
     connect(mSerialScanTimer, &QTimer::timeout, this, &updateSerialPorts);
 
-    ////////////////// DRAW SPLINE CHART ///////////////////////
-    QSplineSeries* series = new QSplineSeries();
-    series->setName("spline");
-
-    // add spline data points
-    series->append(0,6);
-    series->append(2,4);
-    series->append(3,8);
-    series->append(7,4);
-    series->append(10,5);
-
-    *series<<QPoint(11,1)<<QPoint(13,3)<<QPoint(17,6)<<QPoint(18,3)<<QPoint(20,2);
-
-    // create the actual chart
-    QChart* chart = new QChart();
-    chart->legend()->hide();
-    chart->addSeries(series);
-    chart->setTitle("Acceleration");
-    chart->createDefaultAxes();
-    chart->axes(Qt::Vertical).first()->setRange(0, 10);
-
-    // create qchartview
-    QChartView* chartView = new QChartView(chart);
-    chartView->setRenderHint(QPainter::Antialiasing); // make lines look nicer
-
-    ui->accelerationChart->addWidget(chartView);
-
-    // create dummy graph 2
-    QSplineSeries* series2 = new QSplineSeries();
-    series2->setName("spline");
-
-    // add spline data points
-    series2->append(0,6);
-    series2->append(2,4);
-    series2->append(3,8);
-    series2->append(7,4);
-    series2->append(10,5);
-
-    *series2<<QPoint(11,1)<<QPoint(13,3)<<QPoint(17,6)<<QPoint(18,3)<<QPoint(20,2);
-
-    // create the actual chart
-    QChart* chart2 = new QChart();
-    chart2->legend()->hide();
-    chart2->addSeries(series2);
-    chart2->setTitle("Acceleration");
-    chart2->createDefaultAxes();
-    chart2->axes(Qt::Vertical).first()->setRange(0, 10);
-
-    // create qchartview
-    QChartView* chartView2 = new QChartView(chart2);
-    chartView2->setRenderHint(QPainter::Antialiasing); // make lines look nicer
-
-
-    ui->simulatedDataChart->addWidget(chartView2);
+    ////////////////// INIT PLOT AREA ///////////////////////
+    ui->plotWidget->resize(300, 200);
+    this->initPlotArea();
 
 }
 
@@ -423,6 +372,34 @@ void MainWindow::updateSystemDiagnosticsUI() {
             sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
         }
     }
+
+}
+
+/**
+ * @ brief Setup graphing widget on startup
+ */
+void MainWindow::initPlotArea() {
+    // plot a simple quadratic graph
+    QVector<double> x(101), y(101);
+    for (int i=0; i< 101; ++i) {
+        x[i] = i/50.0 - 1;
+        y[i] = x[i]*x[i]; // quadratic function
+
+    }
+
+    // create a graph and assign data to it
+    ui->plotWidget->addGraph();
+    ui->plotWidget->graph(0)->setData(x, y);
+
+    // label the axes
+    ui->plotWidget->xAxis->setLabel("X value");
+    ui->plotWidget->yAxis->setLabel("Y label");
+
+    // set the axes range, so we see all data
+    ui->plotWidget->xAxis->setRange(-1, 1);
+    ui->plotWidget->yAxis->setRange(0, 1);
+
+    ui->plotWidget->replot();
 
 }
 
