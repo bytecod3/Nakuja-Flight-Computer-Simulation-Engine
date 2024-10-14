@@ -1,0 +1,59 @@
+
+/*! @mainpage
+* @section intro_sec Introduction
+* Nakuja Flight Computer Testing and Simulation Engine (NaFCTSE) is an internal tool designed for flight 
+* computer software and hardware verification using Hardware-in-the-loop (HIL) during rocket development at the Nakuja Project. 
+*
+* Built on the Qt C++ framework and MATLAB, this tool provides a windows desktop app that is the used by the team during 
+* the integration and testing (I&T) flight computer development phase, making it easy to catch software and hardware bugs way before launch. The motivation to build was to help the team perform quick and fast bench tests on the flight computers without having to rely on long and spaced drone tests. 
+
+@note This is not a replacement of the actual drone tests that are usually done, rather an enhancement of the testing procedures.
+* 
+* @section step1 Features and capability
+* We built this on the Qt C++ framework which is powerful and versatile for such uses. NaFCSTE comes as a suite of 2 things: 1) Test data generation models on MATLAB and 2) Desktop application. 
+
+* @subsection step2 1) Test data generation models with MATLAB
+* Here we are concerned with the generation of "fake" data used for simulation. This data is generated using a SIMULINK model and MATLAB scripts. It is then packaged into a compact csv(comma separated values) file that is to be consumed by the desktop app.  Here is a breakdown of the crucial data that is generated. 
+
+
+See https://github.com/nakujaproject/N4-Flight-Software to check the full telemetry data packet in comparison. 
+
+* @subsection step3 2) Desktop application 
+* 
+
+* @section step4 Requirements 
+* @section step5 Installation
+* @section step6 Usage
+* @section step7 Expected results  
+* @section step8 Adapting NaFCTSE for your flight computer 
+* @section step9 Contributors
+* 1. Edwin Mwiti
+* 2. Naomi Chesang
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+*
+
+
+
+ */

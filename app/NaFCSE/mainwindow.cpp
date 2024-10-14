@@ -414,5 +414,8 @@ void MainWindow::on_btnLink_clicked()
         qDebug() << soh_byte;
     }
 
+    // get the response command from serial
+
+
 }
 
