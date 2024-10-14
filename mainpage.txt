@@ -22,6 +22,7 @@ See https://github.com/nakujaproject/N4-Flight-Software to check the full teleme
 * 
 
 * @section step4 Requirements 
+The following are required to install and run this tool:
 * @section step5 Installation
 * @section step6 Usage
 * @section step7 Expected results  
