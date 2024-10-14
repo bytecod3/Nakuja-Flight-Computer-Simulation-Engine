@@ -1,0 +1,36 @@
+var classQCPLegend =
+[
+    [ "SelectablePart", "classQCPLegend.html#a5404de8bc1e4a994ca4ae69e2c7072f1", [
+      [ "spNone", "classQCPLegend.html#a5404de8bc1e4a994ca4ae69e2c7072f1a378201c07d500af7126e3ec91652eed7", null ],
+      [ "spLegendBox", "classQCPLegend.html#a5404de8bc1e4a994ca4ae69e2c7072f1a0fa4758962a46fa1dc9da818abae23c4", null ],
+      [ "spItems", "classQCPLegend.html#a5404de8bc1e4a994ca4ae69e2c7072f1a768bfb95f323db4c66473375032c0af7", null ]
+    ] ],
+    [ "QCPLegend", "classQCPLegend.html#a0001a456989bd07ea378883651fabd72", null ],
+    [ "addItem", "classQCPLegend.html#a3ab274de52d2951faea45a6d975e6b3f", null ],
+    [ "clearItems", "classQCPLegend.html#a24795c7250eb5214fcea16b7217b4dfb", null ],
+    [ "hasItem", "classQCPLegend.html#ad0f698e33db454a6c103b5206740e599", null ],
+    [ "hasItemWithPlottable", "classQCPLegend.html#a4b90a442af871582df85c2bc13f91e88", null ],
+    [ "item", "classQCPLegend.html#acfe9694c45104a3359d3806ed366fcf7", null ],
+    [ "itemCount", "classQCPLegend.html#a57ab86ab8b2a3762d4c1455eb5452c88", null ],
+    [ "itemWithPlottable", "classQCPLegend.html#a91e790002d8bf15a20628a8e8841e397", null ],
+    [ "removeItem", "classQCPLegend.html#ac91595c3eaa746fe6321d2eb952c63bb", null ],
+    [ "removeItem", "classQCPLegend.html#a2aea4ec6da2d454dd0b241a254d65082", null ],
+    [ "selectedItems", "classQCPLegend.html#ac7d9e567d5c551e09cd9bcc4306c5532", null ],
+    [ "selectionChanged", "classQCPLegend.html#a82c88464edac07a9eefaf3906268df3b", null ],
+    [ "selectTest", "classQCPLegend.html#ae11e1229abeec1abdbd22a57f2b26a84", null ],
+    [ "setBorderPen", "classQCPLegend.html#a866a9e3f5267de7430a6c7f26a61db9f", null ],
+    [ "setBrush", "classQCPLegend.html#a497bbcd38baa3598c08e2b3f48103f23", null ],
+    [ "setFont", "classQCPLegend.html#aa4cda8499e3cb0f3be415edc02984c73", null ],
+    [ "setIconBorderPen", "classQCPLegend.html#a2f2c93d18a651f4ff294bb3f026f49b8", null ],
+    [ "setIconSize", "classQCPLegend.html#a8b0740cce488bf7010da6beda6898984", null ],
+    [ "setIconSize", "classQCPLegend.html#a96b1a37fd4ee6a9778e6e54fe56ab6c2", null ],
+    [ "setIconTextPadding", "classQCPLegend.html#a62973bd69d5155e8ea3141366e8968f6", null ],
+    [ "setSelectableParts", "classQCPLegend.html#a9ce60aa8bbd89f62ae4fa83ac6c60110", null ],
+    [ "setSelectedBorderPen", "classQCPLegend.html#a2c35d262953a25d96b6112653fbefc88", null ],
+    [ "setSelectedBrush", "classQCPLegend.html#a875227f3219c9799464631dec5e8f1bd", null ],
+    [ "setSelectedFont", "classQCPLegend.html#ab580a01c3c0a239374ed66c29edf5ad2", null ],
+    [ "setSelectedIconBorderPen", "classQCPLegend.html#ade93aabe9bcccaf9cf46cec22c658027", null ],
+    [ "setSelectedParts", "classQCPLegend.html#a2aee309bb5c2a794b1987f3fc97f8ad8", null ],
+    [ "setSelectedTextColor", "classQCPLegend.html#a7674dfc7a1f30e1abd1018c0ed45e0bc", null ],
+    [ "setTextColor", "classQCPLegend.html#ae1eb239ff4a4632fe1b6c3e668d845c6", null ]
+];

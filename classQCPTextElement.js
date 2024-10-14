@@ -1,0 +1,25 @@
+var classQCPTextElement =
+[
+    [ "QCPTextElement", "classQCPTextElement.html#ae1de18bdb1e7ba959f132018dd9a0258", null ],
+    [ "QCPTextElement", "classQCPTextElement.html#a00f08a8a3363ad8d7d12ca0db4922b6b", null ],
+    [ "QCPTextElement", "classQCPTextElement.html#a2684e65def4a5daf80be9f5f149ca9b2", null ],
+    [ "QCPTextElement", "classQCPTextElement.html#adb4bcd3743dbfabfedee4fe9c2ee93da", null ],
+    [ "QCPTextElement", "classQCPTextElement.html#a00b75787b77b39bbd083813c2a7b2520", null ],
+    [ "clicked", "classQCPTextElement.html#ad2246a0e701c0655623f048737298334", null ],
+    [ "doubleClicked", "classQCPTextElement.html#a9c6fd27ae8a7c3a02df7a6bbd3509e40", null ],
+    [ "maximumOuterSizeHint", "classQCPTextElement.html#ae82475b50c10a5b3314d996d50ae536b", null ],
+    [ "minimumOuterSizeHint", "classQCPTextElement.html#a47b8541f55ff520c557e0f27461f109e", null ],
+    [ "mouseDoubleClickEvent", "classQCPTextElement.html#a2272ff775ab385f612e9fd39773de7c0", null ],
+    [ "mousePressEvent", "classQCPTextElement.html#ad7b2c98355e3d2f912574b74fcee0574", null ],
+    [ "mouseReleaseEvent", "classQCPTextElement.html#acfcbaf9b1da18745e72726aafb39c855", null ],
+    [ "selectionChanged", "classQCPTextElement.html#a49f45b87ee9c1fe866c2cdd12af17a9a", null ],
+    [ "selectTest", "classQCPTextElement.html#a29e95d6cfd9e28772ce6a8890a2c8889", null ],
+    [ "setFont", "classQCPTextElement.html#a09b3241769528fa87cb4bf35c97defad", null ],
+    [ "setSelectable", "classQCPTextElement.html#a3c5f9b1897a036b16495ed3fb8371c55", null ],
+    [ "setSelected", "classQCPTextElement.html#aba5521f9fb22a5f3d2f09ab37d4a1751", null ],
+    [ "setSelectedFont", "classQCPTextElement.html#a0a2397a3c4ede519e16ab3e991904065", null ],
+    [ "setSelectedTextColor", "classQCPTextElement.html#abaec200cae70a0eade53583defc0476d", null ],
+    [ "setText", "classQCPTextElement.html#ac44b81e69e719b879eb2feecb33557e2", null ],
+    [ "setTextColor", "classQCPTextElement.html#a4f3b8361c3ffb3f84346954929ce93ba", null ],
+    [ "setTextFlags", "classQCPTextElement.html#ab908f437f552020888a3ad8cf8242605", null ]
+];

@@ -1,9 +1,0 @@
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/qt-serial-write-test.dir
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/edit_cache.dir
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/rebuild_cache.dir
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/list_install_components.dir
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/install.dir
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/install/local.dir
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/install/strip.dir
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/qt-serial-write-test_autogen_timestamp_deps.dir
-F:/5th-year/project/Nakuja-Flight-Computer-Simulation-Engine/code-playground/qt-ser-write/qt-serial-write-test/build/Desktop_Qt_6_7_2_MinGW_64_bit-Debug/CMakeFiles/qt-serial-write-test_autogen.dir
