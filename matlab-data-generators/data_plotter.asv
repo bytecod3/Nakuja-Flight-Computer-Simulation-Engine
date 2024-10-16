@@ -52,27 +52,14 @@ t = out.yout.signals(7).values(:,:,1);
 t = t(1,:);
 x_acc = out.yout.signals(8).values(:,:,1);
 x_acc = x_acc(1,:);
+length(t)
+disp("LENGTH X ACC"); length(x_acc)
 plot(t, x_acc);
 grid on;
-title("X acceleration");
+title("R");
 xlabel("Time (s)");
-ylabel("Acceleration (g) ");
-legend("X acceleration");
+ylabel("Velocity (m/s)");
+legend("Powered-flight", "Coasting");
 
 
-%////////////// y acceleration plot /////////////////////
-figure(3);
-t = out.yout.signals(7).values(:,:,1);
-t = t(1,:);
-y_acc = out.yout.signals(6).values(:,:,1);
-y_acc = y_acc(1,:);
-plot(t, x_acc);
-grid on;
-title("Y acceleration");
-xlabel("Time (s)");
-ylabel("Acceleration (g) ");
-legend("Y acceleration");
-
-
-%////////////// altitude and apogee plot /////////////////////
-
+%////////////// x acceleration plot /////////////////////
