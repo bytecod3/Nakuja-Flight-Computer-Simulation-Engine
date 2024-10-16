@@ -436,7 +436,7 @@ void MainWindow::on_btnLink_clicked()
     QVector<double> longt;          // gps longitude
     QVector<double> atm_pressure;   // atmospheric pressure
 
-    // open file
+    // open simulation data file
     std::ifstream f(file_str);
 
     ////////////////////////////////////////////////////////////////////
@@ -449,18 +449,22 @@ void MainWindow::on_btnLink_clicked()
         x_accel.push_back(row[0]);
     }
 
-    // feed this into the QVector
+    // feed this into the QVector to prepare for transmission
     for(const auto& element: x_accel) {
         QString element_qs = QString::fromLocal8Bit(element.c_str());
         ax.push_back(element_qs.toDouble());
     }
 
+    // send the data to device under test - TODO: remove this line here
+    // get length of the data points
+    int vec_length = ax.size();
+    for(int i = 0; i < vec_length; i++) {
+        qDebug() << ax[i];
+    }
+
     ////////////////////////////////////////////////////////////////////
 
-    // send the data to device under test
-
     // plot the data on the app
-
 
     // close the file
 
