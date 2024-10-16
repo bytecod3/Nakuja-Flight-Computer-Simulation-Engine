@@ -43,7 +43,7 @@
         <widget class="QLabel" name="postflightLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
@@ -55,7 +55,7 @@ color: black;</string>
         <widget class="QLabel" name="mainchutedescentLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
@@ -67,7 +67,7 @@ color: black;</string>
         <widget class="QLabel" name="mainchuteejectLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
@@ -79,7 +79,7 @@ color: black;</string>
         <widget class="QLabel" name="droguechutedescentLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
@@ -91,7 +91,7 @@ color: black;</string>
         <widget class="QLabel" name="droguechuteejectLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
@@ -103,7 +103,7 @@ color: black;</string>
         <widget class="QLabel" name="ballisticdescentLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
@@ -115,7 +115,7 @@ color: black;</string>
         <widget class="QLabel" name="apogeeLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;
 </string>
          </property>
@@ -128,7 +128,7 @@ color: black;
         <widget class="QLabel" name="coastingLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;
 </string>
          </property>
@@ -141,7 +141,7 @@ color: black;
         <widget class="QLabel" name="poweredflightLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
@@ -153,7 +153,7 @@ color: black;</string>
         <widget class="QLabel" name="preflightLabel">
          <property name="styleSheet">
           <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
@@ -262,7 +262,8 @@ margin-right: 10</string>
            <widget class="QPushButton" name="connectSerial">
             <property name="styleSheet">
              <string notr="true">padding-top: 4px;
-padding-bottom: 4px;</string>
+padding-bottom: 4px;
+</string>
             </property>
             <property name="text">
              <string>Connect</string>
@@ -312,7 +313,7 @@ padding-bottom: 4px;</string>
               <widget class="QLabel" name="IMU_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
                </property>
                <property name="text">
@@ -324,7 +325,7 @@ color: black;</string>
               <widget class="QLabel" name="ALT_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
                </property>
                <property name="text">
@@ -336,7 +337,7 @@ color: black;</string>
               <widget class="QLabel" name="GPS_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
                </property>
                <property name="text">
@@ -348,7 +349,7 @@ color: black;</string>
               <widget class="QLabel" name="COMMS_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
                </property>
                <property name="text">
@@ -360,7 +361,7 @@ color: black;</string>
               <widget class="QLabel" name="FLASH_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
                </property>
                <property name="text">
@@ -372,7 +373,7 @@ color: black;</string>
               <widget class="QLabel" name="TESTFLASH_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
                </property>
                <property name="text">
@@ -384,7 +385,7 @@ color: black;</string>
               <widget class="QLabel" name="POWER_subsys_label">
                <property name="styleSheet">
                 <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
                </property>
                <property name="text">
@@ -436,7 +437,7 @@ color: black;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
              </property>
              <property name="text">
@@ -454,7 +455,7 @@ color: black;</string>
              </property>
              <property name="styleSheet">
               <string notr="true">border: 1px solid gray;
-border-radius: 4px;
+border-radius: 2px;
 color: black;</string>
              </property>
              <property name="text">
@@ -510,6 +511,13 @@ color: black;</string>
             <property name="text">
              <string>DATA LINK</string>
             </property>
+            <property name="icon">
+             <iconset resource="upload-icon.qrc">
+              <normaloff>:/icon/icons/upload.png</normaloff>:/icon/icons/upload.png</iconset>
+            </property>
+            <property name="flat">
+             <bool>false</bool>
+            </property>
            </widget>
           </item>
           <item>
@@ -522,6 +530,10 @@ color: black;</string>
             </property>
             <property name="text">
              <string>START TEST</string>
+            </property>
+            <property name="icon">
+             <iconset resource="play-icon.qrc">
+              <normaloff>:/icons/icons/play.png</normaloff>:/icons/icons/play.png</iconset>
             </property>
            </widget>
           </item>
@@ -625,8 +637,15 @@ color: black;</string>
          </item>
          <item>
           <widget class="QPushButton" name="writeSerialButton">
+           <property name="styleSheet">
+            <string notr="true">padding-top: 4px;
+padding-bottom: 4px;</string>
+           </property>
            <property name="text">
-            <string>SEND</string>
+            <string>Send</string>
+           </property>
+           <property name="flat">
+            <bool>false</bool>
            </property>
           </widget>
          </item>
@@ -669,7 +688,7 @@ font: {
      <x>0</x>
      <y>0</y>
      <width>1242</width>
-     <height>21</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>
@@ -683,6 +702,9 @@ font: {
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="play-icon.qrc"/>
+  <include location="upload-icon.qrc"/>
+ </resources>
  <connections/>
 </ui>

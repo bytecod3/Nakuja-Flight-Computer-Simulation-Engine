@@ -9,6 +9,7 @@
 #include <QString>
 #include <QFileDialog>
 #include <QFileInfo>
+#include <fstream>
 #include "defines.h"
 #include "serialparser.h"
 #include "typeinfo.h"
@@ -30,6 +31,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    // set up button icons
+    QPixmap pixmap("./icons/play.png");
+    QIcon ButtonIcon(pixmap);
+    ui->btnLink->setIcon(ButtonIcon);
+
 
     // scan and load all the serial ports
     this->loadPorts();
@@ -444,7 +451,7 @@ void MainWindow::on_btnLink_clicked()
     CSVRow row;
 
     // from the order of the csv file, first column == x acceleration
-    std::vector<double> x_accel;
+    std::vector<std::string> x_accel;
     while(f >> row) {
         x_accel.push_back(row[0]);
     }
