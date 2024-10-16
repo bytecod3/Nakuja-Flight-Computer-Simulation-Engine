@@ -12,6 +12,7 @@
 #include "defines.h"
 #include "serialparser.h"
 #include "typeinfo.h"
+#include "csv-parser.h"
 
 // variables to use during handshake
 // ASCII numeric values
@@ -203,6 +204,9 @@ void MainWindow::on_connectSerial_clicked()
     } else {
         // update the status bar
         ui->statusbar->showMessage("Connected to " + portName);
+
+        // disabel the serial connect button
+        ui->connectSerial->setEnabled(false);
         isConnected = true; // redundant
     }
 
@@ -415,6 +419,50 @@ void MainWindow::on_btnLink_clicked()
     }
 
     // get the response command from serial
+    // here, the state has changed to
+    // invoke the csv-parser
+
+    // get the simulation data file
+    QString data_file = ui->lnFilename->text();
+    QByteArray filename = data_file.toLocal8Bit();
+    const char* file_str = filename.data();
+
+    // vectors to hold the simulation data values
+    QVector<double> altitude;       // hold the altitude values
+    QVector<double> ax;             // x acceleration
+    QVector<double> ay;             // y acceleration
+    QVector<double> az;             // z acceleration
+    QVector<double> lat;            // gps latitude
+    QVector<double> longt;          // gps longitude
+    QVector<double> atm_pressure;   // atmospheric pressure
+
+    // open file
+    std::ifstream f(file_str);
+
+    ////////////////////////////////////////////////////////////////////
+    // row represents one row of data
+    CSVRow row;
+
+    // from the order of the csv file, first column == x acceleration
+    std::vector<double> x_accel;
+    while(f >> row) {
+        x_accel.push_back(row[0]);
+    }
+
+    // feed this into the QVector
+    for(const auto& element: x_accel) {
+        QString element_qs = QString::fromLocal8Bit(element.c_str());
+        ax.push_back(element_qs.toDouble());
+    }
+
+    ////////////////////////////////////////////////////////////////////
+
+    // send the data to device under test
+
+    // plot the data on the app
+
+
+    // close the file
 
 
 }
