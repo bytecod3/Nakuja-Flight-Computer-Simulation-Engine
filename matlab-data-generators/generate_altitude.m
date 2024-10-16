@@ -21,6 +21,16 @@ t = 50:0.001:100;
 t = t(2:end);
 desc = linspace(powered_flight(end), 0, samples/2); desc = desc(:);
 
-plot(time, powered_flight, t, desc);
+% combined vector
+f = [powered_flight; desc];
+ft = [time t];
+
+% send to csv
+m = [ft' f];
+dlmwrite('altitude_data.csv', m); 
+
+
+% plot(time, powered_flight, t, desc);
+plot(ft, f);
 xlabel( 'x' )
 grid on
