@@ -170,7 +170,7 @@ color: black;</string>
           <item row="1" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout">
             <item>
-             <widget class="QLabel" name="label_9">
+             <widget class="QLabel" name="lblSimulationFile">
               <property name="text">
                <string>Simulation file </string>
               </property>
@@ -217,7 +217,7 @@ margin-right: 10</string>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
-               <widget class="QLabel" name="label_10">
+               <widget class="QLabel" name="lblPort">
                 <property name="text">
                  <string>Port </string>
                 </property>
@@ -231,7 +231,7 @@ margin-right: 10</string>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_3">
               <item>
-               <widget class="QLabel" name="label_11">
+               <widget class="QLabel" name="lblBaudRate">
                 <property name="text">
                  <string>Baud rate</string>
                 </property>
@@ -247,7 +247,7 @@ margin-right: 10</string>
           <item row="2" column="0">
            <layout class="QHBoxLayout" name="horizontalLayout_4">
             <item>
-             <widget class="QLabel" name="label_12">
+             <widget class="QLabel" name="lblTimeStep">
               <property name="text">
                <string>Time step (ms)</string>
               </property>

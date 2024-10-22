@@ -284,6 +284,25 @@ void MainWindow::setStaticUI() {
     ui->simulationParamsGroupBox->setAutoFillBackground(true);
     ui->simulationParamsGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff;} ");
 
+    // Simulation parameters labels and select boxes
+    ui->lblPort->setAutoFillBackground(true);
+    ui->lblPort->setStyleSheet("QLabel { background-color: #111111; color: #ffffff; }");
+    ui->lblBaudRate->setAutoFillBackground(true);
+    ui->lblBaudRate->setStyleSheet(" QLabel {background-color: #111111; color: #ffffff; }");
+    ui->lblSimulationFile->setAutoFillBackground(true);
+    ui->lblSimulationFile->setStyleSheet(" QLabel {background-color: #111111;  color: #ffffff; }");
+    ui->lblTimeStep->setAutoFillBackground(true);
+    ui->lblTimeStep->setStyleSheet(" QLabel {background-color: #111111;  color: #ffffff; }");
+    ui->cmbSerialPorts->setAutoFillBackground(true);
+    ui->cmbSerialPorts->setStyleSheet("QComboBox { background-color: #244976; color: #ffffff; } ");
+    ui->cmbBaudRates->setAutoFillBackground(true);
+    ui->cmbBaudRates->setStyleSheet("QComboBox { background-color: #244976; color: #ffffff; } ");
+    ui->lnFilename->setAutoFillBackground(true);
+    ui->lnFilename->setStyleSheet("QLineEdit { background-color: #ffffff; color: #1a2e49; } ");
+    ui->cmbTimeStep->setAutoFillBackground(true);
+    ui->cmbTimeStep->setStyleSheet("QComboBox { background-color: #244976; color: #ffffff; } ");
+
+
 }
 
 /////////////////////////////////////////////////////////////////////
