@@ -1,1 +1,5 @@
-<RCC/>
+<RCC>
+    <qresource prefix="/icons">
+        <file>icons/serial-link.png</file>
+    </qresource>
+</RCC>

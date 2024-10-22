@@ -7,7 +7,6 @@
 #include "serialparser.h"
 #include <QTimer>
 
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -23,6 +22,7 @@ public:
     int SERIAL_BUFF_LENGTH = 256;
     QString activeStateStyle = "QLabel { background-color : black; color : #00FF00; border: 1px solid gray; border-radius: 4px; font: 700 9pt; }";
     ~MainWindow();
+    void setStaticUI();
 
 private slots:
     // serial monitor functions
@@ -41,7 +41,7 @@ private slots:
     void updateSystemDiagnosticsUI();
 
     // graphing capabilities
-    void initPlotArea();
+    // void initPlotArea();
 
 private:
     Ui::MainWindow *ui;

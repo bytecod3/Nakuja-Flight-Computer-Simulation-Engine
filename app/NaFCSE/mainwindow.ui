@@ -28,7 +28,7 @@
    </property>
    <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="0,0,0,0">
     <item>
-     <widget class="QGroupBox" name="groupBox">
+     <widget class="QGroupBox" name="flightStatesGroupBox">
       <property name="maximumSize">
        <size>
         <width>350</width>
@@ -47,7 +47,7 @@ border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
-          <string>POST FLIGHT</string>
+          <string>Post Flight</string>
          </property>
         </widget>
        </item>
@@ -59,7 +59,7 @@ border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
-          <string>MAIN CHUTE DESCENT</string>
+          <string>Main Chute Descent</string>
          </property>
         </widget>
        </item>
@@ -71,7 +71,7 @@ border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
-          <string>MAIN CHUTE EJECT</string>
+          <string>Main Chute Eject</string>
          </property>
         </widget>
        </item>
@@ -83,7 +83,7 @@ border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
-          <string>DROGUE CHUTE DESCENT</string>
+          <string>Drogue Chute Descent</string>
          </property>
         </widget>
        </item>
@@ -95,7 +95,7 @@ border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
-          <string>DROGUE CHUTE EJECT</string>
+          <string>Drogue Chute Eject</string>
          </property>
         </widget>
        </item>
@@ -107,7 +107,7 @@ border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
-          <string>BALLISTIC DESCENT</string>
+          <string>Ballistic Descent</string>
          </property>
         </widget>
        </item>
@@ -120,7 +120,7 @@ color: black;
 </string>
          </property>
          <property name="text">
-          <string>APOGEE</string>
+          <string>Apogee</string>
          </property>
         </widget>
        </item>
@@ -133,7 +133,7 @@ color: black;
 </string>
          </property>
          <property name="text">
-          <string>COASTING</string>
+          <string>Coasting</string>
          </property>
         </widget>
        </item>
@@ -145,7 +145,7 @@ border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
-          <string>POWERED FLIGHT</string>
+          <string>Powered Flight</string>
          </property>
         </widget>
        </item>
@@ -157,12 +157,12 @@ border-radius: 2px;
 color: black;</string>
          </property>
          <property name="text">
-          <string>PRE-FLIGHT</string>
+          <string>Pre-flight</string>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QGroupBox" name="groupBox_2">
+        <widget class="QGroupBox" name="simulationParamsGroupBox">
          <property name="title">
           <string>Simulation Parameters</string>
          </property>
@@ -267,6 +267,10 @@ padding-bottom: 4px;
             </property>
             <property name="text">
              <string>Connect</string>
+            </property>
+            <property name="icon">
+             <iconset resource="serial-icon.qrc">
+              <normaloff>:/icons/icons/serial-link.png</normaloff>:/icons/icons/serial-link.png</iconset>
             </property>
            </widget>
           </item>
@@ -512,7 +516,7 @@ color: black;</string>
              <string>DATA LINK</string>
             </property>
             <property name="icon">
-             <iconset resource="upload-icon.qrc">
+             <iconset>
               <normaloff>:/icon/icons/upload.png</normaloff>:/icon/icons/upload.png</iconset>
             </property>
             <property name="flat">
@@ -594,10 +598,10 @@ color: black;</string>
          </widget>
         </item>
         <item>
-         <widget class="QCustomPlot" name="plotWidget" native="true">
+         <widget class="QWidget" name="widget" native="true">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
-            <horstretch>3</horstretch>
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
@@ -688,23 +692,15 @@ font: {
      <x>0</x>
      <y>0</y>
      <width>1242</width>
-     <height>22</height>
+     <height>21</height>
     </rect>
    </property>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>QCustomPlot</class>
-   <extends>QWidget</extends>
-   <header>qcustomplot.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources>
+  <include location="serial-icon.qrc"/>
   <include location="play-icon.qrc"/>
-  <include location="upload-icon.qrc"/>
  </resources>
  <connections/>
 </ui>

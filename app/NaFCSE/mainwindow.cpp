@@ -37,7 +37,6 @@ MainWindow::MainWindow(QWidget *parent)
     QIcon ButtonIcon(pixmap);
     ui->btnLink->setIcon(ButtonIcon);
 
-
     // scan and load all the serial ports
     this->loadPorts();
 
@@ -72,8 +71,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     ////////////////// INIT PLOT AREA ///////////////////////
-    ui->plotWidget->resize(300, 200);
-    this->initPlotArea();
+    // ui->plotWidget->resize(300, 200);
+    // this->initPlotArea();
 
     // check our current app state to display on status bar
     if(current_app_state == APP_STATES::HANDSHAKE) {
@@ -85,6 +84,10 @@ MainWindow::MainWindow(QWidget *parent)
     } else {
         ui->statusbar->showMessage("Waiting");
     }
+
+
+    // SET STATIC UI
+    this->setStaticUI();
 
 }
 
@@ -253,6 +256,36 @@ void MainWindow::on_closeSerialButton_clicked()
     this->updateSystemDiagnosticsUI();
 }
 
+void MainWindow::setStaticUI() {
+    // to hold labels that represent the state
+    // TODO: move 10 to  #DEFINE constant
+    QLabel* stateLabels[10] = {ui->preflightLabel,
+                               ui->poweredflightLabel,
+                               ui->coastingLabel,
+                               ui->apogeeLabel,
+                               ui->ballisticdescentLabel,
+                               ui->droguechuteejectLabel,
+                               ui->droguechutedescentLabel,
+                               ui->mainchuteejectLabel,
+                               ui->mainchutedescentLabel,
+                               ui->postflightLabel};
+
+    // set defaults state for the labels
+    for(uint8_t i = 0; i < 10; i++) {
+        stateLabels[i]->setAutoFillBackground(true);
+        stateLabels[i]->setStyleSheet("QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }");
+    }
+
+    // Flight states group box styles
+    ui->flightStatesGroupBox->setAutoFillBackground(true);
+    ui->flightStatesGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff;} ");
+
+    // Simulation parameters group box colors
+    ui->simulationParamsGroupBox->setAutoFillBackground(true);
+    ui->simulationParamsGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff;} ");
+
+}
+
 /////////////////////////////////////////////////////////////////////
 //////////            UI UPDATE HANDLERS                 ////////////
 /////////////////////////////////////////////////////////////////////
@@ -281,7 +314,7 @@ void MainWindow::updateStateUI(quint8 s) {
     // set defaults state for the labels
     for(uint8_t i = 0; i < 10; i++) {
         stateLabels[i]->setAutoFillBackground(true);
-        stateLabels[i]->setStyleSheet(" QLabel { border: 1px solid gray; border-radius: 4px; color: black; } ");
+        stateLabels[i]->setStyleSheet("QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }");
     }
 
     switch (s) {
@@ -375,30 +408,30 @@ void MainWindow::updateSystemDiagnosticsUI() {
 /**
  * @ brief Setup graphing widget on startup
  */
-void MainWindow::initPlotArea() {
-    // plot a simple quadratic graph
-    QVector<double> x(101), y(101);
-    for (int i=0; i< 101; ++i) {
-        x[i] = i/50.0 - 1;
-        y[i] = x[i]*x[i]; // quadratic function
+// void MainWindow::initPlotArea() {
+//     // plot a simple quadratic graph
+//     QVector<double> x(101), y(101);
+//     for (int i=0; i< 101; ++i) {
+//         x[i] = i/50.0 - 1;
+//         y[i] = x[i]*x[i]; // quadratic function
 
-    }
+//     }
 
-    // create a graph and assign data to it
-    ui->plotWidget->addGraph();
-    ui->plotWidget->graph(0)->setData(x, y);
+//     // create a graph and assign data to it
+//     ui->plotWidget->addGraph();
+//     ui->plotWidget->graph(0)->setData(x, y);
 
-    // label the axes
-    ui->plotWidget->xAxis->setLabel("X value");
-    ui->plotWidget->yAxis->setLabel("Y label");
+//     // label the axes
+//     ui->plotWidget->xAxis->setLabel("X value");
+//     ui->plotWidget->yAxis->setLabel("Y label");
 
-    // set the axes range, so we see all data
-    ui->plotWidget->xAxis->setRange(-1, 1);
-    ui->plotWidget->yAxis->setRange(0, 1);
+//     // set the axes range, so we see all data
+//     ui->plotWidget->xAxis->setRange(-1, 1);
+//     ui->plotWidget->yAxis->setRange(0, 1);
 
-    ui->plotWidget->replot();
+//     ui->plotWidget->replot();
 
-}
+// }
 
 /**
  * @brief MainWindow::~MainWindow
@@ -429,52 +462,65 @@ void MainWindow::on_btnLink_clicked()
     // here, the state has changed to
     // invoke the csv-parser
 
-    // get the simulation data file
+    // get the simulation data file   
     QString data_file = ui->lnFilename->text();
-    QByteArray filename = data_file.toLocal8Bit();
-    const char* file_str = filename.data();
+    QFileInfo t_file(data_file);
+    QString file_ext = t_file.completeSuffix();
 
-    // vectors to hold the simulation data values
-    QVector<double> altitude;       // hold the altitude values
-    QVector<double> ax;             // x acceleration
-    QVector<double> ay;             // y acceleration
-    QVector<double> az;             // z acceleration
-    QVector<double> lat;            // gps latitude
-    QVector<double> longt;          // gps longitude
-    QVector<double> atm_pressure;   // atmospheric pressure
+    // check if a simulation file has been selected
+    if(data_file == "") {
+        QMessageBox::critical(this, "File error", "Please select a file");
+    } else if(file_ext != "csv") {
+        QMessageBox::critical(this, "File error", "Please select a csv file");
+    } else {
 
-    // open simulation data file
-    std::ifstream f(file_str);
+        // right file selected
 
-    ////////////////////////////////////////////////////////////////////
-    // row represents one row of data
-    CSVRow row;
+        QByteArray filename = data_file.toLocal8Bit();
+        const char* file_str = filename.data();
 
-    // from the order of the csv file, first column == x acceleration
-    std::vector<std::string> x_accel;
-    while(f >> row) {
-        x_accel.push_back(row[0]);
+        // vectors to hold the simulation data values
+        QVector<double> altitude;       // hold the altitude values
+        QVector<double> ax;             // x acceleration
+        QVector<double> ay;             // y acceleration
+        QVector<double> az;             // z acceleration
+        QVector<double> lat;            // gps latitude
+        QVector<double> longt;          // gps longitude
+        QVector<double> atm_pressure;   // atmospheric pressure
+
+        // open simulation data file
+        std::ifstream f(file_str);
+
+        ////////////////////////////////////////////////////////////////////
+        // row represents one row of data
+        CSVRow row;
+
+        // from the order of the csv file, first column == x acceleration
+        std::vector<std::string> x_accel;
+        while(f >> row) {
+            x_accel.push_back(row[0]);
+        }
+
+        // feed this into the QVector to prepare for transmission
+        for(const auto& element: x_accel) {
+            QString element_qs = QString::fromLocal8Bit(element.c_str());
+            ax.push_back(element_qs.toDouble());
+        }
+
+        // send the data to device under test - TODO: remove this line here
+        // get length of the data points
+        int vec_length = ax.size();
+        for(int i = 0; i < vec_length; i++) {
+            qDebug() << ax[i];
+        }
+
+        ////////////////////////////////////////////////////////////////////
+
+        // plot the data on the app
+
+        // close the file
+
     }
-
-    // feed this into the QVector to prepare for transmission
-    for(const auto& element: x_accel) {
-        QString element_qs = QString::fromLocal8Bit(element.c_str());
-        ax.push_back(element_qs.toDouble());
-    }
-
-    // send the data to device under test - TODO: remove this line here
-    // get length of the data points
-    int vec_length = ax.size();
-    for(int i = 0; i < vec_length; i++) {
-        qDebug() << ax[i];
-    }
-
-    ////////////////////////////////////////////////////////////////////
-
-    // plot the data on the app
-
-    // close the file
-
 
 }
 
