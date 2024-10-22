@@ -310,7 +310,7 @@ void MainWindow::setStaticUI() {
 
     // serial connect buttons
     ui->connectSerial->setAutoFillBackground(true);
-    ui->connectSerial->setStyleSheet(" QPushButton { background-color: #1c2e50; color: #ffffff; } ");
+    ui->connectSerial->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff; } ");
     ui->closeSerialButton->setAutoFillBackground(true);
     ui->closeSerialButton->setStyleSheet(" QPushButton { background-color: #dc1300; color: #ffffff; } " );
 
@@ -362,19 +362,19 @@ void MainWindow::setStaticUI() {
 
     // data link button
     ui->btnLink->setAutoFillBackground(true);
-    ui->btnLink->setStyleSheet(" QPushButton { background-color: #1c2e50; color: #ffffff; } ");
+    ui->btnLink->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff; } ");
 
     // simulation button test
     ui->btnMainRun->setAutoFillBackground(true);
-    ui->btnMainRun->setStyleSheet(" QPushButton { background-color: #1c2e50; color: #ffffff; } ");
+    ui->btnMainRun->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff; } ");
 
     // simulated altitude data plot
     ui->lblSimulatedAlt->setAutoFillBackground(true);
-    ui->lblSimulatedPressure->setStyleSheet(" QGroupBox { background-color: #111111; color: #ffffff; }  " );
+    ui->lblSimulatedPressure->setStyleSheet(" QLabel { background-color: #111111; color: #ffffff; }  " );
 
     // simulated pressure data plot
     ui->lblSimulatedPressure->setAutoFillBackground(true);
-    ui->lblSimulatedPressure->setStyleSheet(" QGroupBox { background-color: #111111; color: #ffffff; }  " );
+    ui->lblSimulatedPressure->setStyleSheet(" QLabel { background-color: #111111; color: #ffffff; }  " );
 
     // serial monitor
     ui->serialWriteTextEntry->setAutoFillBackground(true);
@@ -390,6 +390,10 @@ void MainWindow::setStaticUI() {
     // status bar
     ui->statusbar->setAutoFillBackground(true);
     ui->statusbar->setStyleSheet(" QStatusBar {  background-color: #2f2f2f; color: #ffffff; } ");
+
+    // menubar
+    ui->menubar->setAutoFillBackground(true);
+    ui->menubar->setStyleSheet( " QMenuBar {  background-color: #2f2f2f; color: #ffffff; }  " );
 
 
 }
