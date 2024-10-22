@@ -314,7 +314,6 @@ void MainWindow::setStaticUI() {
     ui->closeSerialButton->setAutoFillBackground(true);
     ui->closeSerialButton->setStyleSheet(" QPushButton { background-color: #dc1300; color: #ffffff; } " );
 
-
     // systems check UI
     ui->IMU_subsys_label->setAutoFillBackground(true);
     ui->IMU_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
@@ -360,6 +359,37 @@ void MainWindow::setStaticUI() {
     ui->radioSingleEjection->setStyleSheet(" QRadioButton { padding: 2px; background-color : #111111; color : #ffffff; border-radius: 2px; } ");
     ui->radioDoubleEjection->setAutoFillBackground(true);
     ui->radioDoubleEjection->setStyleSheet(" QRadioButton { padding: 2px; background-color : #111111; color : #ffffff; border-radius: 2px; } ");
+
+    // data link button
+    ui->btnLink->setAutoFillBackground(true);
+    ui->btnLink->setStyleSheet(" QPushButton { background-color: #1c2e50; color: #ffffff; } ");
+
+    // simulation button test
+    ui->btnMainRun->setAutoFillBackground(true);
+    ui->btnMainRun->setStyleSheet(" QPushButton { background-color: #1c2e50; color: #ffffff; } ");
+
+    // simulated altitude data plot
+    ui->lblSimulatedAlt->setAutoFillBackground(true);
+    ui->lblSimulatedPressure->setStyleSheet(" QGroupBox { background-color: #111111; color: #ffffff; }  " );
+
+    // simulated pressure data plot
+    ui->lblSimulatedPressure->setAutoFillBackground(true);
+    ui->lblSimulatedPressure->setStyleSheet(" QGroupBox { background-color: #111111; color: #ffffff; }  " );
+
+    // serial monitor
+    ui->serialWriteTextEntry->setAutoFillBackground(true);
+    ui->serialWriteTextEntry->setStyleSheet(" QLineEdit { background-color: #ffffff; color: #1a2e49; padding: 2px; }  ");
+    ui->writeSerialButton->setAutoFillBackground(true);
+    ui->writeSerialButton->setStyleSheet(" QPushButton { background-color: #1c2e50; color: #ffffff; padding; 4px; } ");
+    ui->lblSerialMonitor->setAutoFillBackground(true);
+    ui->lblSerialMonitor->setStyleSheet("QLabel { color: #ffffff; } ");
+
+    ui->serialMonitor->setAutoFillBackground(true);
+    ui->serialMonitor->setStyleSheet(" QTextBrowser { background-color: #050505; color: #1fa61c; border: 1px solid gray; } ");
+
+    // status bar
+    ui->statusbar->setAutoFillBackground(true);
+    ui->statusbar->setStyleSheet(" QStatusBar {  background-color: #2f2f2f; color: #ffffff; } ");
 
 
 }
