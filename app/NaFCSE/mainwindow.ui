@@ -212,7 +212,7 @@ color: black;</string>
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>40</width>
+               <width>50</width>
                <height>20</height>
               </size>
              </property>
@@ -220,16 +220,21 @@ color: black;</string>
            </item>
            <item>
             <widget class="QLineEdit" name="lnFilename">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="styleSheet">
-              <string notr="true">margin-left: 0;
-margin-right: 10</string>
+              <string notr="true">margin-left: 0;</string>
              </property>
             </widget>
            </item>
            <item>
             <widget class="QToolButton" name="btnChooseFile">
              <property name="styleSheet">
-              <string notr="true">margin-left: 0</string>
+              <string notr="true"/>
              </property>
              <property name="text">
               <string>...</string>

@@ -257,7 +257,11 @@ void MainWindow::on_closeSerialButton_clicked()
 }
 
 void MainWindow::setStaticUI() {
-    // to hold labels that represent the state
+
+    // overall app background
+    ui->centralwidget->setAutoFillBackground(true);
+    ui->centralwidget->setStyleSheet("background-color: #2f2f2f; ");
+
     // TODO: move 10 to  #DEFINE constant
     QLabel* stateLabels[10] = {ui->preflightLabel,
                                ui->poweredflightLabel,
@@ -278,11 +282,11 @@ void MainWindow::setStaticUI() {
 
     // Flight states group box styles
     ui->flightStatesGroupBox->setAutoFillBackground(true);
-    ui->flightStatesGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff;} ");
+    ui->flightStatesGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff; border: 2px solid #111111; padding: 5px; border-radius: 2px; } ");
 
     // Simulation parameters group box colors
     ui->simulationParamsGroupBox->setAutoFillBackground(true);
-    ui->simulationParamsGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff;} ");
+    ui->simulationParamsGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff; border: 2px solid #111111; padding: 5px; border-radius: 2px; } ");
 
     // Simulation parameters labels and select boxes
     ui->lblPort->setAutoFillBackground(true);
@@ -301,6 +305,19 @@ void MainWindow::setStaticUI() {
     ui->lnFilename->setStyleSheet("QLineEdit { background-color: #ffffff; color: #1a2e49; } ");
     ui->cmbTimeStep->setAutoFillBackground(true);
     ui->cmbTimeStep->setStyleSheet("QComboBox { background-color: #244976; color: #ffffff; } ");
+    ui->btnChooseFile->setAutoFillBackground(true);
+    ui->btnChooseFile->setStyleSheet("QToolButton { background-color: #244976; color: #ffffff; } ");
+
+    // serial connect buttons
+    ui->connectSerial->setAutoFillBackground(true);
+    ui->connectSerial->setStyleSheet(" QPushButton { background-color: #1c2e50; color: #ffffff; } ");
+    ui->closeSerialButton->setAutoFillBackground(true);
+    ui->closeSerialButton->setStyleSheet(" QPushButton { background-color: #dc1300; color: #ffffff; } " );
+
+
+    // systems check UI
+    ui->IMU_subsys_label->setAutoFillBackground(true);
+    ui->IMU_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
 
 
 }
