@@ -322,19 +322,31 @@ padding-bottom: 4px;
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_9">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
       <property name="topMargin">
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
        <number>10</number>
       </property>
       <item>
        <widget class="QFrame" name="verticalFrame_7">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
         <property name="styleSheet">
-         <string notr="true">border-image: url(:/images/render.jpg) 0 0 0 0 cover;</string>
+         <string notr="true">border-image: url(:/images/rock-engine.png) 0 0 0 0 cover ;</string>
         </property>
         <layout class="QVBoxLayout" name="rocketOrientation"/>
        </widget>
       </item>
       <item>
-       <widget class="QGroupBox" name="groupBox_5">
+       <widget class="QGroupBox" name="flightSystemsGroupBox">
         <property name="title">
          <string>Flight system checks</string>
         </property>
@@ -441,8 +453,17 @@ color: black;</string>
     </item>
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_8">
+      <property name="leftMargin">
+       <number>10</number>
+      </property>
       <property name="topMargin">
-       <number>5</number>
+       <number>10</number>
+      </property>
+      <property name="rightMargin">
+       <number>10</number>
+      </property>
+      <property name="bottomMargin">
+       <number>10</number>
       </property>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
@@ -453,7 +474,7 @@ color: black;</string>
          <number>5</number>
         </property>
         <item>
-         <widget class="QGroupBox" name="groupBox_3">
+         <widget class="QGroupBox" name="softwareModeGroupBox">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -465,7 +486,7 @@ color: black;</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_6">
            <item>
-            <widget class="QLabel" name="label_16">
+            <widget class="QLabel" name="lblFlightMode">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -483,7 +504,7 @@ color: black;</string>
             </widget>
            </item>
            <item>
-            <widget class="QLabel" name="label_15">
+            <widget class="QLabel" name="lblSafeMode">
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -504,7 +525,7 @@ color: black;</string>
          </widget>
         </item>
         <item>
-         <widget class="QGroupBox" name="groupBox_4">
+         <widget class="QGroupBox" name="EjectionStagesGroupBox">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -516,14 +537,14 @@ color: black;</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
            <item>
-            <widget class="QRadioButton" name="radioButton_2">
+            <widget class="QRadioButton" name="radioSingleEjection">
              <property name="text">
               <string>Single Ejection</string>
              </property>
             </widget>
            </item>
            <item>
-            <widget class="QRadioButton" name="radioButton">
+            <widget class="QRadioButton" name="radioDoubleEjection">
              <property name="text">
               <string>Double Ejection</string>
              </property>
@@ -535,7 +556,7 @@ color: black;</string>
         <item>
          <layout class="QVBoxLayout" name="verticalLayout_5">
           <property name="leftMargin">
-           <number>20</number>
+           <number>0</number>
           </property>
           <item>
            <widget class="QPushButton" name="btnLink">
@@ -579,65 +600,65 @@ color: black;</string>
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_7">
-        <property name="topMargin">
-         <number>20</number>
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
         </property>
+        <property name="sizeType">
+         <enum>QSizePolicy::Maximum</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>10</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_7">
         <item>
-         <widget class="QGroupBox" name="groupBox_6">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
+         <widget class="QGroupBox" name="simulatedAltitudeGroupBox">
           <property name="title">
-           <string>Data points</string>
+           <string>Simulated Altitude</string>
           </property>
-          <layout class="QHBoxLayout" name="horizontalLayout_8">
-           <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_7">
-             <item>
-              <widget class="QRadioButton" name="radioButton_3">
-               <property name="text">
-                <string>Velocity</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="radioButton_4">
-               <property name="text">
-                <string>Acceleration</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="radioButton_5">
-               <property name="text">
-                <string>Altitude</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QRadioButton" name="radioButton_6">
-               <property name="text">
-                <string>Pressure</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </item>
-          </layout>
+          <widget class="QWidget" name="altitudePlotWidget" native="true">
+           <property name="geometry">
+            <rect>
+             <x>9</x>
+             <y>29</y>
+             <width>351</width>
+             <height>201</height>
+            </rect>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+          </widget>
          </widget>
         </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_12">
         <item>
-         <widget class="QWidget" name="widget" native="true">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
+         <widget class="QGroupBox" name="groupBox_2">
+          <property name="title">
+           <string>Simulated atmospheric pressure</string>
           </property>
+          <widget class="QWidget" name="pressurePlotWidget" native="true">
+           <property name="geometry">
+            <rect>
+             <x>10</x>
+             <y>30</y>
+             <width>351</width>
+             <height>201</height>
+            </rect>
+           </property>
+          </widget>
          </widget>
         </item>
        </layout>
@@ -646,6 +667,12 @@ color: black;</string>
     </item>
     <item>
      <widget class="QFrame" name="verticalFrame_3">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Maximum" vsizetype="Minimum">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
       <property name="styleSheet">
        <string notr="true">border: 1 px solid black;
 </string>

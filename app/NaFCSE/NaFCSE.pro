@@ -34,6 +34,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 RESOURCES += \
+    engine.qrc \
     play-icon.qrc \
     rocket-render.qrc \
     serial-icon.qrc \

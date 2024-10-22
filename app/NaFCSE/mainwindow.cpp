@@ -319,6 +319,48 @@ void MainWindow::setStaticUI() {
     ui->IMU_subsys_label->setAutoFillBackground(true);
     ui->IMU_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
 
+    ui->ALT_subsys_label->setAutoFillBackground(true);
+    ui->ALT_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+
+    ui->GPS_subsys_label->setAutoFillBackground(true);
+    ui->GPS_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+
+    ui->COMMS_subsys_label->setAutoFillBackground(true);
+    ui->COMMS_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+
+    ui->FLASH_subsys_label->setAutoFillBackground(true);
+    ui->FLASH_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+
+    ui->TESTFLASH_subsys_label->setAutoFillBackground(true);
+    ui->TESTFLASH_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+
+    ui->POWER_subsys_label->setAutoFillBackground(true);
+    ui->POWER_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+
+    // flight systems groupbox styles
+    ui->flightSystemsGroupBox->setAutoFillBackground(true);
+    ui->flightSystemsGroupBox->setStyleSheet( "QGroupBox { background-color: #111111; color: #ffffff; border: 2px solid #111111; padding: 5px; border-radius: 2px; } ");
+
+    // Software mode group
+    ui->softwareModeGroupBox->setAutoFillBackground(true);
+    ui->softwareModeGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff; border: 2px solid #111111; padding: 5px; border-radius: 2px; } ");
+
+    // ejection stages groupbox
+    ui->EjectionStagesGroupBox->setAutoFillBackground(true);
+    ui->EjectionStagesGroupBox->setStyleSheet("QGroupBox { background-color: #111111; color: #ffffff; border: 2px solid #111111; padding: 5px; border-radius: 2px; } ");
+
+    // software mode labels
+    ui->lblFlightMode->setAutoFillBackground(true);
+    ui->lblFlightMode->setStyleSheet(" QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; } ");
+    ui->lblSafeMode->setAutoFillBackground(true);
+    ui->lblSafeMode->setStyleSheet( " QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; } ");
+
+    // ejection stages radio buttons
+    ui->radioSingleEjection->setAutoFillBackground(true);
+    ui->radioSingleEjection->setStyleSheet(" QRadioButton { padding: 2px; background-color : #111111; color : #ffffff; border-radius: 2px; } ");
+    ui->radioDoubleEjection->setAutoFillBackground(true);
+    ui->radioDoubleEjection->setStyleSheet(" QRadioButton { padding: 2px; background-color : #111111; color : #ffffff; border-radius: 2px; } ");
+
 
 }
 
