@@ -243,17 +243,17 @@ void MainWindow::on_writeSerialButton_clicked() {
  */
 void MainWindow::on_closeSerialButton_clicked()
 {
-    // if(isConnected) {
-    //     port.closeSerial();
-    //     ui->statusbar->showMessage("Serial port disconnected");
+    if(isConnected) {
+        port.closeSerial();
+        ui->statusbar->showMessage("Serial port disconnected");
 
-    // } else {
-    //     ui->statusbar->showMessage("Serial not available");
-    // }
+    } else {
+        ui->statusbar->showMessage("Serial not available");
+    }
 
     // isConnected = false;
 
-    this->updateSystemDiagnosticsUI();
+    // this->updateSystemDiagnosticsUI();
 }
 
 void MainWindow::setStaticUI() {
@@ -604,27 +604,53 @@ void MainWindow::on_btnLink_clicked()
         std::ifstream f(file_str);
 
         ////////////////////////////////////////////////////////////////////
+        /// // process x acceleration data
         // row represents one row of data
+        // CSVRow row;
+
+        // // from the order of the csv file, first column == x acceleration
+        // // second column is the altitude
+        // std::vector<std::string> x_accel;
+        // while(f >> row) {
+        //     x_accel.push_back(row[0]);
+        // }
+
+        // // feed this into the QVector to prepare for transmission
+        // for(const auto& element: x_accel) {
+        //     QString element_qs = QString::fromLocal8Bit(element.c_str());
+        //     ax.push_back(element_qs.toDouble());
+        // }
+
+        // // send the data to device under test - TODO: remove this line here
+        // // get length of the data points
+        // int vec_length = ax.size();
+        // for(int i = 0; i < vec_length; i++) {
+        //     qDebug() << ax[i];
+        // }
+
+        // Process altitude data
         CSVRow row;
-
-        // from the order of the csv file, first column == x acceleration
-        std::vector<std::string> x_accel;
+        std::vector<std::string> altitude_string;
         while(f >> row) {
-            x_accel.push_back(row[0]);
+            altitude_string.push_back(row[1]);
         }
 
-        // feed this into the QVector to prepare for transmission
-        for(const auto& element: x_accel) {
+        // feed the altitude data into the QVector
+        for(const auto& element: altitude_string) {
             QString element_qs = QString::fromLocal8Bit(element.c_str());
-            ax.push_back(element_qs.toDouble());
+            altitude.push_back(element_qs.toDouble());
         }
 
-        // send the data to device under test - TODO: remove this line here
-        // get length of the data points
-        int vec_length = ax.size();
-        for(int i = 0; i < vec_length; i++) {
-            qDebug() << ax[i];
+        int alt_vec_length = altitude.size();
+        for(int i=0; i < alt_vec_length; i++) {
+            qDebug() << altitude[i];
         }
+
+        // write the altitude to the serial port
+        QString alt_str = "Altitude123";
+        QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
+        altitude_to_serial_int.append('\n');
+        port.writeToSerial(altitude_to_serial_int); // Send data to serial
 
         ////////////////////////////////////////////////////////////////////
 
