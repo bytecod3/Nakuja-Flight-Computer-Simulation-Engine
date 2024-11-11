@@ -41,10 +41,13 @@ private slots:
     void updateSystemDiagnosticsUI();
 
     // EOT slots
-    void updateUserOnEOT();
+    void handleEndOfTransmission();
 
     // graphing capabilities
     // void initPlotArea();
+
+signals:
+    void endOfTransmissionSignal();
 
 private:
     Ui::MainWindow *ui;

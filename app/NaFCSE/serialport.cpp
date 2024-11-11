@@ -63,9 +63,10 @@ void SerialPort::closeSerial() {
  * @brief SerialPort::writeToSerial
  * write data to serial
  */
-void SerialPort::writeToSerial(QByteArray &data) {
+quint64 SerialPort::writeToSerial(QByteArray &data) {
     const quint64 written = _serialPort->write(data);
     // TODO: check size of data written
+    return written;
 
 }
 

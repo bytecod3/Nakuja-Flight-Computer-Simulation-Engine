@@ -12,7 +12,7 @@ public:
     explicit SerialPort(QObject *parent = nullptr);
     bool connectToSerial(QString portName, QString baudRate);
     void closeSerial();
-    void writeToSerial(QByteArray &data);
+    quint64 writeToSerial(QByteArray &data);
     ~SerialPort(); // destructor
 
 private:

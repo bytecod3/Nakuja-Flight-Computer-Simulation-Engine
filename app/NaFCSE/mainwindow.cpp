@@ -69,6 +69,8 @@ MainWindow::MainWindow(QWidget *parent)
     /// 3. handles plug-n-play for serial port
     connect(mSerialScanTimer, &QTimer::timeout, this, &updateSerialPorts);
 
+    connect(this, &MainWindow::endOfTransmissionSignal, this, &MainWindow::handleEndOfTransmission);
+
     ////////////////// INIT PLOT AREA ///////////////////////
     // ui->plotWidget->resize(300, 200);
     // this->initPlotArea();
@@ -142,6 +144,14 @@ void MainWindow::readData(QString data) {
     // get type of data
     // qDebug() << data.trimmed();
 
+    // char* data_char =data.toStdString().c_str();
+
+    if(data == "EOT\n") {
+        qDebug() << "End of transmission received from DUT";
+    }
+
+    // convert back to QString
+    //QString data_str = QString::fromUtf16((ushort*)(data_char));
 
     // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
     if(current_app_state == APP_STATES::HANDSHAKE) {
@@ -664,33 +674,37 @@ void MainWindow::on_btnLink_clicked()
             QString alt_str = QString::number(altitude[vl]);
             QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
             altitude_to_serial_int.append('\n');
+
+            // get the number of bytes we expect to write to serial
+
+            // qDebug() << "SENDINTO SERIAL";
             port.writeToSerial(altitude_to_serial_int); // Send data to serial
 
             // update the progress bar
             // ui->progressBar->setValue(vl);
 
             vl++;
-            qDebug() << vl;
+            // qDebug() << vl;
 
         }
 
         // emit EOT_signal();
-        if(vl == alt_vec_length) {
-            qDebug() << "eot";
-        }
+        // if(vl == alt_vec_length) {
+        //     qDebug() << "eot";
+        // }
 
         // ONCE WE ARE DONE SENDING THE DATA, SEND THE EOT(END OF TRANSMISSION) SIGNAL TO THE
         // DEVICE UNDER TEST
-        QString eot_str = "EOT";
-        QByteArray eot_int(QString(eot_str).toUtf8());
-        eot_int.append('\n');
-        port.writeToSerial(eot_int);
+        // QString eot_str = "EOT";
+        // QByteArray eot_int(QString(eot_str).toUtf8());
+        // eot_int.append('\n');
+        // port.writeToSerial(eot_int);
 
-        ui->statusbar->clearMessage();
-        ui->statusbar->showMessage("End of transmission.");
+        // ui->statusbar->clearMessage();
+        // ui->statusbar->showMessage("End of transmission.");
 
-        // pop-up message
-        QMessageBox::information(this,  "Data link", "End of Transmission to device under test.");
+        // // pop-up message
+        // QMessageBox::information(this,  "Data link", "End of Transmission to device under test.");
 
         ////////////////////////////////////////////////////////////////////
 
@@ -702,7 +716,7 @@ void MainWindow::on_btnLink_clicked()
 
 }
 
-void MainWindow::updateUserOnEOT()
+void MainWindow::handleEndOfTransmission()
 {
-    qDebug() << "EOT signal";
+    qDebug() << "EOT signal received from Device under test";
 }
