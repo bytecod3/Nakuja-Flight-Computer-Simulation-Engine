@@ -4,7 +4,7 @@ var searchData=
   ['width_1',['width',['../classQCPAxisRect.html#a204645398a4f9d0b0189385c7c2cfb91',1,'QCPAxisRect::width()'],['../classQCPPolarAxisAngular.html#abde756ec197666d7ee91eee11bc7c6d5',1,'QCPPolarAxisAngular::width()']]],
   ['widthtype_2',['WidthType',['../classQCPBars.html#a65dbbf1ab41cbe993d71521096ed4649',1,'QCPBars::WidthType'],['../classQCPFinancial.html#aef1761dda71a53dc5269685e9e492626',1,'QCPFinancial::WidthType']]],
   ['with_20matlab_3',['1) Test data generation models with MATLAB',['../index.html#step2',1,'']]],
-  ['writetoserial_4',['writeToSerial',['../classSerialPort.html#a6d0ab122ba6da3a23d6bd10aee04f79a',1,'SerialPort']]],
+  ['writetoserial_4',['writeToSerial',['../classSerialPort.html#a9ea5c1e639b308c3845a1f3a8079d260',1,'SerialPort']]],
   ['wtabsolute_5',['wtAbsolute',['../classQCPBars.html#a65dbbf1ab41cbe993d71521096ed4649ab74315c9aa77df593c58dd25dfc0de35',1,'QCPBars::wtAbsolute'],['../classQCPFinancial.html#aef1761dda71a53dc5269685e9e492626a0758d53bb6d7b4858e6bf8771edc934a',1,'QCPFinancial::wtAbsolute']]],
   ['wtaxisrectratio_6',['wtAxisRectRatio',['../classQCPBars.html#a65dbbf1ab41cbe993d71521096ed4649a90bc09899361ad3422ff277f7c790ffe',1,'QCPBars::wtAxisRectRatio'],['../classQCPFinancial.html#aef1761dda71a53dc5269685e9e492626a806518350ea5814d28c29b0056e33ecd',1,'QCPFinancial::wtAxisRectRatio']]],
   ['wtplotcoords_7',['wtPlotCoords',['../classQCPBars.html#a65dbbf1ab41cbe993d71521096ed4649aad3cc60ae1bfb1160a30237bee9eaf10',1,'QCPBars::wtPlotCoords'],['../classQCPFinancial.html#aef1761dda71a53dc5269685e9e492626af676bc8dbe700b96b333329c9dbfc30f',1,'QCPFinancial::wtPlotCoords']]]
