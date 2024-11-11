@@ -139,23 +139,26 @@ void MainWindow::updateSerialMonitor(const QString data) {
  */
 void MainWindow::readData(QString data) {
     // TODO: parser to set some vectors
-    parser.parseAll(data);
+    // parser.parseAll(data);
 
     // get type of data
-    // qDebug() << data.trimmed();
+    qDebug() << data.trimmed();
+    if(data.trimmed() == "EOT") {
+        emit endOfTransmissionSignal();
+    }
 
     // char* data_char =data.toStdString().c_str();
-
-    if(data == "EOT\n") {
-        qDebug() << "End of transmission received from DUT";
-    }
+    // qDebug() << data;
+    // if(data == "EOT\n") {
+    //     // emit endOfTransmissionSignal();
+    //     qDebug() << "End of transmission received from DUT";
+    // }
 
     // convert back to QString
     //QString data_str = QString::fromUtf16((ushort*)(data_char));
 
     // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
     if(current_app_state == APP_STATES::HANDSHAKE) {
-
 
     } else if(current_app_state == APP_STATES::NOMINAL) {
         // update UI
@@ -574,7 +577,6 @@ MainWindow::~MainWindow()
  */
 void MainWindow::on_btnLink_clicked()
 {
-    qDebug() << "LINK CLICKED";
 
     if(current_app_state == APP_STATES::HANDSHAKE) {
         // send SOH signal to the device under test Start of Header
