@@ -17,7 +17,7 @@
 
 // variables to use during handshake
 // ASCII numeric values
-QString NAK = "21\n"; // NAK command sent from the receiver (flight computer)
+QString NAK = "21\n"; // NAK command sent from the receiver (flight computer) - device under test
 QString SOH = "1\n";
 
 /**
@@ -68,7 +68,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     /// 3. handles plug-n-play for serial port
     connect(mSerialScanTimer, &QTimer::timeout, this, &updateSerialPorts);
-
 
     ////////////////// INIT PLOT AREA ///////////////////////
     // ui->plotWidget->resize(300, 200);
@@ -141,7 +140,7 @@ void MainWindow::readData(QString data) {
     parser.parseAll(data);
 
     // get type of data
-    qDebug() << data.trimmed();
+    // qDebug() << data.trimmed();
 
 
     // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
@@ -186,7 +185,7 @@ void MainWindow::on_btnChooseFile_clicked()
         QMessageBox::critical(this, "File error", "Please select a csv file");
         return;
     } else {
-        qDebug() <<trajectory_file;
+        // qDebug() <<trajectory_file;
     }
 
     // set the filename in the filename field
@@ -203,21 +202,23 @@ void MainWindow::on_btnChooseFile_clicked()
 void MainWindow::on_connectSerial_clicked()
 {
     // connect to serial port
-    QString portName = ui->cmbSerialPorts->currentText();
-    QString baudRate = ui->cmbBaudRates->currentText();
-    isConnected = port.connectToSerial(portName, baudRate);
+    QString portName = ui->cmbSerialPorts->currentText(); // get the selected COM port
+    QString baudRate = ui->cmbBaudRates->currentText(); // get the selected BAUD rate
 
     if(!isConnected) {
-        QMessageBox::critical(this, "Port error", "Could not connect to port");
-        // update the status bar
+        isConnected = port.connectToSerial(portName, baudRate); // try serial connection
+        ui->statusbar->showMessage("Connected to " + portName);
+        isConnected = true;
+        // QMessageBox::critical(this, "Port error", "Could not connect to port");
 
     } else {
         // update the status bar
-        ui->statusbar->showMessage("Connected to " + portName);
+        // ui->statusbar->showMessage("Connected to " + portName);
 
-        // disabel the serial connect button
-        ui->connectSerial->setEnabled(false);
-        isConnected = true; // redundant
+        // disable the serial connect button
+        // ui->connectSerial->setEnabled(false);
+        // isConnected = true; // redundant
+        QMessageBox::critical(this, "Port error", "Could not connect to port");
     }
 
 }
@@ -230,7 +231,7 @@ void MainWindow::on_writeSerialButton_clicked() {
     QString serial_command = ui->serialWriteTextEntry->text();
     QByteArray serial_comm(QString(serial_command).toUtf8());
     serial_comm.append('\n');
-    qDebug() << serial_comm;
+    // qDebug() << serial_comm;
 
     // QByteArray QB_SOH;
     // QB_SOH.setNum(SOH);
@@ -245,15 +246,12 @@ void MainWindow::on_closeSerialButton_clicked()
 {
     if(isConnected) {
         port.closeSerial();
+        isConnected = false;
         ui->statusbar->showMessage("Serial port disconnected");
 
     } else {
         ui->statusbar->showMessage("Serial not available");
     }
-
-    // isConnected = false;
-
-    // this->updateSystemDiagnosticsUI();
 }
 
 void MainWindow::setStaticUI() {
@@ -362,19 +360,19 @@ void MainWindow::setStaticUI() {
 
     // data link button
     ui->btnLink->setAutoFillBackground(true);
-    ui->btnLink->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff; } ");
+    ui->btnLink->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff;padding:10px; border: 1px solid gray; border-radius: 2px;} ");
 
     // simulation button test
     ui->btnMainRun->setAutoFillBackground(true);
-    ui->btnMainRun->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff; } ");
+    ui->btnMainRun->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff; padding:10px; border: 1px solid green; border-radius: 2px;} ");
 
     // simulated altitude data plot
     ui->lblSimulatedAlt->setAutoFillBackground(true);
-    ui->lblSimulatedPressure->setStyleSheet(" QLabel { background-color: #111111; color: #ffffff; }  " );
+    ui->lblSimulatedAlt->setStyleSheet(" QLabel { background-color: #111111; color: #ffffff; padding: 2px; }  " );
 
     // simulated pressure data plot
     ui->lblSimulatedPressure->setAutoFillBackground(true);
-    ui->lblSimulatedPressure->setStyleSheet(" QLabel { background-color: #111111; color: #ffffff; }  " );
+    ui->lblSimulatedPressure->setStyleSheet(" QLabel { background-color: #111111; color: #ffffff; padding: 2px;}  " );
 
     // serial monitor
     ui->serialWriteTextEntry->setAutoFillBackground(true);
@@ -383,6 +381,11 @@ void MainWindow::setStaticUI() {
     ui->writeSerialButton->setStyleSheet(" QPushButton { background-color: #1c2e50; color: #ffffff; padding; 4px; } ");
     ui->lblSerialMonitor->setAutoFillBackground(true);
     ui->lblSerialMonitor->setStyleSheet("QLabel { color: #ffffff; } ");
+
+    // progress bar
+    ui->progressBar->setValue(0);
+    ui->progressBar->setRange(0, 2000);
+    ui->progressBar->setMaximum(10000);
 
     ui->serialMonitor->setAutoFillBackground(true);
     ui->serialMonitor->setStyleSheet(" QTextBrowser { background-color: #050505; color: #1fa61c; border: 1px solid gray; } ");
@@ -564,7 +567,7 @@ void MainWindow::on_btnLink_clicked()
     qDebug() << "LINK CLICKED";
 
     if(current_app_state == APP_STATES::HANDSHAKE) {
-        // send SOH signal to the device under test
+        // send SOH signal to the device under test Start of Header
         QByteArray soh_byte = SOH.toUtf8();
         this->port.writeToSerial(soh_byte);
         qDebug() << soh_byte;
@@ -642,15 +645,52 @@ void MainWindow::on_btnLink_clicked()
         }
 
         int alt_vec_length = altitude.size();
-        for(int i=0; i < alt_vec_length; i++) {
-            qDebug() << altitude[i];
+
+        // for(int i=0; i < alt_vec_length; i++) {
+        //     // qDebug() << altitude[i];
+        //     // write the altitude to the serial port
+        //     QString alt_str = QString::number(altitude[i]);
+        //     QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
+        //     altitude_to_serial_int.append('\n');
+        //     port.writeToSerial(altitude_to_serial_int); // Send data to serial
+
+        //     // update the progress bar
+        //     ui->progressBar->setValue(i);
+        // }
+
+        int vl = 0;
+        while (vl != alt_vec_length) {
+            // write the altitude to the serial port
+            QString alt_str = QString::number(altitude[vl]);
+            QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
+            altitude_to_serial_int.append('\n');
+            port.writeToSerial(altitude_to_serial_int); // Send data to serial
+
+            // update the progress bar
+            // ui->progressBar->setValue(vl);
+
+            vl++;
+            qDebug() << vl;
+
         }
 
-        // write the altitude to the serial port
-        QString alt_str = "Altitude123";
-        QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
-        altitude_to_serial_int.append('\n');
-        port.writeToSerial(altitude_to_serial_int); // Send data to serial
+        // emit EOT_signal();
+        if(vl == alt_vec_length) {
+            qDebug() << "eot";
+        }
+
+        // ONCE WE ARE DONE SENDING THE DATA, SEND THE EOT(END OF TRANSMISSION) SIGNAL TO THE
+        // DEVICE UNDER TEST
+        QString eot_str = "EOT";
+        QByteArray eot_int(QString(eot_str).toUtf8());
+        eot_int.append('\n');
+        port.writeToSerial(eot_int);
+
+        ui->statusbar->clearMessage();
+        ui->statusbar->showMessage("End of transmission.");
+
+        // pop-up message
+        QMessageBox::information(this,  "Data link", "End of Transmission to device under test.");
 
         ////////////////////////////////////////////////////////////////////
 
@@ -662,3 +702,7 @@ void MainWindow::on_btnLink_clicked()
 
 }
 
+void MainWindow::updateUserOnEOT()
+{
+    qDebug() << "EOT signal";
+}

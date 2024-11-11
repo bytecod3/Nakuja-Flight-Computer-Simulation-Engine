@@ -44,7 +44,7 @@
       <item>
        <widget class="QGroupBox" name="flightStatesGroupBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+         <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -187,7 +187,7 @@ color: black;</string>
       <item>
        <widget class="QGroupBox" name="simulationParamsGroupBox">
         <property name="sizePolicy">
-         <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <sizepolicy hsizetype="Fixed" vsizetype="Preferred">
           <horstretch>0</horstretch>
           <verstretch>0</verstretch>
          </sizepolicy>
@@ -204,22 +204,6 @@ color: black;</string>
               <string>Simulation file </string>
              </property>
             </widget>
-           </item>
-           <item>
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeType">
-              <enum>QSizePolicy::Expanding</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>100</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
            </item>
            <item>
             <widget class="QLineEdit" name="lnFilename">
@@ -361,89 +345,96 @@ padding-bottom: 4px;
            </property>
            <item row="0" column="0">
             <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
              <item>
-              <widget class="QLabel" name="IMU_subsys_label">
-               <property name="styleSheet">
-                <string notr="true">border: 1px solid gray;
+              <layout class="QGridLayout" name="gridLayout_2">
+               <item row="0" column="0">
+                <widget class="QLabel" name="IMU_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
 border-radius: 2px;
 color: black;</string>
-               </property>
-               <property name="text">
-                <string>IMU</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="ALT_subsys_label">
-               <property name="styleSheet">
-                <string notr="true">border: 1px solid gray;
+                 </property>
+                 <property name="text">
+                  <string>IMU</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QLabel" name="ALT_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
 border-radius: 2px;
 color: black;</string>
-               </property>
-               <property name="text">
-                <string>ALTIMETER</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="GPS_subsys_label">
-               <property name="styleSheet">
-                <string notr="true">border: 1px solid gray;
+                 </property>
+                 <property name="text">
+                  <string>ALTIMETER</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="0">
+                <widget class="QLabel" name="TESTFLASH_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
 border-radius: 2px;
 color: black;</string>
-               </property>
-               <property name="text">
-                <string>GPS</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="COMMS_subsys_label">
-               <property name="styleSheet">
-                <string notr="true">border: 1px solid gray;
+                 </property>
+                 <property name="text">
+                  <string>TEST-FLASH</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="1">
+                <widget class="QLabel" name="GPS_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
 border-radius: 2px;
 color: black;</string>
-               </property>
-               <property name="text">
-                <string>COMMS</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="FLASH_subsys_label">
-               <property name="styleSheet">
-                <string notr="true">border: 1px solid gray;
+                 </property>
+                 <property name="text">
+                  <string>GPS</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLabel" name="COMMS_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
 border-radius: 2px;
 color: black;</string>
-               </property>
-               <property name="text">
-                <string>FLASH</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="TESTFLASH_subsys_label">
-               <property name="styleSheet">
-                <string notr="true">border: 1px solid gray;
+                 </property>
+                 <property name="text">
+                  <string>COMMS</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="POWER_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
 border-radius: 2px;
 color: black;</string>
-               </property>
-               <property name="text">
-                <string>TEST-FLASH</string>
-               </property>
-              </widget>
-             </item>
-             <item>
-              <widget class="QLabel" name="POWER_subsys_label">
-               <property name="styleSheet">
-                <string notr="true">border: 1px solid gray;
+                 </property>
+                 <property name="text">
+                  <string>POWER</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLabel" name="FLASH_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
 border-radius: 2px;
 color: black;</string>
-               </property>
-               <property name="text">
-                <string>POWER</string>
-               </property>
-              </widget>
+                 </property>
+                 <property name="text">
+                  <string>FLASH</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
             </layout>
            </item>
@@ -494,7 +485,7 @@ color: black;</string>
            <item>
             <widget class="QLabel" name="lblFlightMode">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -512,7 +503,7 @@ color: black;</string>
            <item>
             <widget class="QLabel" name="lblSafeMode">
              <property name="sizePolicy">
-              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+              <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
                <horstretch>0</horstretch>
                <verstretch>0</verstretch>
               </sizepolicy>
@@ -533,7 +524,7 @@ color: black;</string>
         <item>
          <widget class="QGroupBox" name="EjectionStagesGroupBox">
           <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+           <sizepolicy hsizetype="Preferred" vsizetype="Maximum">
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
@@ -567,7 +558,7 @@ color: black;</string>
           <item>
            <widget class="QPushButton" name="btnLink">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+             <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -587,7 +578,7 @@ color: black;</string>
           <item>
            <widget class="QPushButton" name="btnMainRun">
             <property name="sizePolicy">
-             <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+             <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
               <horstretch>0</horstretch>
               <verstretch>0</verstretch>
              </sizepolicy>
@@ -602,7 +593,7 @@ color: black;</string>
              <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="text">
-             <string>SIMULATE</string>
+             <string>Start simulation</string>
             </property>
             <property name="icon">
              <iconset resource="play-icon.qrc">
@@ -743,6 +734,13 @@ color: #000000;
 font: {
 	color: #ffffff;
 }</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QProgressBar" name="progressBar">
+         <property name="value">
+          <number>24</number>
          </property>
         </widget>
        </item>

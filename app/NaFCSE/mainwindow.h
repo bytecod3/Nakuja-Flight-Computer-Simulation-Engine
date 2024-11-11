@@ -40,6 +40,9 @@ private slots:
     void updateStateUI(quint8 state);
     void updateSystemDiagnosticsUI();
 
+    // EOT slots
+    void updateUserOnEOT();
+
     // graphing capabilities
     // void initPlotArea();
 

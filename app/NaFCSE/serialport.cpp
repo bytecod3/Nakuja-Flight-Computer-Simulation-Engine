@@ -25,11 +25,11 @@ SerialPort::~SerialPort() {
  * scan the available serial ports
  */
 bool SerialPort::connectToSerial(QString portName, QString baudRate) {
-    // check is the port is not open
-    if (_serialPort!= nullptr) {
-        _serialPort->close();
-        delete(_serialPort);
-    }
+    // check if the port is not open
+    // if (_serialPort != nullptr) {
+    //     _serialPort->close();
+    //     delete(_serialPort);
+    // }
 
     // initialize the serial port
     _serialPort = new QSerialPort(this);
@@ -53,7 +53,7 @@ bool SerialPort::connectToSerial(QString portName, QString baudRate) {
  * Close serial connection
  */
 void SerialPort::closeSerial() {
-    if(_serialPort !=nullptr) {
+    if(_serialPort != nullptr) {
         _serialPort->close();
         delete _serialPort;
     }
