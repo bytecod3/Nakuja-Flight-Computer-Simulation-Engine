@@ -108,26 +108,58 @@ Introduction</h1>
 <dl class="section note"><dt>Note</dt><dd>This is not a replacement of the actual drone tests that are usually done, rather an enhancement of the testing procedures.</dd></dl>
 <h1><a class="anchor" id="step1"></a>
 Features and capability</h1>
-<p>We built this on the Qt C++ framework which is powerful and versatile for such uses. NaFCSTE comes as a suite of 2 things: 1) Test data generation models on MATLAB and 2) Desktop application.</p>
-<h2><a class="anchor" id="step2"></a>
-Test data generation models with MATLAB</h2>
-<p>Here we are concerned with the generation of "fake" data used for simulation. This data is generated using a SIMULINK model and MATLAB scripts. It is then packaged into a compact csv(comma separated values) file that is to be consumed by the desktop app. Here is a breakdown of the crucial data that is generated.</p>
-<p>See <a href="https://github.com/nakujaproject/N4-Flight-Software">https://github.com/nakujaproject/N4-Flight-Software</a> to check the full telemetry data packet in comparison.</p>
-<h2><a class="anchor" id="step3"></a>
-Desktop application</h2>
-<h1><a class="anchor" id="step4"></a>
-Requirements</h1>
-<h1><a class="anchor" id="step5"></a>
-Installation</h1>
-<h1><a class="anchor" id="step6"></a>
-Usage</h1>
+<p>We built this on the Qt C++ framework which is powerful and versatile for such uses. NaFCSTE comes as a suite of 2 major things:</p><ol type="1">
+<li>Test data generation models on MATLAB</li>
+<li>Desktop application.</li>
+</ol>
 <h1><a class="anchor" id="step7"></a>
-Expected results</h1>
-<p><br  />
- </p>
-<h1><a class="anchor" id="step8"></a>
+How it works</h1>
+<p>The testing engine is broken into the following systems:</p><ol type="1">
+<li>MATLAB Data generation models and scripts</li>
+<li>HIL Code embedded into the flight software</li>
+<li>Flight computer hardware components</li>
+<li>Desktop application</li>
+</ol>
+<h2><a class="anchor" id="step8"></a>
+1. MATLAB Data generation models and scripts</h2>
+<dl class="section note"><dt>Note</dt><dd>In development</dd></dl>
+<p>The engine shall generate test data used for simulation. This data is generated using a SIMULINK model and MATLAB scripts. It is then packaged into a compact csv(comma separated values) file that is to be consumed by the desktop app. Here is a breakdown of the crucial data that is generated. See <a href="https://github.com/nakujaproject/N4-Flight-Software">https://github.com/nakujaproject/N4-Flight-Software</a> to check the full telemetry data packet in comparison.</p>
+<h2><a class="anchor" id="step9"></a>
+2. HIL Code embedded into the flight software</h2>
+<p>The Hardware-in-the-loop code is responsible for setting the flight software to the right modes to be able to receive the test data. The flight software is in THREE modes: DATA_ACQUISITION_STATE(DAQ), TEST_STATE and FLIGHT_MODE</p>
+<p>In the DAQ state, the flight computer receives the test data. To be able to implement this mode, we implemented an improvised version of the XMODEM protocol(<a href="https://wiki.synchro.net/ref:xmodem">https://wiki.synchro.net/ref:xmodem</a>). By setting the flight hardware in the DAQ_STATE, which is basicaly a toggle pin, the flight software sets itself into a handshake state. It sends NACK command to the testing PC after every 4 seconds. In this mode the flight computer will wait until data starts being received through UART.</p>
+<p>The user is responsible for initiating the transfer from the PC to the flight computer.</p>
+<p>Once the data is received, it is saved into an already initialized SD card as a txt file.</p>
+<p>We operate this DAQ mode using a STATE_MACHINE that has 4 states: (I)HANDSHAKE (II)RECEIVE_TEST_DATA (III)CONFIRM_TEST_DATA and (IV)FINISH_DATA_RECEIVE</p>
+<ul>
+<li>In HANDSHAKE, the flight computer being tested tries to establish communication with the testing PC.</li>
+<li>In RECEIVE_TEST_DATA state, the flight computer receives flight data line by line and writes it to SD card.</li>
+<li>CONFIRM_TEST_DATA is not used due to redundancy. It is meant to confirm that we received the right and all data by printing out the stored values from the SD card on the Serial debugger.</li>
+<li>FINISH_DATA_RECEIVE sets the flight computer to a state that says it is done receiving data. The first time this state is activated, it sends a END_OF_TRANSMISSION signal to the testing PC to confirm end of data transmission.</li>
+</ul>
+<p>At this point, the user is responsible for resetting the hardware toggle pin to TEST_MODE(see usage for more info)</p>
+<p>When the flight computer reboots, it will be in TEST_MODE. It is ready consume the data. Ideally it goes ahead and creates all the tasks and functions required during flight, BUT suspends all functions that read sensors, because the sensors is what we are simulating.</p>
+<p>Inside the loop section of the code, we have implemented a CSV parser to help with data consumption. the CSV parser reads the file in the SD card and decodes each row line by line. The csv file is already organized into a telemetry packet structure(see flight software for more info on this).</p>
+<p>One task of main importance is the task resposible for checking the flight state. To be able to feed data into this task, we send the decoded data to a queue that the check flight state task the receives and perfoms the checking as per predefined conditions.</p>
+<p>In this function, whatever the output of the check state is, we send it to the testing app through UART debug.</p>
+<p>When done with data consumption, the software sends a signal to the testing app to indicate that it is done consuming the test data.</p>
+<h2><a class="anchor" id="step10"></a>
+3. Flight computer hardware components</h2>
+<p>The interface provided by the hardware to accommodate the testing system is an SD card and a two pin toggle switch. The SD card stores test data received via serial from the testing PC. This data is later decoded. Also, using the toggle pin, the user can select to put the computer in either the DAQ_MODE, TEST_MODE or FLIGHT_MODE.</p>
+<h2><a class="anchor" id="step11"></a>
+4. Desktop application</h2>
+<dl class="section note"><dt>Note</dt><dd>In development For data visualization of test data in form of graphs, performing handshake with the device under test, and debugging the flight computer.</dd></dl>
+<h1><a class="anchor" id="step12"></a>
+Installation</h1>
+<p>Follow the steps below to install this tool</p>
+<h2><a class="anchor" id="step13"></a>
+System requirements</h2>
+<p>The following are required to install and run this tool:</p>
+<h1><a class="anchor" id="step14"></a>
+Usage</h1>
+<h1><a class="anchor" id="step15"></a>
 Adapting NaFCTSE for your flight computer</h1>
-<h1><a class="anchor" id="step9"></a>
+<h1><a class="anchor" id="step16"></a>
 Contributors</h1>
 <ol type="1">
 <li>Edwin Mwiti</li>

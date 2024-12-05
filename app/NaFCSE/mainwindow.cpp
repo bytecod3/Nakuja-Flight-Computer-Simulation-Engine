@@ -95,7 +95,6 @@ MainWindow::MainWindow(QWidget *parent)
 /////////////////////////////////////////////////////////////////////
 //////////             SERIAL PORT FUNCTIONS             ////////////
 /////////////////////////////////////////////////////////////////////
-
 /**
  * @brief MainWindow::loadPorts
  * scan for available com ports and add them to combo box
@@ -145,6 +144,11 @@ void MainWindow::readData(QString data) {
     qDebug() << data.trimmed();
     if(data.trimmed() == "EOT") {
         emit endOfTransmissionSignal();
+    }
+
+    // check for Subsystems string
+    if(data.trimmed() == "SUBSYSTEM_INIT_MASK") {
+        emit subsystemsInitCheckSignal();
     }
 
     // char* data_char =data.toStdString().c_str();
@@ -325,27 +329,32 @@ void MainWindow::setStaticUI() {
     ui->closeSerialButton->setAutoFillBackground(true);
     ui->closeSerialButton->setStyleSheet(" QPushButton { background-color: #dc1300; color: #ffffff; } " );
 
-    // systems check UI
+    // sub-systems check UI
+    // initially the sub-systems label is greyed out
+    // if a system is found faulty , the bg color changes to red
+    // othersiw if it is okay, the bg color changes to green
     ui->IMU_subsys_label->setAutoFillBackground(true);
-    ui->IMU_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+    ui->IMU_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
     ui->ALT_subsys_label->setAutoFillBackground(true);
-    ui->ALT_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+    ui->ALT_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
     ui->GPS_subsys_label->setAutoFillBackground(true);
-    ui->GPS_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+    ui->GPS_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
     ui->COMMS_subsys_label->setAutoFillBackground(true);
-    ui->COMMS_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+    ui->COMMS_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
     ui->FLASH_subsys_label->setAutoFillBackground(true);
-    ui->FLASH_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+    ui->FLASH_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
     ui->TESTFLASH_subsys_label->setAutoFillBackground(true);
-    ui->TESTFLASH_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+    ui->TESTFLASH_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
     ui->POWER_subsys_label->setAutoFillBackground(true);
-    ui->POWER_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }" );
+    ui->POWER_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
+
+
 
     // flight systems groupbox styles
     ui->flightSystemsGroupBox->setAutoFillBackground(true);
@@ -677,36 +686,14 @@ void MainWindow::on_btnLink_clicked()
             QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
             altitude_to_serial_int.append('\n');
 
-            // get the number of bytes we expect to write to serial
-
             // qDebug() << "SENDINTO SERIAL";
             port.writeToSerial(altitude_to_serial_int); // Send data to serial
-
-            // update the progress bar
-            // ui->progressBar->setValue(vl);
 
             vl++;
             // qDebug() << vl;
 
         }
 
-        // emit EOT_signal();
-        // if(vl == alt_vec_length) {
-        //     qDebug() << "eot";
-        // }
-
-        // ONCE WE ARE DONE SENDING THE DATA, SEND THE EOT(END OF TRANSMISSION) SIGNAL TO THE
-        // DEVICE UNDER TEST
-        // QString eot_str = "EOT";
-        // QByteArray eot_int(QString(eot_str).toUtf8());
-        // eot_int.append('\n');
-        // port.writeToSerial(eot_int);
-
-        // ui->statusbar->clearMessage();
-        // ui->statusbar->showMessage("End of transmission.");
-
-        // // pop-up message
-        // QMessageBox::information(this,  "Data link", "End of Transmission to device under test.");
 
         ////////////////////////////////////////////////////////////////////
 
@@ -718,7 +705,27 @@ void MainWindow::on_btnLink_clicked()
 
 }
 
+/**
+ * @brief MainWindow::handleEndOfTransmission
+ * Alert on End of Transmission
+ */
 void MainWindow::handleEndOfTransmission()
 {
     qDebug() << "EOT signal received from Device under test";
+
+    // pop-up message
+    QMessageBox::information(this,  "Data link", "End of Transmission to device under test.");
+}
+
+
+/**
+ * @brief MainWindow::handleSubsystemsCheck
+ * Receives the string containing the init status of the flight computer subsystems
+ * and updates the UI
+ */
+void MainWindow::handleSubsystemsCheck() {
+
+    qDebug() << "Subsystems check";
+
+
 }

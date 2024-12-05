@@ -43,11 +43,15 @@ private slots:
     // EOT slots
     void handleEndOfTransmission();
 
+    // subsystems check slot
+    void handleSubsystemsCheck();
+
     // graphing capabilities
     // void initPlotArea();
 
 signals:
-    void endOfTransmissionSignal();
+    void endOfTransmissionSignal(); // to check for End of Transmission signal from DUT
+    void subsystemsInitCheckSignal(); // to check for subsystems
 
 private:
     Ui::MainWindow *ui;

@@ -26,22 +26,55 @@ var NAVTREE =
 [
   [ "Nakuja Flight Computer Testing and Simulation Engine (NaFCTSE)", "index.html", [
     [ "Introduction", "index.html#intro_sec", null ],
-    [ "Features and capability", "index.html#step1", [
-      [ "Test data generation models with MATLAB", "index.html#step2", null ],
-      [ "Desktop application", "index.html#step3", null ]
+    [ "Features and capability", "index.html#step1", null ],
+    [ "How it works", "index.html#step7", [
+      [ "MATLAB Data generation models and scripts", "index.html#step8", null ],
+      [ "HIL Code embedded into the flight software", "index.html#step9", null ],
+      [ "Flight computer hardware components", "index.html#step10", null ],
+      [ "Desktop application", "index.html#step11", null ]
     ] ],
-    [ "Requirements", "index.html#step4", null ],
-    [ "Installation", "index.html#step5", null ],
-    [ "Usage", "index.html#step6", null ],
-    [ "Expected results", "index.html#step7", null ],
-    [ "Adapting NaFCTSE for your flight computer", "index.html#step8", null ],
-    [ "Contributors", "index.html#step9", null ]
+    [ "Installation", "index.html#step12", [
+      [ "System requirements", "index.html#step13", null ]
+    ] ],
+    [ "Usage", "index.html#step14", null ],
+    [ "Adapting NaFCTSE for your flight computer", "index.html#step15", null ],
+    [ "Contributors", "index.html#step16", null ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", "namespaces_dup" ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Enumerations", "namespacemembers_enum.html", null ],
+        [ "Enumerator", "namespacemembers_eval.html", null ]
+      ] ]
+    ] ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
+      [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
+      [ "Class Members", "functions.html", [
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
+        [ "Variables", "functions_vars.html", null ],
+        [ "Enumerations", "functions_enum.html", null ],
+        [ "Enumerator", "functions_eval.html", null ],
+        [ "Related Symbols", "functions_rela.html", null ]
+      ] ]
+    ] ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ]
+    ] ]
   ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"index.html"
+"_desktop___qt__6__7__0___min_g_w__64__bit-_debug_2debug_2moc__predefs_8h_source.html",
+"class_q_c_p_axis_ticker_date_time.html#a84cc5c6bbc7c99c1f9bd4b3a392e1b9d",
+"class_q_c_p_data_container.html#ac0d5f1babb70699e4732026af1ae12db",
+"class_q_c_p_item_text.html#a9b9ec6eea0eb0603977ff84d4c78d0a3",
+"class_q_c_p_plottable_interface1_d.html#af9a720ace6499337406a5e65d4823f57",
+"class_q_c_p_scatter_style.html#adb31525af6b680e6f1b7472e43859349a524613ba5d1c4eaa1541d74cf339d283",
+"class_ui___main_window.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
