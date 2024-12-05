@@ -1,11 +1,15 @@
 var searchData=
 [
-  ['wheelevent_0',['wheelEvent',['../classQCPLayerable.html#a47dfd7b8fd99c08ca54e09c362b6f022',1,'QCPLayerable::wheelEvent()'],['../classQCPAxis.html#aa850f195d7cc470c53809d0fff5e444d',1,'QCPAxis::wheelEvent()'],['../classQCPAxisRect.html#a93eeaa0c127d6d6fe8171b2455080262',1,'QCPAxisRect::wheelEvent()'],['../classQCPColorScale.html#a63cf19be184f6670c9495ad3a9a1baeb',1,'QCPColorScale::wheelEvent()'],['../classQCPPolarAxisRadial.html#ab495743f9f7412a109af0b0065a7b9ae',1,'QCPPolarAxisRadial::wheelEvent()'],['../classQCPPolarAxisAngular.html#a78f5d8c2c942fa1c47dcef5d96616e8d',1,'QCPPolarAxisAngular::wheelEvent()'],['../classQCPColorScaleAxisRectPrivate.html#a93eeaa0c127d6d6fe8171b2455080262',1,'QCPColorScaleAxisRectPrivate::wheelEvent()']]],
-  ['width_1',['width',['../classQCPAxisRect.html#a204645398a4f9d0b0189385c7c2cfb91',1,'QCPAxisRect::width()'],['../classQCPPolarAxisAngular.html#abde756ec197666d7ee91eee11bc7c6d5',1,'QCPPolarAxisAngular::width()']]],
-  ['widthtype_2',['WidthType',['../classQCPBars.html#a65dbbf1ab41cbe993d71521096ed4649',1,'QCPBars::WidthType'],['../classQCPFinancial.html#aef1761dda71a53dc5269685e9e492626',1,'QCPFinancial::WidthType']]],
-  ['with_20matlab_3',['1) Test data generation models with MATLAB',['../index.html#step2',1,'']]],
-  ['writetoserial_4',['writeToSerial',['../classSerialPort.html#a9ea5c1e639b308c3845a1f3a8079d260',1,'SerialPort']]],
-  ['wtabsolute_5',['wtAbsolute',['../classQCPBars.html#a65dbbf1ab41cbe993d71521096ed4649ab74315c9aa77df593c58dd25dfc0de35',1,'QCPBars::wtAbsolute'],['../classQCPFinancial.html#aef1761dda71a53dc5269685e9e492626a0758d53bb6d7b4858e6bf8771edc934a',1,'QCPFinancial::wtAbsolute']]],
-  ['wtaxisrectratio_6',['wtAxisRectRatio',['../classQCPBars.html#a65dbbf1ab41cbe993d71521096ed4649a90bc09899361ad3422ff277f7c790ffe',1,'QCPBars::wtAxisRectRatio'],['../classQCPFinancial.html#aef1761dda71a53dc5269685e9e492626a806518350ea5814d28c29b0056e33ecd',1,'QCPFinancial::wtAxisRectRatio']]],
-  ['wtplotcoords_7',['wtPlotCoords',['../classQCPBars.html#a65dbbf1ab41cbe993d71521096ed4649aad3cc60ae1bfb1160a30237bee9eaf10',1,'QCPBars::wtPlotCoords'],['../classQCPFinancial.html#aef1761dda71a53dc5269685e9e492626af676bc8dbe700b96b333329c9dbfc30f',1,'QCPFinancial::wtPlotCoords']]]
+  ['undefinepen_0',['undefinePen',['../classQCPScatterStyle.html#acabc2a8c83d650b946f50c3166b6c35e',1,'QCPScatterStyle']]],
+  ['under_20or_20between_20graphs_1',['Filling under or between graphs',['../classQCPGraph.html#filling',1,'']]],
+  ['up_20to_20the_20plottable_2',['Leaving the color/pen up to the plottable',['../classQCPScatterStyle.html#QCPScatterStyle-undefinedpen',1,'']]],
+  ['update_3',['update',['../classQCPLayoutElement.html#a929c2ec62e0e0e1d8418eaa802e2af9b',1,'QCPLayoutElement::update()'],['../classQCPLayout.html#a48ecc9c98ea90b547c3e27a931a8f7bd',1,'QCPLayout::update()'],['../classQCPAxisRect.html#add049d464b9ef2ccdc638adc4ccb4aca',1,'QCPAxisRect::update()'],['../classQCPColorScale.html#a259dcb6d3053a2cc3c197e9b1191ddbe',1,'QCPColorScale::update()'],['../classQCPPolarAxisAngular.html#a9f2dfb377cdf3ce22a451fa9d3ab47e6',1,'QCPPolarAxisAngular::update()'],['../classQCPColorScaleAxisRectPrivate.html#add049d464b9ef2ccdc638adc4ccb4aca',1,'QCPColorScaleAxisRectPrivate::update()']]],
+  ['updatelegendicon_4',['updateLegendIcon',['../classQCPColorMap.html#a5d8158b62d55fcfeaabcb68ce0083e87',1,'QCPColorMap']]],
+  ['updatephase_5',['UpdatePhase',['../classQCPLayoutElement.html#a0d83360e05735735aaf6d7983c56374d',1,'QCPLayoutElement']]],
+  ['updateposition_6',['updatePosition',['../classQCPItemTracer.html#a5b90296109e36384aedbc8908a670413',1,'QCPItemTracer']]],
+  ['uplayout_7',['upLayout',['../classQCPLayoutElement.html#a0d83360e05735735aaf6d7983c56374da5d1ccf5d79967c232c3c511796860045',1,'QCPLayoutElement']]],
+  ['upmargins_8',['upMargins',['../classQCPLayoutElement.html#a0d83360e05735735aaf6d7983c56374da288cb59a92280e47261a341f2813e676',1,'QCPLayoutElement']]],
+  ['uppreparation_9',['upPreparation',['../classQCPLayoutElement.html#a0d83360e05735735aaf6d7983c56374dad6119882eba136357c2f627992e527d3',1,'QCPLayoutElement']]],
+  ['usage_10',['Usage',['../index.html#step14',1,'Usage'],['../classQCPCurve.html#qcpcurve-usage',1,'Usage'],['../classQCPBarsGroup.html#qcpbarsgroup-usage',1,'Usage'],['../classQCPBars.html#qcpbars-usage',1,'Usage'],['../classQCPStatisticalBox.html#qcpstatisticalbox-usage',1,'Usage'],['../classQCPColorMap.html#qcpcolormap-usage',1,'Usage'],['../classQCPFinancial.html#qcpfinancial-usage',1,'Usage']]],
+  ['using_20items_11',['Using items',['../classQCPAbstractItem.html#items-using',1,'']]]
 ];

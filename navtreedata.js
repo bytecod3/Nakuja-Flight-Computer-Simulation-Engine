@@ -26,16 +26,19 @@ var NAVTREE =
 [
   [ "Nakuja Flight Computer Testing and Simulation Engine (NaFCTSE)", "index.html", [
     [ "Introduction", "index.html#intro_sec", null ],
-    [ "Features and capability", "index.html#step1", [
-      [ "1) Test data generation models with MATLAB", "index.html#step2", null ],
-      [ "2) Desktop application", "index.html#step3", null ]
+    [ "Features and capability", "index.html#step1", null ],
+    [ "How it works", "index.html#step7", [
+      [ "MATLAB Data generation models and scripts", "index.html#step8", null ],
+      [ "HIL Code embedded into the flight software", "index.html#step9", null ],
+      [ "Flight computer hardware components", "index.html#step10", null ],
+      [ "Desktop application", "index.html#step11", null ]
     ] ],
-    [ "Requirements", "index.html#step4", null ],
-    [ "Installation", "index.html#step5", null ],
-    [ "Usage", "index.html#step6", null ],
-    [ "Expected results", "index.html#step7", null ],
-    [ "Adapting NaFCTSE for your flight computer", "index.html#step8", null ],
-    [ "Contributors", "index.html#step9", null ],
+    [ "Installation", "index.html#step12", [
+      [ "System requirements", "index.html#step13", null ]
+    ] ],
+    [ "Usage", "index.html#step14", null ],
+    [ "Adapting NaFCTSE for your flight computer", "index.html#step15", null ],
+    [ "Contributors", "index.html#step16", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [

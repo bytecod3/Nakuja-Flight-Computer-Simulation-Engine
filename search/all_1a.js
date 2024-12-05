@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['zoom_0',['zoom',['../classQCPAxisRect.html#a5fc8460564e81dcc2a9343dc8bc1fe67',1,'QCPAxisRect::zoom(const QRectF &amp;pixelRect)'],['../classQCPAxisRect.html#ae481c28b50e10cfbbec59fde45e77367',1,'QCPAxisRect::zoom(const QRectF &amp;pixelRect, const QList&lt; QCPAxis * &gt; &amp;affectedAxes)']]]
+  ['xaxis_0',['xAxis',['../classQCustomPlot.html#a968b5ac86c181a49bba78c2b62a80cb3',1,'QCustomPlot']]],
+  ['xaxis2_1',['xAxis2',['../classQCustomPlot.html#ada41599f22cad901c030f3dcbdd82fd9',1,'QCustomPlot']]]
 ];
