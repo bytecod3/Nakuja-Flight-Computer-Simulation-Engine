@@ -146,6 +146,11 @@ void MainWindow::readData(QString data) {
         emit endOfTransmissionSignal();
     }
 
+    // check for states
+    if(data.trimmed() == "PRE-FLIGHT") {
+        emit preflightRCVDSignal();
+    }
+
     // check for Subsystems string
     if(data.trimmed() == "SUBSYSTEM_INIT_MASK") {
         emit subsystemsInitCheckSignal();
@@ -506,7 +511,6 @@ void MainWindow::updateStateUI(quint8 s) {
         break;
     }
 
-
 }
 
 /**
@@ -617,7 +621,7 @@ void MainWindow::on_btnLink_clicked()
 
         // vectors to hold the simulation data values
         QVector<double> altitude;       // hold the altitude values
-        QVector<double> ax;             // x acceleration
+        QVector<double> ax;             // x accelerationl
         QVector<double> ay;             // y acceleration
         QVector<double> az;             // z acceleration
         QVector<double> lat;            // gps latitude
@@ -726,6 +730,9 @@ void MainWindow::handleEndOfTransmission()
 void MainWindow::handleSubsystemsCheck() {
 
     qDebug() << "Subsystems check";
+}
 
 
+void MainWindow::handleStateReceive() {
+    qDebug() << "Change of state";
 }
