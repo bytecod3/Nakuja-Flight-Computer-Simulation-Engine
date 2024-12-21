@@ -199,36 +199,18 @@ void MainWindow::systemsCheck(QString s) {
     // improve this cdoe to make it handle bit length of any size
     if(string_length == 6) {
         st.insert(0, QString("0"));
-        st.insert(1, QString("0")); // overloaded
+        st.insert(1, QString("0"));
     } else {
-        st.insert(0, p, (bit_length-string_length));
+        st.insert(0, p, (bit_length-string_length)); // overloaded
     }
 
-    qDebug() << st;
-
-    // set the subsytems init UI
-    if(QString::compare("1", st[1]) == 0) {
-        qDebug() << "IMU OK";
-    } else {
-       qDebug() << "IMU NOT OK";
-    }
-
+    this->updateSystemDiagnosticsUI(st);
 
 }
 
 /////////////////////////////////////////////////////////////////////
 //////////             BUTTON PRESS HANDLERS             ////////////
 /////////////////////////////////////////////////////////////////////
-
-/**
- * @brief MainWindow::on_btnRun_clicked
- * Run the application
- */
-// void MainWindow::on_btnRun_clicked(QString data)
-// {
-
-
-// }
 
 /**
  * @brief MainWindow::on_toolButton_clicked
@@ -558,31 +540,108 @@ void MainWindow::updateStateUI(quint8 s) {
  *
  * Display the status of the subsystems on the UI
  */
-void MainWindow::updateSystemDiagnosticsUI() {
+void MainWindow::updateSystemDiagnosticsUI(QString st) {
     // get the susbsytems labels
     QLabel* sub_system_labels[this->num_sub_systems] = {
         ui->IMU_subsys_label,
         ui->ALT_subsys_label,
+        ui->TESTFLASH_subsys_label, // sd card
+        ui->POWER_subsys_label,
         ui->GPS_subsys_label,
         ui->COMMS_subsys_label,
         ui->FLASH_subsys_label,
-        ui->TESTFLASH_subsys_label,
-        ui->POWER_subsys_label
     };
 
     // loop each susbsytem label
     // check if its value is set to 1 or 0
     // if 1, set GREEN, else set RED
 
-    for(int j = 0; j < this->num_sub_systems; j++) {
-        if(sys_diag[j] == 1) {
-            sub_system_labels[j]->setAutoFillBackground(true);
-            sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
-        } else {
-            sub_system_labels[j]->setAutoFillBackground(true);
-            sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
-        }
+    // set the subsytems init UI
+    /** bit assignment
+     * bit0 -> IMU          (LSB)
+     * bit1 -> ALTIMETER
+     * bit2 -> SD CARD
+     * bit3 -> POWER
+     * bit4 -> GPS
+     * bit5 -> COMMS
+     * bit6 -> FLASH
+     * bit7 -> X (unused)   (MSB)
+     *
+    */
+
+    // check IMU
+    if(QString::compare("1", st[7]) == 0) {
+        sub_system_labels[0]->setAutoFillBackground(true);
+        sub_system_labels[0]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+    } else {
+        sub_system_labels[0]->setAutoFillBackground(true);
+        sub_system_labels[0]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
     }
+
+    // check ALTIMETER
+    if(QString::compare("1", st[6]) == 0) {
+        sub_system_labels[1]->setAutoFillBackground(true);
+        sub_system_labels[1]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+    } else {
+        sub_system_labels[1]->setAutoFillBackground(true);
+        sub_system_labels[1]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
+    }
+
+    // check SD CARD
+    if(QString::compare("1", st[5]) == 0) {
+        sub_system_labels[2]->setAutoFillBackground(true);
+        sub_system_labels[2]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+    } else {
+        sub_system_labels[2]->setAutoFillBackground(true);
+        sub_system_labels[2]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
+    }
+
+    // check POWER
+    if(QString::compare("1", st[4]) == 0) {
+        sub_system_labels[3]->setAutoFillBackground(true);
+        sub_system_labels[3]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+    } else {
+        sub_system_labels[3]->setAutoFillBackground(true);
+        sub_system_labels[3]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
+    }
+
+    // check GPS
+    if(QString::compare("1", st[3]) == 0) {
+        sub_system_labels[4]->setAutoFillBackground(true);
+        sub_system_labels[4]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+    } else {
+        sub_system_labels[4]->setAutoFillBackground(true);
+        sub_system_labels[4]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
+    }
+
+    // check COMMS
+    if(QString::compare("1", st[2]) == 0) {
+        sub_system_labels[5]->setAutoFillBackground(true);
+        sub_system_labels[5]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+    } else {
+        sub_system_labels[5]->setAutoFillBackground(true);
+        sub_system_labels[5]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
+    }
+
+    // check FLASH
+    if(QString::compare("1", st[1]) == 0) {
+        sub_system_labels[6]->setAutoFillBackground(true);
+        sub_system_labels[6]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+    } else {
+        sub_system_labels[6]->setAutoFillBackground(true);
+        sub_system_labels[6]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
+    }
+
+    // for(int j = 0; j < this->num_sub_systems; j++) {
+    //     if(sys_diag[j] == 1) {
+    //         sub_system_labels[j]->setAutoFillBackground(true);
+    //         sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
+    //     } else {
+    //         sub_system_labels[j]->setAutoFillBackground(true);
+    //         sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
+    //     }
+    // }
+
 
 }
 

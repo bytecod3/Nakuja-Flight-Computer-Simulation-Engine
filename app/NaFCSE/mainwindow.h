@@ -38,7 +38,7 @@ private slots:
 
     // update UI functions
     void updateStateUI(quint8 state);
-    void updateSystemDiagnosticsUI();
+    void updateSystemDiagnosticsUI(QString);
 
     // EOT slots
     void handleEndOfTransmission();
