@@ -183,18 +183,33 @@ void MainWindow::readData(QString data) {
 
 void MainWindow::systemsCheck(QString s) {
     bool ok;
+    int bit_length = 8;
+    int string_length = 0;
     int s_dec = s.toInt(&ok, 10);
 
     // convert to binary
     std::bitset<8> s_bin = s_dec;
     QString st = QString::number(s_dec, 2);
 
-    const char imu[] = "1";
+    string_length = st.length();
+
+    const QChar p[1] = {'0'};
+    qDebug() << string_length;
+
+    // improve this cdoe to make it handle bit length of any size
+    if(string_length == 6) {
+        st.insert(0, QString("0"));
+        st.insert(1, QString("0")); // overloaded
+    } else {
+        st.insert(0, p, (bit_length-string_length));
+    }
+
+    qDebug() << st;
 
     // set the subsytems init UI
-    if(QString::compare("1", st[0]) == 0) {
+    if(QString::compare("1", st[1]) == 0) {
         qDebug() << "IMU OK";
-    } else if(QString::compare("0", st[0]) == 0) {
+    } else {
        qDebug() << "IMU NOT OK";
     }
 
