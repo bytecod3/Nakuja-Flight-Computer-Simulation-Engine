@@ -29,8 +29,9 @@ ft = [time t];
 m = [ft' f];
 dlmwrite('altitude_data.csv', m); 
 
-
 % plot(time, powered_flight, t, desc);
 plot(ft, f);
-xlabel( 'x' )
+xlabel( 'Time(sec)' );
+ylabel('Altitude (m)');
+title("Altitude test data");
 grid on

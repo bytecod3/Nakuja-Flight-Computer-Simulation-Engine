@@ -10,6 +10,7 @@
 #include <QFileDialog>
 #include <QFileInfo>
 #include <fstream>
+#include <bitset>
 #include "defines.h"
 #include "serialparser.h"
 #include "typeinfo.h"
@@ -141,7 +142,7 @@ void MainWindow::readData(QString data) {
     // parser.parseAll(data);
 
     // get type of data
-    qDebug() << data.trimmed();
+    //qDebug() << data.trimmed();
     if(data.trimmed() == "EOT") {
         emit endOfTransmissionSignal();
     }
@@ -155,6 +156,10 @@ void MainWindow::readData(QString data) {
     if(data.trimmed() == "SUBSYSTEM_INIT_MASK") {
         emit subsystemsInitCheckSignal();
     }
+
+    // check the sub-systems init mask
+    QString state = data.trimmed();
+    systemsCheck(state);
 
     // char* data_char =data.toStdString().c_str();
     // qDebug() << data;
@@ -173,6 +178,26 @@ void MainWindow::readData(QString data) {
         // update UI
         this->updateStateUI(parser.getCurrentFlightState());
     }
+
+}
+
+void MainWindow::systemsCheck(QString s) {
+    bool ok;
+    int s_dec = s.toInt(&ok, 10);
+
+    // convert to binary
+    std::bitset<8> s_bin = s_dec;
+    QString st = QString::number(s_dec, 2);
+
+    const char imu[] = "1";
+
+    // set the subsytems init UI
+    if(QString::compare("1", st[0]) == 0) {
+        qDebug() << "IMU OK";
+    } else if(QString::compare("0", st[0]) == 0) {
+       qDebug() << "IMU NOT OK";
+    }
+
 
 }
 

@@ -50,6 +50,8 @@ private slots:
     // graphing capabilities
     // void initPlotArea();
 
+    void systemsCheck(QString);
+
 signals:
     void endOfTransmissionSignal(); // to check for End of Transmission signal from DUT
     void subsystemsInitCheckSignal(); // to check for subsystems

@@ -23,7 +23,6 @@ d=-1.5;
 u = c + (d-c).*rand(100,1);
 u = base_long * u;
 
-
 % join data 
 lat_final = [lat1; r];
 long_final = [longt1; u];
