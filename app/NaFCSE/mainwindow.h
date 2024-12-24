@@ -35,9 +35,10 @@ private slots:
     void on_writeSerialButton_clicked();
     void on_closeSerialButton_clicked();
     void on_btnLink_clicked();
+    void on_btnCheckSystems_clicked();
 
     // update UI functions
-    void updateStateUI(quint8 state);
+    void updateFlightStateUI(QString);
     void updateSystemDiagnosticsUI(QString);
 
     // EOT slots

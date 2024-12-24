@@ -339,6 +339,13 @@ padding-bottom: 4px;
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
+          <widget class="QPushButton" name="btnCheckSystems">
+           <property name="text">
+            <string>Check systems</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <layout class="QGridLayout" name="systemChecks">
            <property name="spacing">
             <number>6</number>
@@ -780,8 +787,8 @@ font: {
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="serial-icon.qrc"/>
   <include location="play-icon.qrc"/>
+  <include location="serial-icon.qrc"/>
  </resources>
  <connections/>
 </ui>

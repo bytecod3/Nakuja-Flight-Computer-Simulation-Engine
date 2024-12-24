@@ -148,18 +148,37 @@ void MainWindow::readData(QString data) {
     }
 
     // check for states
-    if(data.trimmed() == "PRE-FLIGHT") {
-        emit preflightRCVDSignal();
+    QString stte = "";
+    if(data.trimmed() == "PREFLIGHT") {
+        stte = "PREFLIGHT";
+    } else if(data.trimmed() == "POWERED") {
+        stte = "POWERED";
+    } else if(data.trimmed() == "COASTING") {
+        stte = "COASTING";
+    } else if(data.trimmed() == "APOGEE") {
+        stte = "APOGEE";
+    } else if(data.trimmed() == "BALLISTIC") {
+        stte = "BALLISTIC";
+    } else if(data.trimmed() == "DROGUE") {
+        stte = "DROGUE";
+    } else if(data.trimmed() == "DROGUE_DESC") {
+        stte = "DROGUE_DESC";
+    } else if(data.trimmed() == "MAIN") {
+        stte = "MAIN";
+    } else if(data.trimmed() == "MAIN_DESC") {
+        stte = "MAIN_DESC";
+    } else if(data.trimmed() == "POST_FLIGHT") {
+        stte = "POST_FLIGHT";
+    } else if(data.trimmed() == "END") {
+        stte = "END";
     }
+
+    updateFlightStateUI(stte);
 
     // check for Subsystems string
     if(data.trimmed() == "SUBSYSTEM_INIT_MASK") {
         emit subsystemsInitCheckSignal();
     }
-
-    // check the sub-systems init mask
-    QString state = data.trimmed();
-    systemsCheck(state);
 
     // char* data_char =data.toStdString().c_str();
     // qDebug() << data;
@@ -171,13 +190,19 @@ void MainWindow::readData(QString data) {
     // convert back to QString
     //QString data_str = QString::fromUtf16((ushort*)(data_char));
 
-    // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASII commands from serial
+    // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASCII commands from serial
     if(current_app_state == APP_STATES::HANDSHAKE) {
-
+        qDebug() << current_app_state;
     } else if(current_app_state == APP_STATES::NOMINAL) {
-        // update UI
-        this->updateStateUI(parser.getCurrentFlightState());
+        //this->updateStateUI(parser.getCurrentFlightState());
+        qDebug() << current_app_state;
+    } else if(current_app_state == APP_STATES::SYSTEM_CHECK) {
+        // check the sub-systems init mask
+        QString state = data.trimmed();
+        systemsCheck(state);
     }
+
+    //qDebug() << current_app_state;
 
 }
 
@@ -196,7 +221,7 @@ void MainWindow::systemsCheck(QString s) {
     const QChar p[1] = {'0'};
     qDebug() << string_length;
 
-    // improve this cdoe to make it handle bit length of any size
+    // improve this code to make it handle bit length of any size
     if(string_length == 6) {
         st.insert(0, QString("0"));
         st.insert(1, QString("0"));
@@ -381,8 +406,6 @@ void MainWindow::setStaticUI() {
     ui->POWER_subsys_label->setAutoFillBackground(true);
     ui->POWER_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
-
-
     // flight systems groupbox styles
     ui->flightSystemsGroupBox->setAutoFillBackground(true);
     ui->flightSystemsGroupBox->setStyleSheet( "QGroupBox { background-color: #111111; color: #ffffff; border: 2px solid #111111; padding: 5px; border-radius: 2px; } ");
@@ -414,6 +437,9 @@ void MainWindow::setStaticUI() {
     // simulation button test
     ui->btnMainRun->setAutoFillBackground(true);
     ui->btnMainRun->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff; padding:10px; border: 1px solid green; border-radius: 2px;} ");
+
+    ui->btnCheckSystems->setAutoFillBackground(true);
+    ui->btnCheckSystems->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff;padding:10px; border: 1px solid gray; border-radius: 2px;} ");
 
     // simulated altitude data plot
     ui->lblSimulatedAlt->setAutoFillBackground(true);
@@ -453,87 +479,6 @@ void MainWindow::setStaticUI() {
 /////////////////////////////////////////////////////////////////////
 //////////            UI UPDATE HANDLERS                 ////////////
 /////////////////////////////////////////////////////////////////////
-/**
- *
- * @brief SerialParser::updateStateUI
- * @param s
- *
- * updates the state labels on screen to show change of flight states
- */
-void MainWindow::updateStateUI(quint8 s) {
-
-    // to hold labels that represent the state
-    // TODO: move 10 to  #DEFINE constant
-    QLabel* stateLabels[10] = {ui->preflightLabel,
-                              ui->poweredflightLabel,
-                              ui->coastingLabel,
-                              ui->apogeeLabel,
-                              ui->ballisticdescentLabel,
-                              ui->droguechuteejectLabel,
-                              ui->droguechutedescentLabel,
-                              ui->mainchuteejectLabel,
-                              ui->mainchutedescentLabel,
-                              ui->postflightLabel};
-
-    // set defaults state for the labels
-    for(uint8_t i = 0; i < 10; i++) {
-        stateLabels[i]->setAutoFillBackground(true);
-        stateLabels[i]->setStyleSheet("QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }");
-    }
-
-    switch (s) {
-    case 0:
-        // qDebug() << "PREFLIGHT";
-        stateLabels[0]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 1:
-        // qDebug() << "POWEREDFLIGHT";
-        stateLabels[1]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 2:
-        // qDebug() << "COASTING";
-        stateLabels[2]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 3:
-        // qDebug() << "APOGEE";
-        stateLabels[3]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 4:
-        // qDebug() << "BALLISTIC DESCENT";
-        stateLabels[4]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 5:
-        // qDebug() << "DROGUE EJECT";
-        stateLabels[5]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 6:
-        // qDebug() << "DROGUE DESCENT";
-        stateLabels[6]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 7:
-        // qDebug() << "MAIN CHUTE EJECT";
-        stateLabels[7]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 8:
-        // qDebug() << "MAIN CHUTE DESCENT";
-        stateLabels[8]->setStyleSheet(this->activeStateStyle);
-        break;
-
-    case 9:
-        // qDebug() << "POST FLIGHT";
-        stateLabels[9]->setStyleSheet(this->activeStateStyle);
-        break;
-    }
-
-}
 
 /**
  * @brief MainWindow::updateSystemDiagnosticsUI
@@ -549,7 +494,7 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
         ui->POWER_subsys_label,
         ui->GPS_subsys_label,
         ui->COMMS_subsys_label,
-        ui->FLASH_subsys_label,
+        ui->FLASH_subsys_label
     };
 
     // loop each susbsytem label
@@ -645,6 +590,61 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
 
 }
 
+void MainWindow::updateFlightStateUI(QString state) {
+    // TODO: move 10 to  #DEFINE constant
+    QLabel* stateLabels[10] = {
+       ui->preflightLabel,
+       ui->poweredflightLabel,
+       ui->coastingLabel,
+       ui->apogeeLabel,
+       ui->ballisticdescentLabel,
+       ui->droguechuteejectLabel,
+       ui->droguechutedescentLabel,
+       ui->mainchuteejectLabel,
+       ui->mainchutedescentLabel,
+       ui->postflightLabel
+    };
+
+    if(state == "PREFLIGHT") {
+        stateLabels[0]->setAutoFillBackground(true);
+        stateLabels[0]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    } else if( state == "POWERED" ) {
+        stateLabels[1]->setAutoFillBackground(true);
+        stateLabels[1]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    } else if( state == "COASTING" ) {
+        stateLabels[2]->setAutoFillBackground(true);
+        stateLabels[2]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    }else if( state == "APOGEE" ) {
+        stateLabels[3]->setAutoFillBackground(true);
+        stateLabels[3]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    } else if( state == "BALLISTIC" ) {
+        stateLabels[4]->setAutoFillBackground(true);
+        stateLabels[4]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    } else if( state == "DROGUE" ) {
+        stateLabels[5]->setAutoFillBackground(true);
+        stateLabels[5]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    } else if( state == "DROGUE_DESC" ) {
+        stateLabels[6]->setAutoFillBackground(true);
+        stateLabels[6]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    }else if( state == "MAIN" ) {
+        stateLabels[7]->setAutoFillBackground(true);
+        stateLabels[7]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    } else if( state == "MAIN_DESC" ) {
+        stateLabels[8]->setAutoFillBackground(true);
+        stateLabels[8]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    } else if( state == "POST_FLIGHT" ) {
+        stateLabels[9]->setAutoFillBackground(true);
+        stateLabels[9]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
+    } else if(state == "END") {
+        // set defaults state for the labels
+        for(uint8_t i = 0; i < 10; i++) {
+            stateLabels[i]->setAutoFillBackground(true);
+            stateLabels[i]->setStyleSheet("QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }");
+        }
+    }
+
+}
+
 /**
  * @ brief Setup graphing widget on startup
  */
@@ -654,7 +654,6 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
 //     for (int i=0; i< 101; ++i) {
 //         x[i] = i/50.0 - 1;
 //         y[i] = x[i]*x[i]; // quadratic function
-
 //     }
 
 //     // create a graph and assign data to it
@@ -714,7 +713,6 @@ void MainWindow::on_btnLink_clicked()
     } else {
 
         // right file selected
-
         QByteArray filename = data_file.toLocal8Bit();
         const char* file_str = filename.data();
 
@@ -831,7 +829,16 @@ void MainWindow::handleSubsystemsCheck() {
     qDebug() << "Subsystems check";
 }
 
-
 void MainWindow::handleStateReceive() {
     qDebug() << "Change of state";
 }
+
+void MainWindow::on_btnCheckSystems_clicked()
+{
+    current_app_state = APP_STATES::SYSTEM_CHECK;
+    QString reset_command = "1";
+    QByteArray reset_cmd(reset_command.toUtf8());
+    reset_cmd.append('\n');
+    port.writeToSerial(reset_cmd);
+}
+
