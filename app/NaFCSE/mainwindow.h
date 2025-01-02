@@ -40,6 +40,7 @@ private slots:
     // update UI functions
     void updateFlightStateUI(QString);
     void updateSystemDiagnosticsUI(QString);
+    void updateSubSystemsPeriodic();
 
     // EOT slots
     void handleEndOfTransmission();
@@ -52,6 +53,7 @@ private slots:
     // void initPlotArea();
 
     void systemsCheck(QString);
+
 
 signals:
     void endOfTransmissionSignal(); // to check for End of Transmission signal from DUT
@@ -71,6 +73,8 @@ private:
     QTimer* mSerialScanTimer; // to scan the serial ports periodically
     void loadPorts();
     void updateSerialPorts();
+
+    QTimer* updateSubSystemsTimer;
 
     // test
     // order -> imu, altimeter, gps, comms, flash, test-flash, power

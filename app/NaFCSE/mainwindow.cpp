@@ -63,16 +63,25 @@ MainWindow::MainWindow(QWidget *parent)
     mSerialScanTimer->setInterval(5000);
     mSerialScanTimer->start();
 
+    // create a timer to be updating the system init mask every 2 seconds
+    updateSubSystemsTimer = new QTimer(this);
+    updateSubSystemsTimer->setInterval(1000);
+    updateSubSystemsTimer->start();
+
     /////////////////// SIGNALS AND SLOTS ////////////////////////
-    /// 1. display data received from serial
+    /// display data received from serial
     connect(&port, &SerialPort::dataReceived, this, &MainWindow::updateSerialMonitor);
 
-    /// 2. process data received from the serial monitor
+    /// process data received from the serial monitor
     connect(&port, &SerialPort::dataReceived, this, &MainWindow::readData);
 
-    /// 3. handles plug-n-play for serial port
+    /// handles plug-n-play for serial port
     connect(mSerialScanTimer, &QTimer::timeout, this, &updateSerialPorts);
 
+    // update the susbsystems system periodically
+    connect(updateSubSystemsTimer, &QTimer::timeout, this, &updateSubSystemsPeriodic);
+
+    // on data transmission end
     connect(this, &MainWindow::endOfTransmissionSignal, this, &MainWindow::handleEndOfTransmission);
 
     ////////////////// INIT PLOT AREA ///////////////////////
@@ -145,10 +154,15 @@ void MainWindow::readData(QString data) {
     // parser.parseAll(data);
 
     // check system
-    systemsCheck(system_state);
+    if(current_app_state == APP_STATES::SYSTEM_CHECK) {
+        QString state = data.trimmed();
+        system_state = state;
+        //systemsCheck(system_state);
 
-    // get type of data
-    //qDebug() << data.trimmed();
+        // reset the state
+        current_app_state = APP_STATES::NOMINAL;
+    }
+
     if(data.trimmed() == "EOT") {
         emit endOfTransmissionSignal();
     }
@@ -192,19 +206,16 @@ void MainWindow::readData(QString data) {
     //QString data_str = QString::fromUtf16((ushort*)(data_char));
 
     // TODO: IF WE ARE IN THE HANDSHAKE STATE, parse the ASCII commands from serial
-    if(current_app_state == APP_STATES::HANDSHAKE) {
-        qDebug() << current_app_state;
-    } else if(current_app_state == APP_STATES::NOMINAL) {
-        //this->updateStateUI(parser.getCurrentFlightState());
-        qDebug() << current_app_state;
-    } else if(current_app_state == APP_STATES::SYSTEM_CHECK) {
-        // check the sub-systems init mask
-        QString state = data.trimmed();
-        system_state = state;
-    }
-
-    //qDebug() << current_app_state;
-
+    // if(current_app_state == APP_STATES::HANDSHAKE) {
+    //     qDebug() << current_app_state;
+    // } else if(current_app_state == APP_STATES::NOMINAL) {
+    //     //this->updateStateUI(parser.getCurrentFlightState());
+    //     qDebug() << current_app_state;
+    // } else if(current_app_state == APP_STATES::SYSTEM_CHECK) {
+    //     // check the sub-systems init mask
+    //     QString state = data.trimmed();
+    //     system_state = state;
+    // }
 }
 
 void MainWindow::systemsCheck(QString s) {
@@ -220,7 +231,6 @@ void MainWindow::systemsCheck(QString s) {
     string_length = st.length();
 
     const QChar p[1] = {'0'};
-    qDebug() << string_length;
 
     // improve this code to make it handle bit length of any size
     if(string_length == 6) {
@@ -837,10 +847,37 @@ void MainWindow::handleStateReceive() {
 void MainWindow::on_btnCheckSystems_clicked()
 {
     current_app_state = APP_STATES::SYSTEM_CHECK;
-    QString reset_command = "1"; // sends command 1 to the fligth computer to check for subsystems
+    QString reset_command = "1"; // sends command 1 to the flight computer to check for subsystems
     QByteArray reset_cmd(reset_command.toUtf8());
     reset_cmd.append('\n');
     port.writeToSerial(reset_cmd);
 
 }
 
+
+void MainWindow::updateSubSystemsPeriodic() {
+    bool ok;
+    int bit_length = 8;
+    int string_length = 0;
+    int s_dec = system_state.toInt(&ok, 10);
+
+    // convert to binary
+    std::bitset<8> s_bin = s_dec;
+    QString st = QString::number(s_dec, 2);
+
+    string_length = st.length();
+
+    const QChar p[1] = {'0'};
+
+    // improve this code to make it handle bit length of any size
+    if(string_length == 6) {
+        st.insert(0, QString("0"));
+        st.insert(1, QString("0"));
+    } else {
+        st.insert(0, p, (bit_length-string_length)); // overloaded
+    }
+
+    //qDebug() << st;
+    this->updateSystemDiagnosticsUI(st);
+
+}
