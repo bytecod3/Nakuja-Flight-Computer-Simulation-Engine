@@ -837,7 +837,7 @@ void MainWindow::handleStateReceive() {
 void MainWindow::on_btnCheckSystems_clicked()
 {
     current_app_state = APP_STATES::SYSTEM_CHECK;
-    QString reset_command = "1";
+    QString reset_command = "1"; // sends command 1 to the fligth computer to check for subsystems
     QByteArray reset_cmd(reset_command.toUtf8());
     reset_cmd.append('\n');
     port.writeToSerial(reset_cmd);
