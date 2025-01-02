@@ -21,11 +21,14 @@
 QString NAK = "21\n"; // NAK command sent from the receiver (flight computer) - device under test
 QString SOH = "1\n";
 
+QString system_state = "";
+
 /**
  * @brief MainWindow::MainWindow
  * @param parent
  *
  * Constructor
+ *
  */
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -141,6 +144,9 @@ void MainWindow::readData(QString data) {
     // TODO: parser to set some vectors
     // parser.parseAll(data);
 
+    // check system
+    systemsCheck(system_state);
+
     // get type of data
     //qDebug() << data.trimmed();
     if(data.trimmed() == "EOT") {
@@ -175,11 +181,6 @@ void MainWindow::readData(QString data) {
 
     updateFlightStateUI(stte);
 
-    // check for Subsystems string
-    if(data.trimmed() == "SUBSYSTEM_INIT_MASK") {
-        emit subsystemsInitCheckSignal();
-    }
-
     // char* data_char =data.toStdString().c_str();
     // qDebug() << data;
     // if(data == "EOT\n") {
@@ -199,7 +200,7 @@ void MainWindow::readData(QString data) {
     } else if(current_app_state == APP_STATES::SYSTEM_CHECK) {
         // check the sub-systems init mask
         QString state = data.trimmed();
-        systemsCheck(state);
+        system_state = state;
     }
 
     //qDebug() << current_app_state;
@@ -314,6 +315,7 @@ void MainWindow::on_writeSerialButton_clicked() {
 void MainWindow::on_closeSerialButton_clicked()
 {
     if(isConnected) {
+
         port.closeSerial();
         isConnected = false;
         ui->statusbar->showMessage("Serial port disconnected");
@@ -818,7 +820,6 @@ void MainWindow::handleEndOfTransmission()
     QMessageBox::information(this,  "Data link", "End of Transmission to device under test.");
 }
 
-
 /**
  * @brief MainWindow::handleSubsystemsCheck
  * Receives the string containing the init status of the flight computer subsystems
@@ -840,5 +841,6 @@ void MainWindow::on_btnCheckSystems_clicked()
     QByteArray reset_cmd(reset_command.toUtf8());
     reset_cmd.append('\n');
     port.writeToSerial(reset_cmd);
+
 }
 
