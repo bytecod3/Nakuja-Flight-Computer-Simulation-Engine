@@ -357,6 +357,54 @@ padding-bottom: 4px;
              </property>
              <item>
               <layout class="QGridLayout" name="gridLayout_2">
+               <item row="2" column="0">
+                <widget class="QLabel" name="SD_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
+border-radius: 2px;
+color: black;</string>
+                 </property>
+                 <property name="text">
+                  <string>SD-CARD</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="0">
+                <widget class="QLabel" name="SPIFFS_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
+border-radius: 2px;
+color: black;</string>
+                 </property>
+                 <property name="text">
+                  <string>SPIFFS</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="2" column="1">
+                <widget class="QLabel" name="FLASH_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
+border-radius: 2px;
+color: black;</string>
+                 </property>
+                 <property name="text">
+                  <string>FLASH</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="3" column="1">
+                <widget class="QLabel" name="TESTGPIO_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
+border-radius: 2px;
+color: black;</string>
+                 </property>
+                 <property name="text">
+                  <string>TEST-GPIO</string>
+                 </property>
+                </widget>
+               </item>
                <item row="0" column="0">
                 <widget class="QLabel" name="IMU_subsys_label">
                  <property name="styleSheet">
@@ -381,18 +429,6 @@ color: black;</string>
                  </property>
                 </widget>
                </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="TESTFLASH_subsys_label">
-                 <property name="styleSheet">
-                  <string notr="true">border: 1px solid gray;
-border-radius: 2px;
-color: black;</string>
-                 </property>
-                 <property name="text">
-                  <string>TEST-FLASH</string>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="1">
                 <widget class="QLabel" name="GPS_subsys_label">
                  <property name="styleSheet">
@@ -414,30 +450,6 @@ color: black;</string>
                  </property>
                  <property name="text">
                   <string>COMMS</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="3" column="0">
-                <widget class="QLabel" name="POWER_subsys_label">
-                 <property name="styleSheet">
-                  <string notr="true">border: 1px solid gray;
-border-radius: 2px;
-color: black;</string>
-                 </property>
-                 <property name="text">
-                  <string>POWER</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QLabel" name="FLASH_subsys_label">
-                 <property name="styleSheet">
-                  <string notr="true">border: 1px solid gray;
-border-radius: 2px;
-color: black;</string>
-                 </property>
-                 <property name="text">
-                  <string>FLASH</string>
                  </property>
                 </widget>
                </item>
@@ -787,8 +799,8 @@ font: {
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
  <resources>
-  <include location="play-icon.qrc"/>
   <include location="serial-icon.qrc"/>
+  <include location="play-icon.qrc"/>
  </resources>
  <connections/>
 </ui>

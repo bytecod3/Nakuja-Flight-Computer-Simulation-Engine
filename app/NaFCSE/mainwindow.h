@@ -78,7 +78,7 @@ private:
 
     // test
     // order -> imu, altimeter, gps, comms, flash, test-flash, power
-    static constexpr int num_sub_systems = 7;
+    static constexpr int num_sub_systems = 8;
     int sys_diag[num_sub_systems] = {1,1,1,1,0,1,0};
 
 };

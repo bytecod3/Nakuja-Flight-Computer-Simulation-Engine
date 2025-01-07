@@ -412,11 +412,11 @@ void MainWindow::setStaticUI() {
     ui->FLASH_subsys_label->setAutoFillBackground(true);
     ui->FLASH_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
-    ui->TESTFLASH_subsys_label->setAutoFillBackground(true);
-    ui->TESTFLASH_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
+    ui->SD_subsys_label->setAutoFillBackground(true);
+    ui->SD_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
-    ui->POWER_subsys_label->setAutoFillBackground(true);
-    ui->POWER_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
+    ui->SPIFFS_subsys_label->setAutoFillBackground(true);
+    ui->SPIFFS_subsys_label->setStyleSheet( "QLabel { padding: 2px; background-color : #958d93; color : #ffffff; border-radius: 2px; }" );
 
     // flight systems groupbox styles
     ui->flightSystemsGroupBox->setAutoFillBackground(true);
@@ -498,15 +498,17 @@ void MainWindow::setStaticUI() {
  * Display the status of the subsystems on the UI
  */
 void MainWindow::updateSystemDiagnosticsUI(QString st) {
-    // get the susbsytems labels
+    // get the subsystems labels
     QLabel* sub_system_labels[this->num_sub_systems] = {
-        ui->IMU_subsys_label,
         ui->ALT_subsys_label,
-        ui->TESTFLASH_subsys_label, // sd card
-        ui->POWER_subsys_label,
+        ui->IMU_subsys_label,
+        ui->FLASH_subsys_label,
         ui->GPS_subsys_label,
-        ui->COMMS_subsys_label,
-        ui->FLASH_subsys_label
+        ui->SD_subsys_label, // sd card
+        ui->SPIFFS_subsys_label, // SPIFFS
+        ui->TESTGPIO_subsys_label, // TEST GPIO
+        ui->COMMS_subsys_label, // No way of testing comms at the moment
+
     };
 
     // loop each susbsytem label
@@ -515,18 +517,18 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
 
     // set the subsytems init UI
     /** bit assignment
-     * bit0 -> IMU          (LSB)
-     * bit1 -> ALTIMETER
-     * bit2 -> SD CARD
-     * bit3 -> POWER
-     * bit4 -> GPS
-     * bit5 -> COMMS
-     * bit6 -> FLASH
-     * bit7 -> X (unused)   (MSB)
+     * bit0 -> ALTIMETER          (LSB)
+     * bit1 -> IMU
+     * bit2 -> FLASH
+     * bit3 -> GPS
+     * bit4 -> SD CARD
+     * bit5 -> SPIFFS
+     * bit6 -> TESTGPIO
+     * bit7 -> X (unused)   (MSB) // reserved for COMMS (xbee)
      *
     */
 
-    // check IMU
+    // check ALTIMETER
     if(QString::compare("1", st[7]) == 0) {
         sub_system_labels[0]->setAutoFillBackground(true);
         sub_system_labels[0]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
@@ -535,7 +537,7 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
         sub_system_labels[0]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
     }
 
-    // check ALTIMETER
+    // check IMU
     if(QString::compare("1", st[6]) == 0) {
         sub_system_labels[1]->setAutoFillBackground(true);
         sub_system_labels[1]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
@@ -544,7 +546,7 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
         sub_system_labels[1]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
     }
 
-    // check SD CARD
+    // check FLASH
     if(QString::compare("1", st[5]) == 0) {
         sub_system_labels[2]->setAutoFillBackground(true);
         sub_system_labels[2]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
@@ -553,7 +555,7 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
         sub_system_labels[2]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
     }
 
-    // check POWER
+    // check GPS
     if(QString::compare("1", st[4]) == 0) {
         sub_system_labels[3]->setAutoFillBackground(true);
         sub_system_labels[3]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
@@ -562,7 +564,7 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
         sub_system_labels[3]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
     }
 
-    // check GPS
+    // check SD CARD
     if(QString::compare("1", st[3]) == 0) {
         sub_system_labels[4]->setAutoFillBackground(true);
         sub_system_labels[4]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
@@ -571,7 +573,7 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
         sub_system_labels[4]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
     }
 
-    // check COMMS
+    // check SPIFFS
     if(QString::compare("1", st[2]) == 0) {
         sub_system_labels[5]->setAutoFillBackground(true);
         sub_system_labels[5]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
@@ -580,7 +582,7 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
         sub_system_labels[5]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
     }
 
-    // check FLASH
+    // check TEST-GPIO
     if(QString::compare("1", st[1]) == 0) {
         sub_system_labels[6]->setAutoFillBackground(true);
         sub_system_labels[6]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
@@ -588,17 +590,6 @@ void MainWindow::updateSystemDiagnosticsUI(QString st) {
         sub_system_labels[6]->setAutoFillBackground(true);
         sub_system_labels[6]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
     }
-
-    // for(int j = 0; j < this->num_sub_systems; j++) {
-    //     if(sys_diag[j] == 1) {
-    //         sub_system_labels[j]->setAutoFillBackground(true);
-    //         sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: green } ");
-    //     } else {
-    //         sub_system_labels[j]->setAutoFillBackground(true);
-    //         sub_system_labels[j]->setStyleSheet("  QLabel { border: 1px solid gray; border-radius: 4px; color: black; background: red } ");
-    //     }
-    // }
-
 
 }
 
