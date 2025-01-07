@@ -77,5 +77,5 @@ var NAVTREEINDEX =
 "dir_2bc8bc5dd874e6d1ef4a5a2eded4c25c.html"
 ];
 
-var SYNCONMSG = 'click to disable panel synchronisation';
-var SYNCOFFMSG = 'click to enable panel synchronisation';
+var SYNCONMSG = 'click to disable panel synchronization';
+var SYNCOFFMSG = 'click to enable panel synchronization';
