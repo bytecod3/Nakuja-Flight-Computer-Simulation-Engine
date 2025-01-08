@@ -54,7 +54,9 @@ private slots:
     // void initPlotArea();
 
     void systemsCheck(QString);
+    void resetStatesLabels();
 
+    void on_btnMainRun_clicked();
 
 signals:
     void endOfTransmissionSignal(); // to check for End of Transmission signal from DUT

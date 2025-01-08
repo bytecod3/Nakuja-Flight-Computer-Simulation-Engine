@@ -167,33 +167,39 @@ void MainWindow::readData(QString data) {
         emit endOfTransmissionSignal();
     }
 
-    // check for states
-    QString stte = "";
-    if(data.trimmed() == "PREFLIGHT") {
-        stte = "PREFLIGHT";
-    } else if(data.trimmed() == "POWERED") {
-        stte = "POWERED";
-    } else if(data.trimmed() == "COASTING") {
-        stte = "COASTING";
-    } else if(data.trimmed() == "APOGEE") {
-        stte = "APOGEE";
-    } else if(data.trimmed() == "BALLISTIC") {
-        stte = "BALLISTIC";
-    } else if(data.trimmed() == "DROGUE") {
-        stte = "DROGUE";
-    } else if(data.trimmed() == "DROGUE_DESC") {
-        stte = "DROGUE_DESC";
-    } else if(data.trimmed() == "MAIN") {
-        stte = "MAIN";
-    } else if(data.trimmed() == "MAIN_DESC") {
-        stte = "MAIN_DESC";
-    } else if(data.trimmed() == "POST_FLIGHT") {
-        stte = "POST_FLIGHT";
-    } else if(data.trimmed() == "END") {
-        stte = "END";
-    }
+    if(current_app_state == APP_STATES::NOMINAL) {
 
-    updateFlightStateUI(stte);
+        qDebug() << data.trimmed();
+        // qDebug() << "NOMINAL";
+        // // check for states
+        QString stte = "";
+
+        if(data.trimmed() == "PREFLIGHT") {
+            stte = "PREFLIGHT";
+        } else if(data.trimmed() == "POWERED") {
+            stte = "POWERED";
+        } else if(data.trimmed() == "COASTING") {
+            stte = "COASTING";
+        } else if(data.trimmed() == "APOGEE") {
+            stte = "APOGEE";
+        } else if(data.trimmed() == "BALLISTIC") {
+            stte = "BALLISTIC";
+        } else if(data.trimmed() == "DROGUE") {
+            stte = "DROGUE";
+        } else if(data.trimmed() == "DROGUE_DESCENT") {
+            stte = "DROGUE_DESCENT";
+        } else if(data.trimmed() == "MAIN") {
+            stte = "MAIN";
+        } else if(data.trimmed() == "MAIN_DESC") {
+            stte = "MAIN_DESC";
+        } else if(data.trimmed() == "POST_FLIGHT") {
+            stte = "POST_FLIGHT";
+        } else if(data.trimmed() == "END") {
+            stte = "END";
+        }
+
+        updateFlightStateUI(stte);
+    }
 
     // char* data_char =data.toStdString().c_str();
     // qDebug() << data;
@@ -355,6 +361,9 @@ void MainWindow::setStaticUI() {
 
     // set defaults state for the labels
     for(uint8_t i = 0; i < 10; i++) {
+        if( (i == 2) || (i == 4)) {
+            continue;
+        }
         stateLabels[i]->setAutoFillBackground(true);
         stateLabels[i]->setStyleSheet("QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }");
     }
@@ -497,6 +506,30 @@ void MainWindow::setStaticUI() {
 //////////            UI UPDATE HANDLERS                 ////////////
 /////////////////////////////////////////////////////////////////////
 
+void MainWindow::resetStatesLabels() {
+
+    // TODO: move 10 to  #DEFINE constant
+    QLabel* stateLabels[10] = {ui->preflightLabel,
+                               ui->poweredflightLabel,
+                               ui->coastingLabel,
+                               ui->apogeeLabel,
+                               ui->ballisticdescentLabel,
+                               ui->droguechuteejectLabel,
+                               ui->droguechutedescentLabel,
+                               ui->mainchuteejectLabel,
+                               ui->mainchutedescentLabel,
+                               ui->postflightLabel};
+
+    // set defaults state for the labels
+    for(uint8_t i = 0; i < 10; i++) {
+        if( (i == 2) || (i == 4)) {
+            continue;
+        }
+        stateLabels[i]->setAutoFillBackground(true);
+        stateLabels[i]->setStyleSheet("QLabel { padding: 2px; background-color : #1a2e49; color : #ffffff; border-radius: 2px; }");
+    }
+}
+
 /**
  * @brief MainWindow::updateSystemDiagnosticsUI
  *
@@ -631,13 +664,13 @@ void MainWindow::updateFlightStateUI(QString state) {
     } else if( state == "DROGUE" ) {
         stateLabels[5]->setAutoFillBackground(true);
         stateLabels[5]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
-    } else if( state == "DROGUE_DESC" ) {
+    } else if( state == "DROGUE_DESCENT" ) {
         stateLabels[6]->setAutoFillBackground(true);
         stateLabels[6]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
     }else if( state == "MAIN" ) {
         stateLabels[7]->setAutoFillBackground(true);
         stateLabels[7]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
-    } else if( state == "MAIN_DESC" ) {
+    } else if( state == "MAIN_DESC") {
         stateLabels[8]->setAutoFillBackground(true);
         stateLabels[8]->setStyleSheet("QLabel { padding: 2px; background-color : #F98E0E; color : #ffffff; border-radius: 2px; }");
     } else if( state == "POST_FLIGHT" ) {
@@ -890,3 +923,15 @@ void MainWindow::updateSubSystemsPeriodic() {
     this->updateSystemDiagnosticsUI(st);
 
 }
+
+void MainWindow::on_btnMainRun_clicked()
+{
+    this->resetStatesLabels();
+    ui->serialMonitor->clear();
+    current_app_state = APP_STATES::SYSTEM_CHECK;
+    QString h = "2";
+    QByteArray h_cmd(h.toUtf8());
+    h_cmd.append('\n');
+    port.writeToSerial(h_cmd);
+}
+
