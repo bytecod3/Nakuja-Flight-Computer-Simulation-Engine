@@ -339,11 +339,25 @@ padding-bottom: 4px;
         </property>
         <layout class="QHBoxLayout" name="horizontalLayout_6">
          <item>
-          <widget class="QPushButton" name="btnCheckSystems">
-           <property name="text">
-            <string>Check systems</string>
+          <layout class="QVBoxLayout" name="verticalLayout_16">
+           <property name="leftMargin">
+            <number>20</number>
            </property>
-          </widget>
+           <item>
+            <widget class="QPushButton" name="btnConfirmCheck">
+             <property name="text">
+              <string>Confirm check</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="btnCheckSystems">
+             <property name="text">
+              <string>Check systems</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
          </item>
          <item>
           <layout class="QGridLayout" name="systemChecks">
@@ -369,7 +383,7 @@ color: black;</string>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="0">
+               <item row="4" column="0">
                 <widget class="QLabel" name="SPIFFS_subsys_label">
                  <property name="styleSheet">
                   <string notr="true">border: 1px solid gray;
@@ -378,6 +392,18 @@ color: black;</string>
                  </property>
                  <property name="text">
                   <string>SPIFFS</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="1">
+                <widget class="QLabel" name="COMMS_subsys_label">
+                 <property name="styleSheet">
+                  <string notr="true">border: 1px solid gray;
+border-radius: 2px;
+color: black;</string>
+                 </property>
+                 <property name="text">
+                  <string>COMMS</string>
                  </property>
                 </widget>
                </item>
@@ -393,7 +419,7 @@ color: black;</string>
                  </property>
                 </widget>
                </item>
-               <item row="3" column="1">
+               <item row="4" column="1">
                 <widget class="QLabel" name="TESTGPIO_subsys_label">
                  <property name="styleSheet">
                   <string notr="true">border: 1px solid gray;
@@ -438,18 +464,6 @@ color: black;</string>
                  </property>
                  <property name="text">
                   <string>GPS</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QLabel" name="COMMS_subsys_label">
-                 <property name="styleSheet">
-                  <string notr="true">border: 1px solid gray;
-border-radius: 2px;
-color: black;</string>
-                 </property>
-                 <property name="text">
-                  <string>COMMS</string>
                  </property>
                 </widget>
                </item>

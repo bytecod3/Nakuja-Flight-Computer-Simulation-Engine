@@ -36,6 +36,7 @@ private slots:
     void on_closeSerialButton_clicked();
     void on_btnLink_clicked();
     void on_btnCheckSystems_clicked();
+    void on_btnConfirmCheck_clicked();
 
     // update UI functions
     void updateFlightStateUI(QString);

@@ -453,6 +453,11 @@ void MainWindow::setStaticUI() {
     ui->btnCheckSystems->setAutoFillBackground(true);
     ui->btnCheckSystems->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff;padding:10px; border: 1px solid gray; border-radius: 2px;} ");
 
+
+    ui->btnConfirmCheck->setAutoFillBackground(true);
+    ui->btnConfirmCheck->setStyleSheet(" QPushButton { background-color: #000017; color: #ffffff;padding:10px; border: 1px solid gray; border-radius: 2px;} ");
+
+
     // simulated altitude data plot
     ui->lblSimulatedAlt->setAutoFillBackground(true);
     ui->lblSimulatedAlt->setStyleSheet(" QLabel { background-color: #111111; color: #ffffff; padding: 2px; }  " );
@@ -843,6 +848,19 @@ void MainWindow::on_btnCheckSystems_clicked()
     reset_cmd.append('\n');
     port.writeToSerial(reset_cmd);
 
+}
+
+/**
+ * @brief MainWindow::on_btnConfirmCheck_clicked
+ * This will put the fligth software in system done checking state to
+ * to allow for test data transfer
+ */
+void MainWindow::on_btnConfirmCheck_clicked(){
+    current_app_state = APP_STATES::SYSTEM_CHECK;
+    QString h = "2";
+    QByteArray h_cmd(h.toUtf8());
+    h_cmd.append('\n');
+    port.writeToSerial(h_cmd);
 }
 
 
