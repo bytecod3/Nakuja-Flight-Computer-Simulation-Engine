@@ -1,8 +1,8 @@
 var NAVTREEINDEX0 =
 {
-"Desktop__Qt__6__7__0__MinGW__64__bit-Debug_2debug_2moc__predefs_8h_source.html":[9,0,0,1,0,0,0,0],
-"Desktop__Qt__6__7__1__MinGW__64__bit-Debug_2debug_2moc__predefs_8h_source.html":[9,0,0,1,0,1,0,0],
-"Desktop__Qt__6__7__2__MinGW__64__bit-Debug_2debug_2moc__predefs_8h_source.html":[9,0,0,1,0,2,0,0],
+"Desktop__Qt__6__7__0__MinGW__64__bit-Debug_2debug_2moc__predefs_8h_source.html":[9,0,0,0,0,0,0,0],
+"Desktop__Qt__6__7__1__MinGW__64__bit-Debug_2debug_2moc__predefs_8h_source.html":[9,0,0,0,0,1,0,0],
+"Desktop__Qt__6__7__2__MinGW__64__bit-Debug_2debug_2moc__predefs_8h_source.html":[9,0,0,0,0,2,0,0],
 "annotated.html":[8,0],
 "classCSVRow.html":[8,0,0],
 "classCSVRow.html#a8ae98329f919a23c5b154fcd4efddfe2":[8,0,0,0],
