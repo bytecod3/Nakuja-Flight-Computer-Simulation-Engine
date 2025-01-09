@@ -14,6 +14,7 @@ SOURCES += \
     defines.cpp \
     main.cpp \
     mainwindow.cpp \
+    qcustomplot.cpp \
     serialparser.cpp \
     serialport.cpp
 
@@ -21,6 +22,7 @@ HEADERS += \
     csv-parser.h \
     defines.h \
     mainwindow.h \
+    qcustomplot.h \
     serialparser.h \
     serialport.h \
     window_defs.h

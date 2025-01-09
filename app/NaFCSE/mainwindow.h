@@ -51,7 +51,7 @@ private slots:
     void handleStateReceive();
 
     // graphing capabilities
-    // void initPlotArea();
+    void plotAltitude(QVector<double>*, int);
 
     void systemsCheck(QString);
     void resetStatesLabels();

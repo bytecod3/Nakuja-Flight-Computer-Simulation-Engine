@@ -85,8 +85,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(this, &MainWindow::endOfTransmissionSignal, this, &MainWindow::handleEndOfTransmission);
 
     ////////////////// INIT PLOT AREA ///////////////////////
-    // ui->plotWidget->resize(300, 200);
-    // this->initPlotArea();
+    ui->plotWidget->resize(300, 200);
 
     // check our current app state to display on status bar
     if(current_app_state == APP_STATES::HANDSHAKE) {
@@ -689,29 +688,43 @@ void MainWindow::updateFlightStateUI(QString state) {
 /**
  * @ brief Setup graphing widget on startup
  */
-// void MainWindow::initPlotArea() {
-//     // plot a simple quadratic graph
-//     QVector<double> x(101), y(101);
-//     for (int i=0; i< 101; ++i) {
-//         x[i] = i/50.0 - 1;
-//         y[i] = x[i]*x[i]; // quadratic function
-//     }
+void MainWindow::plotAltitude(QVector<double>* altitudeVector, int altitude_vec_length ) {
+    // plot a simple quadratic graph
+    // QVector<double> x(101), y(101);
+    // for (int i=0; i< 101; ++i) {
+    //     x[i] = i/50.0 - 1;
+    //     y[i] = x[i]*x[i]; // quadratic function
+    // }
 
-//     // create a graph and assign data to it
-//     ui->plotWidget->addGraph();
-//     ui->plotWidget->graph(0)->setData(x, y);
+    // process the vector into x and y vectors
+    QVector<double> x(altitude_vec_length), y(altitude_vec_length);
+    for(int i =0; i < altitude_vec_length; i++) {
+        x[i] = i;
+        y[i] = altitudeVector->at(i);
+    }
 
-//     // label the axes
-//     ui->plotWidget->xAxis->setLabel("X value");
-//     ui->plotWidget->yAxis->setLabel("Y label");
+    // create a graph and assign data to it
+    ui->plotWidget->addGraph();
+    ui->plotWidget->graph(0)->setPen(QPen(Qt::red));
+    ui->plotWidget->graph(0)->setData(x, y);
 
-//     // set the axes range, so we see all data
-//     ui->plotWidget->xAxis->setRange(-1, 1);
-//     ui->plotWidget->yAxis->setRange(0, 1);
+    // label the axes
+    ui->plotWidget->xAxis->setLabel("X value");
+    ui->plotWidget->yAxis->setLabel("Y label");
 
-//     ui->plotWidget->replot();
+    // set the axes range, so we see all data
+    ui->plotWidget->xAxis->setRange(-1, 1);
+    ui->plotWidget->yAxis->setRange(0, 1);
 
-// }
+    // make the ranges scale themselves so graph 0 always fits perfectly in the visible area
+    ui->plotWidget->graph(0)->rescaleAxes();
+
+    // Allow user to drag axis ranges with mouse, zoom with mouse wheel and select graphs by clicking:
+    ui->plotWidget->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
+
+    ui->plotWidget->replot();
+
+}
 
 /**
  * @brief MainWindow::~MainWindow
@@ -730,16 +743,12 @@ MainWindow::~MainWindow()
 void MainWindow::on_btnLink_clicked()
 {
 
-    if(current_app_state == APP_STATES::HANDSHAKE) {
-        // send SOH signal to the device under test Start of Header
-        QByteArray soh_byte = SOH.toUtf8();
-        this->port.writeToSerial(soh_byte);
-        qDebug() << soh_byte;
-    }
-
-    // get the response command from serial
-    // here, the state has changed to
-    // invoke the csv-parser
+    // if(current_app_state == APP_STATES::HANDSHAKE) {
+    //     // send SOH signal to the device under test Start of Header
+    //     QByteArray soh_byte = SOH.toUtf8();
+    //     this->port.writeToSerial(soh_byte);
+    //     qDebug() << soh_byte;
+    // }
 
     // get the simulation data file   
     QString data_file = ui->lnFilename->text();
@@ -752,7 +761,6 @@ void MainWindow::on_btnLink_clicked()
     } else if(file_ext != "csv") {
         QMessageBox::critical(this, "File error", "Please select a csv file");
     } else {
-
         // right file selected
         QByteArray filename = data_file.toLocal8Bit();
         const char* file_str = filename.data();
@@ -801,7 +809,7 @@ void MainWindow::on_btnLink_clicked()
             altitude_string.push_back(row[1]);
         }
 
-        // feed the altitude data into the QVector
+        // feed the altitude data into the QVector as a double
         for(const auto& element: altitude_string) {
             QString element_qs = QString::fromLocal8Bit(element.c_str());
             altitude.push_back(element_qs.toDouble());
@@ -821,25 +829,25 @@ void MainWindow::on_btnLink_clicked()
         //     ui->progressBar->setValue(i);
         // }
 
-        int vl = 0;
-        while (vl != alt_vec_length) {
-            // write the altitude to the serial port
-            QString alt_str = QString::number(altitude[vl]);
-            QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
-            altitude_to_serial_int.append('\n');
+        // int vl = 0;
+        // while (vl != alt_vec_length) {
+        //     // write the altitude to the serial port
+        //     QString alt_str = QString::number(altitude[vl]);
+        //     QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
+        //     altitude_to_serial_int.append('\n');
 
-            // qDebug() << "SENDINTO SERIAL";
-            port.writeToSerial(altitude_to_serial_int); // Send data to serial
+        //     // qDebug() << "SENDINTO SERIAL";
+        //     port.writeToSerial(altitude_to_serial_int); // Send data to serial
 
-            vl++;
-            // qDebug() << vl;
-
-        }
-
+        //     vl++;
+        //     // qDebug() << vl;
+        // }
 
         ////////////////////////////////////////////////////////////////////
 
         // plot the data on the app
+        qDebug() << alt_vec_length;
+        this->plotAltitude(&altitude, alt_vec_length);
 
         // close the file
 

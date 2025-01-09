@@ -656,7 +656,7 @@ color: black;</string>
            </widget>
           </item>
           <item>
-           <widget class="QWidget" name="widget" native="true"/>
+           <widget class="QCustomPlot" name="plotWidget" native="true"/>
           </item>
          </layout>
         </item>
@@ -812,6 +812,14 @@ font: {
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QCustomPlot</class>
+   <extends>QWidget</extends>
+   <header>qcustomplot.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="serial-icon.qrc"/>
   <include location="play-icon.qrc"/>
