@@ -1,5 +1,6 @@
 import csv
 import matplotlib.pyplot as plt
+from pandas.io.stata import stata_epoch
 
 # pseudo code
 '''
@@ -18,6 +19,51 @@ generate state diagram in a file
 altitude_val = [] # holds altitude values
 altitude_x1 = [] # holds x index values for a file with multiple columns
 altitude_x = []  # holds x values for file with a single column
+
+state_log_file = "state_log_file.txt"
+
+LAUNCH_DETECTION_THRESHOLD = 10 # below 5 meters we have not launched
+states = {
+    1:"PREFLIGHT",
+    2:"POWERED_FLIGHT",
+    3:"APOGEE",
+    4:"DROGUE EJECT",
+    5:"DROGUE_DESCENT",
+    6:"MAIN_EJECT",
+    7:"MAIN_DESCENT",
+    8:"POST_FLIGHT",
+}
+
+def check_flight_states(altitude_values, has_header=0):
+    """
+    Check flight states based on the test data
+    """
+    # state machine
+
+    altitude_values_float = []
+
+    if has_header:
+        altitude_values = altitude_values[1:]
+        l = len(altitude_values[1:])
+        # convert from string to float
+        for j in range(0, l):
+            altitude_values_float.append(float(altitude_values[j]))
+
+    else: # no header
+        l = len(altitude_values)
+        # convert from string to float
+        for j in range(0, l):
+            altitude_values_float.append(float(altitude_values[j]))
+
+    for alt_index in range(0, l):
+        state_log = open(state_log_file, 'a')
+
+        if altitude_values_float[alt_index] < LAUNCH_DETECTION_THRESHOLD:
+            state_log.write(states[1]) # append flight state to file
+            state_log.write("\n")
+
+        state_log.close()
+
 
 
 def generate_altitude_plot(has_header = 1):
@@ -43,7 +89,7 @@ def generate_altitude_plot(has_header = 1):
         plt.title("Simulated altitude graph")
         plt.show()
 
-    else: # for file with multiple columns
+    else: # for file with multiple columns, no header
         l = altitude_val
         lx = altitude_x1
         # convert from string to float
@@ -62,7 +108,7 @@ def generate_altitude_plot(has_header = 1):
         plt.show()
 
 
-def open_csv(filename):
+def open_csv(filename, check_state=0):
     has_multiple_columns = 0
     # check filename for multiple columns
     file_with_multi_columns = "altitude_data_matlab.csv"
@@ -81,12 +127,21 @@ def open_csv(filename):
                 altitude_x1.append(row[0]) # represents x index
                 altitude_val.append(row[1]) # second row represents the altitude data
 
-            generate_altitude_plot(has_header=0)
+            # TODO: check usage of multithreading to eliminate this check
+            if check_state:
+                check_flight_states(altitude_val, has_header=0)
+            else:
+                generate_altitude_plot(has_header=0)
+
         else: # has single column, no header
             for row in filereader:
                 altitude_val.append(row[0]) # this is just for confirmation using different altitude data
 
-            generate_altitude_plot(has_header=1)
+            if check_state:
+                check_flight_states(altitude_val, has_header=1)
+            else:
+                generate_altitude_plot(has_header=1)
+
 
 
 '''
@@ -134,7 +189,12 @@ def run_console():
         open_csv(f)
 
     elif choice == 2:
-        print("Choice 2")
+        # perform state detection
+        # TODO: check if filename is valid, if it is a csv file
+        f = input("Enter filename: ")
+        print("Opening test file...")
+        open_csv(f, check_state=1)
+
     elif choice == 3:
         print("Choice 3")
 

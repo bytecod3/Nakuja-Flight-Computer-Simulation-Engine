@@ -45,12 +45,24 @@ Follow the steps below to run the tool:
 3. Select the required option and follow the displayed prompts. 
 
 ### Data analysis
-The data produced by the tool is two fold:
+The data produced by the tool is two-fold:
 - Graphical data
 - State log file 
 
 You can save the graphs as images for later usage.  
 For the flight state file, open the ```flight_test_file.txt``` and verify that the 
 flight states are in sequence as intended.
+
+### How apogee is detected
+
+We employ a ring buffer data structure to detect the apogee. It works as defined below:
+- Store 5 successive values in a ring buffer
+- While consuming the data, keep checking if the oldest value and the current value have a 
+positive difference. 
+- If difference is positive, we are still ascending 
+- If difference is negative, then we are descending. Register this at the first as apogee the first time it 
+is detected
+
+### References and additional resources 
 
 
