@@ -82,11 +82,14 @@ The following are required to install and run this tool:
 
 * @section step14 Usage
 
+Subsystems checking and testing 
 
-* @section step15 Adapting NaFCTSE for your flight computer 
 
 
-* @section step16 Contributors
+* @section step20 Adapting NaFCTSE for your flight computer 
+
+
+* @section step21 Contributors
 * 1. Edwin Mwiti
 * 2. Naomi Chesang
 *
