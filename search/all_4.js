@@ -4,7 +4,7 @@ var searchData=
   ['a_20scatter_20style_1',['Specifying a scatter style',['../classQCPScatterStyle.html#QCPScatterStyle-defining',1,'']]],
   ['a_20specific_20layer_2',['Replotting only a specific layer',['../classQCPLayer.html#qcplayer-buffering',1,'']]],
   ['accepted_3',['accepted',['../classQCPSelectionRect.html#a15a43542e1f7b953a44c260b419e6d2c',1,'QCPSelectionRect']]],
-  ['adapting_20nafctse_20for_20your_20flight_20computer_4',['Adapting NaFCTSE for your flight computer',['../index.html#step15',1,'']]],
+  ['adapting_20nafctse_20for_20your_20flight_20computer_4',['Adapting NaFCTSE for your flight computer',['../index.html#step20',1,'']]],
   ['add_5',['add',['../classQCPDataContainer.html#a42b98bd994307ccd163a43d576f91ad9',1,'QCPDataContainer::add(const QCPDataContainer&lt; DataType &gt; &amp;data)'],['../classQCPDataContainer.html#a51d2a4c9ce4baf5e950b767d26673972',1,'QCPDataContainer::add(const QVector&lt; DataType &gt; &amp;data, bool alreadySorted=false)'],['../classQCPDataContainer.html#a715e8e9972466804954a2f8fbd5288b7',1,'QCPDataContainer::add(const DataType &amp;data)']]],
   ['addaxes_6',['addAxes',['../classQCPAxisRect.html#a792e1f3d9cb1591fca135bb0de9b81fc',1,'QCPAxisRect']]],
   ['addaxis_7',['addAxis',['../classQCPAxisRect.html#a2a845ee60eac7a8d5e71718c5e77c274',1,'QCPAxisRect']]],

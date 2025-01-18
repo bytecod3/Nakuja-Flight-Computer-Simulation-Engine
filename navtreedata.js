@@ -37,8 +37,8 @@ var NAVTREE =
       [ "System requirements", "index.html#step13", null ]
     ] ],
     [ "Usage", "index.html#step14", null ],
-    [ "Adapting NaFCTSE for your flight computer", "index.html#step15", null ],
-    [ "Contributors", "index.html#step16", null ],
+    [ "Adapting NaFCTSE for your flight computer", "index.html#step20", null ],
+    [ "Contributors", "index.html#step21", null ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
