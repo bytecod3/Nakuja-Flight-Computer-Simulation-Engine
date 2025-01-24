@@ -829,24 +829,24 @@ void MainWindow::on_btnLink_clicked()
         //     ui->progressBar->setValue(i);
         // }
 
-        // int vl = 0;
-        // while (vl != alt_vec_length) {
-        //     // write the altitude to the serial port
-        //     QString alt_str = QString::number(altitude[vl]);
-        //     QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
-        //     altitude_to_serial_int.append('\n');
+        int vl = 0;
+        while (vl != alt_vec_length) {
+            // write the altitude to the serial port
+            QString alt_str = QString::number(altitude[vl]);
+            QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
+            altitude_to_serial_int.append('\n');
 
-        //     // qDebug() << "SENDINTO SERIAL";
-        //     port.writeToSerial(altitude_to_serial_int); // Send data to serial
+            // qDebug() << "SENDINTO SERIAL";
+            port.writeToSerial(altitude_to_serial_int); // Send data to serial
 
-        //     vl++;
-        //     // qDebug() << vl;
-        // }
+            vl++;
+            // qDebug() << vl;
+        }
 
         ////////////////////////////////////////////////////////////////////
 
         // plot the data on the app
-        qDebug() << alt_vec_length;
+        // qDebug() << alt_vec_length;
         this->plotAltitude(&altitude, alt_vec_length);
 
         // close the file
