@@ -2,8 +2,8 @@
 #define WINDOW_DEFS_H
 
 
-#define WINDOW_HEIGHT           900
-#define WINDOW_WIDTH            1500
+#define WINDOW_HEIGHT           800
+#define WINDOW_WIDTH            1300
 
 
 #endif // WINDOW_DEFS_H

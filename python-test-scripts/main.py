@@ -20,6 +20,9 @@ altitude_val = [] # holds altitude values
 altitude_x1 = [] # holds x index values for a file with multiple columns
 altitude_x = []  # holds x values for file with a single column
 
+max_alt = 0  # the maximum altitude value recognized from the file 
+apogee_flag = 0 # show that apogee has been detected 
+apogee = 0 # determine the altitude at which apogee was detected
 state_log_file = "state_log_file.txt"
 
 LAUNCH_DETECTION_THRESHOLD = 10 # below 5 meters we have not launched
@@ -58,9 +61,26 @@ def check_flight_states(altitude_values, has_header=0):
     for alt_index in range(0, l):
         state_log = open(state_log_file, 'a')
 
+        # detect PREFLIGHT 
         if altitude_values_float[alt_index] < LAUNCH_DETECTION_THRESHOLD:
             state_log.write(states[1]) # append flight state to file
             state_log.write("\n")
+
+        # detect apogee
+        if altitude_values_float[alt_index] > max_alt:
+            max_alt = altitude_values[alt_index]
+
+        if apogee_flag == 0:
+            if (max_alt - altitude_values[alt_index]) > 3:
+                apogee = max_alt
+                apogee_flag = 1
+                print("Apogee detected at " + str(apogee))
+                state_log.write(states[1]) # append flight state to file
+                state_log.write("\n")   
+            
+        
+
+        
 
         state_log.close()
 
