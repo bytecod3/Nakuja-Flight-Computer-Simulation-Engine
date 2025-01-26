@@ -20,11 +20,12 @@ x1 = linspace(500, 1000, num_samples);
 x_joined = [x x1];
 y_joined = [y y1];
 
+
 % send to csv
-m = [x_joined' y_joined'];
+m = [x' y'];
 dlmwrite('wrong_altitude_data.csv', m); 
 
-plot(x_joined ,y_joined);
+plot(x' ,y');
 xlabel( 'Time(sec)' );
 ylabel('Altitude (m)');
 title("Altitude test data");

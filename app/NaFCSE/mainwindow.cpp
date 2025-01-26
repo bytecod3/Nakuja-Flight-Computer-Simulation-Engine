@@ -156,8 +156,6 @@ void MainWindow::readData(QString data) {
     if(current_app_state == APP_STATES::SYSTEM_CHECK) {
         QString state = data.trimmed();
         system_state = state;
-        //systemsCheck(system_state);
-
         // reset the state
         current_app_state = APP_STATES::NOMINAL;
     }
@@ -743,14 +741,13 @@ MainWindow::~MainWindow()
 void MainWindow::on_btnLink_clicked()
 {
 
-    // if(current_app_state == APP_STATES::HANDSHAKE) {
-    //     // send SOH signal to the device under test Start of Header
-    //     QByteArray soh_byte = SOH.toUtf8();
-    //     this->port.writeToSerial(soh_byte);
-    //     qDebug() << soh_byte;
-    // }
+    // send SOH signal to the device under test Start of Header
+    QByteArray soh_byte = SOH.toUtf8();
+    this->port.writeToSerial(soh_byte);
+    qDebug() << "Sent SOH to Flight computer";
+    qDebug() << soh_byte;
 
-    // get the simulation data file   
+    // get the simulation data file
     QString data_file = ui->lnFilename->text();
     QFileInfo t_file(data_file);
     QString file_ext = t_file.completeSuffix();
@@ -777,31 +774,6 @@ void MainWindow::on_btnLink_clicked()
         // open simulation data file
         std::ifstream f(file_str);
 
-        ////////////////////////////////////////////////////////////////////
-        /// // process x acceleration data
-        // row represents one row of data
-        // CSVRow row;
-
-        // // from the order of the csv file, first column == x acceleration
-        // // second column is the altitude
-        // std::vector<std::string> x_accel;
-        // while(f >> row) {
-        //     x_accel.push_back(row[0]);
-        // }
-
-        // // feed this into the QVector to prepare for transmission
-        // for(const auto& element: x_accel) {
-        //     QString element_qs = QString::fromLocal8Bit(element.c_str());
-        //     ax.push_back(element_qs.toDouble());
-        // }
-
-        // // send the data to device under test - TODO: remove this line here
-        // // get length of the data points
-        // int vec_length = ax.size();
-        // for(int i = 0; i < vec_length; i++) {
-        //     qDebug() << ax[i];
-        // }
-
         // Process altitude data
         CSVRow row;
         std::vector<std::string> altitude_string;
@@ -817,17 +789,6 @@ void MainWindow::on_btnLink_clicked()
 
         int alt_vec_length = altitude.size();
 
-        // for(int i=0; i < alt_vec_length; i++) {
-        //     // qDebug() << altitude[i];
-        //     // write the altitude to the serial port
-        //     QString alt_str = QString::number(altitude[i]);
-        //     QByteArray altitude_to_serial_int(QString(alt_str).toUtf8());
-        //     altitude_to_serial_int.append('\n');
-        //     port.writeToSerial(altitude_to_serial_int); // Send data to serial
-
-        //     // update the progress bar
-        //     ui->progressBar->setValue(i);
-        // }
 
         int vl = 0;
         while (vl != alt_vec_length) {
@@ -884,7 +845,7 @@ void MainWindow::handleStateReceive() {
 void MainWindow::on_btnCheckSystems_clicked()
 {
     current_app_state = APP_STATES::SYSTEM_CHECK;
-    QString reset_command = "1"; // sends command 1 to the flight computer to check for subsystems
+    QString reset_command = "7"; // sends command 1 to the flight computer to check for subsystems
     QByteArray reset_cmd(reset_command.toUtf8());
     reset_cmd.append('\n');
     port.writeToSerial(reset_cmd);
