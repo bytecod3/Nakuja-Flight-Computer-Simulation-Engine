@@ -22,10 +22,12 @@ altitude_x = []  # holds x values for file with a single column
 
 max_alt = 0  # the maximum altitude value recognized from the file 
 apogee_flag = 0 # show that apogee has been detected 
+main_eject_flag = 0
 apogee = 0 # determine the altitude at which apogee was detected
 state_log_file = "state_log_file.txt"
 
 LAUNCH_DETECTION_THRESHOLD = 10 # below 5 meters we have not launched
+
 states = {
     1:"PREFLIGHT",
     2:"POWERED_FLIGHT",
@@ -42,8 +44,12 @@ def check_flight_states(altitude_values, has_header=0):
     Check flight states based on the test data
     """
     # state machine
-
+    global max_alt
+    global apogee_flag
+    global main_eject_flag
     altitude_values_float = []
+
+    state_log = open(state_log_file, 'w').close()
 
     if has_header:
         altitude_values = altitude_values[1:]
@@ -58,32 +64,59 @@ def check_flight_states(altitude_values, has_header=0):
         for j in range(0, l):
             altitude_values_float.append(float(altitude_values[j]))
 
-    for alt_index in range(0, l):
+    for alt_index in range(0, len(altitude_values_float)):
         state_log = open(state_log_file, 'a')
 
-        # detect PREFLIGHT 
-        if altitude_values_float[alt_index] < LAUNCH_DETECTION_THRESHOLD:
-            state_log.write(states[1]) # append flight state to file
-            state_log.write("\n")
-
-        # detect apogee
-        if altitude_values_float[alt_index] > max_alt:
-            max_alt = altitude_values[alt_index]
-
         if apogee_flag == 0:
-            if (max_alt - altitude_values[alt_index]) > 3:
+            # detect PREFLIGHT 
+            if altitude_values_float[alt_index] < LAUNCH_DETECTION_THRESHOLD:
+                state_log.write(states[1]) # append flight state to file
+                state_log.write("\n")
+
+            # detect POWERED FLIGHT 
+            elif  LAUNCH_DETECTION_THRESHOLD < altitude_values_float[alt_index] < LAUNCH_DETECTION_THRESHOLD + 20:
+                state_log.write(states[2]) # append flight state to file
+                state_log.write("\n")
+
+            # detect APOGEE
+            if altitude_values_float[alt_index] > max_alt:
+                max_alt = altitude_values_float[alt_index]
+
+            if (max_alt - float(altitude_values_float[alt_index])) > 3:
                 apogee = max_alt
                 apogee_flag = 1
                 print("Apogee detected at " + str(apogee))
-                state_log.write(states[1]) # append flight state to file
-                state_log.write("\n")   
+                state_log.write(states[3]) # append flight state to file
+                state_log.write("\n")  
+
+                # DROGUE EJECT
+                state_log.write(states[4]) # append flight state to file
+                state_log.write("\n") 
+
+                # DROGUE DESCENT 
+                state_log.write(states[5]) # append flight state to file
+                state_log.write("\n") 
+
             
-        
+        # STATES AFTER APOGEE
+        elif apogee_flag == 1:
+            # detect MAIN CHUTE EJECT
+            if LAUNCH_DETECTION_THRESHOLD <= altitude_values_float[alt_index] <= max_alt:
+                if main_eject_flag == 0:
+                    state_log.write(states[6]) # append flight state to file
+                    state_log.write("\n")
+                    main_eject_flag = 1
+                elif main_eject_flag == 1:
+                    # MAIN CHUTE DESCENT
+                    state_log.write(states[7]) # append flight state to file
+                    state_log.write("\n")
 
-        
-
+            if altitude_values_float[alt_index] < LAUNCH_DETECTION_THRESHOLD:
+                # POST FLIGHT
+                state_log.write(states[8]) # append flight state to file
+                state_log.write("\n")
+    
         state_log.close()
-
 
 
 def generate_altitude_plot(has_header = 1):

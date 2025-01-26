@@ -25,7 +25,7 @@ y_joined = [y y1];
 m = [x' y'];
 dlmwrite('wrong_altitude_data.csv', m); 
 
-plot(x' ,y');
+plot(x_joined ,y_joined);
 xlabel( 'Time(sec)' );
 ylabel('Altitude (m)');
 title("Altitude test data");

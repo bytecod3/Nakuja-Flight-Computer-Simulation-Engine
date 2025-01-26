@@ -3,7 +3,7 @@ mx = 0
 mn = 0
 
 apg_flag = 0
-apg_val = 0;
+apg_val = 0
 
 for i in range(0, len(k)):
     if k[i] > mx:

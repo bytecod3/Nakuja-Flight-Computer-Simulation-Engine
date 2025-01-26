@@ -707,8 +707,8 @@ void MainWindow::plotAltitude(QVector<double>* altitudeVector, int altitude_vec_
     ui->plotWidget->graph(0)->setData(x, y);
 
     // label the axes
-    ui->plotWidget->xAxis->setLabel("X value");
-    ui->plotWidget->yAxis->setLabel("Y label");
+    ui->plotWidget->xAxis->setLabel("time");
+    ui->plotWidget->yAxis->setLabel("altitude");
 
     // set the axes range, so we see all data
     ui->plotWidget->xAxis->setRange(-1, 1);
