@@ -167,7 +167,7 @@ def open_csv(filename, check_state=0):
     file_with_multi_columns = "altitude_data_matlab.csv"
     file_single_columns = "altitude_log.csv"
 
-    if filename == "altitude_data_matlab.csv":
+    if (filename == "altitude_data_matlab.csv") or (filename == "wrong_altitude_data_1.csv") or (filename == "wrong_altitude_data_2_slope.csv") :
         has_multiple_columns = 1
     elif filename == "altitude_log.csv":
         has_multiple_columns = 0
